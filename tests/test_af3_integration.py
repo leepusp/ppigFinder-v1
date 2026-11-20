@@ -49,7 +49,7 @@ class AF3IntegrationTests(unittest.TestCase):
         cfg = AF3RunnerConfig(mode="official", script=str(script), python=sys.executable,
                               model_dir=str(models), db_dir=str(db))
         args = build_af3_command(cfg, self.native, self.out)
-        self.assertIn(f"--json_path={self.native}", args)
+        self.assertIn(f"--json_path={self.native.resolve()}", args)
         self.assertNotIn("--json-path", args)
         self.assertEqual(args, run_af3(cfg, self.native, self.out))
         self.assertFalse(self.out.exists())

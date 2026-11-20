@@ -97,6 +97,19 @@ def install_modular_gui_actions(window) -> None:
         logging.getLogger(__name__).exception("AF3 runner dialog could not be registered")
 
     try:
+        from ppigfinder.ui.remote_connections_dialog import show_remote_connections_dialog
+
+        install_action_once(
+            window,
+            menu_title="System",
+            action_text="Remote Connections (SSH/SFTP)",
+            attribute_name="_ppig_remote_connections_dialog_installed",
+            callback=show_remote_connections_dialog,
+        )
+    except Exception:
+        LOGGER.exception("Remote Connections dialog could not be registered")
+
+    try:
         from ppigfinder.ui.af3_export import export_selected_orfs_as_server_json
 
         install_action_once(

@@ -16,7 +16,7 @@
 | DaVinci AF3 | `hpc/profiles/davinci.py`, docs of dry-run | Institution-specific example; input/wrapper dry-run recorded, not real inference in that particular test |
 | Result parsing | `alphafold/result_parser.py`, `services/alphafold_results_service.py` | Sequential/parallel parsing code; supported metrics depend on output format |
 | Boltz-2 / FoldCP | `structure_prediction/*_input_writer.py` | Input scaffolding; job-runner code contains TODOs |
-| SSH/SFTP and monitoring | `hpc/ssh_client.py`, `services/hpc_service.py`, `hpc/job_monitor.py` | Some of these files are empty; **automated remote round-trip not yet substantiated** |
+| SSH/SFTP and monitoring | `integrations/remote/` implements optional SSH/SFTP file transfer and strict host-key checks; legacy `hpc/` monitoring modules remain empty | File-transfer adapter exists; **remote scheduler submit/monitor not implemented**; real-host GUI round-trip requires validation |
 | Cross-platform packaging | `pyproject.toml`, `main.py`, PyQt launcher | Source install is documented; fresh OS install matrix needs verification |
 
 ## Architectural boundary (recommended)
@@ -71,6 +71,8 @@ supplied by the execution environment, rather than loaded through an assumed
 institutional module. Boltz-2 and FoldCP export inputs but do not execute;
 their placeholder runner scripts fail explicitly with exit code 78.
 
-**Not implemented yet:** backend-neutral connection management and remote
-scheduler adapters (Slurm, PBS, LSF, etc.). AlphaFold Server is a separate,
-manual export workflow. This update does not claim remote automation.
+**Implemented separately:** optional SSH/SFTP connection profiles, strictly
+verified single-file transfer and AF3 command preview. **Not implemented:**
+remote job submission/monitoring or scheduler adapters (Slurm, PBS, LSF).
+AlphaFold Server remains a separate manual workflow. See the
+[remote connections guide](../user_manual/remote_connections.md).

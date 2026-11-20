@@ -30,7 +30,7 @@ class CapabilityRegistryTests(unittest.TestCase):
 
     def test_unimplemented_remote_workflows_are_explicit(self):
         items = self.inspect(executables=("af3", "sbatch", "ssh"), modules=("paramiko",))
-        self.assertEqual(items["ssh_transport"].status, CapabilityStatus.NOT_IMPLEMENTED)
+        self.assertEqual(items["ssh_transport"].status, CapabilityStatus.DETECTED)
         self.assertEqual(items["remote_scheduler"].status, CapabilityStatus.NOT_IMPLEMENTED)
         self.assertEqual(items["boltz2_runner"].status, CapabilityStatus.NOT_IMPLEMENTED)
         self.assertEqual(items["foldcp_runner"].status, CapabilityStatus.NOT_IMPLEMENTED)
