@@ -8,7 +8,7 @@ version = "2.9.14"
 description = "Protein-Protein Interaction Genomic Finder"
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
     { name = "Gabriel Umaji Oka" },
     { name = "Camilla Adan" },
@@ -37,6 +37,8 @@ dev = [
 [project.scripts]
 ppigfinder = "ppigfinder.app:main"
 ppigfinder-af3 = "ppigfinder.integrations.af3.cli:main"
+ppigfinder-remote = "ppigfinder.integrations.remote.cli:main"
+ppigfinder-slurm = "ppigfinder.hpc.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

@@ -21,4 +21,4 @@ This layer should be used after generic inputs are written. The generic files re
 - input/job_spec.json
 - input/af3_input.json
 
-Before production submission, the generated AF3 JSON should be compared against the local AlphaFold 3 runner or server input requirements used on DaVinci.
+Before production submission, the generated AF3 JSON should be compared against the local AlphaFold 3 runner or server input requirements on the target environment.

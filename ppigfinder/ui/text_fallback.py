@@ -86,9 +86,8 @@ def clean_ui_text(text: str) -> str:
         text = text.replace(old, new)
 
     text = _EMOJI_RE.sub("", text)
-    text = re.sub(r"\s+", " ", text).strip()
-
-    return text
+    lines = (re.sub(r"[^\S\n]+", " ", line).strip() for line in text.splitlines())
+    return "\n".join(lines).strip()
 
 
 def _clean_text_object(obj) -> None:

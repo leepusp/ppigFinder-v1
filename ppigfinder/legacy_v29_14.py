@@ -660,26 +660,26 @@ CHANGELOG
       triggers garbage collection, allowing hundreds to thousands of jobs
       to be triaged without exhausting RAM.
 
-  v2.6 (2026) — Bug fixes: PAE_min symmetry + DaVinci output support
+  v2.6 (2026) — Bug fixes: PAE_min symmetry + HPC output support
     • BUG FIX (PAE_min symmetry): chain_pair_pae_min was read as
       chain_pair_pae_min[A][B] only. Corrected to
       min(chain_pair_pae_min[A][B], chain_pair_pae_min[B][A])
       for true inter-chain minimum as documented.
     • BUG FIX (duplicate summary): when a job folder contains both a
-      DaVinci-format summary (*_summary_confidences.json) and an AF3
+      cluster-format summary (*_summary_confidences.json) and an AF3
       Server-format summary (summary_confidences.json), ppigFinder now
       selects the one containing chain_pair_pae_min — the richer format.
     • NEW TIER 6 chain layout: when all previous layout tiers fail
-      (confidences.json lacks token_chain_ids — common in DaVinci outputs),
+      (confidences.json lacks token_chain_ids — common in HPC outputs),
       chain letters A/B are inferred from the chain_pair_pae_min matrix
       dimensions so that focal metrics can still be extracted.
     • BUG FIX (summary-only fallback): the entire inter-chain metric block
       was guarded by `if pae_matrix`, so jobs where confidences.json lacks
-      the 'pae' field (DaVinci outputs with lightweight confidences) showed
+      the 'pae' field (HPC outputs with lightweight confidences) showed
       all metrics as '-' even when chain_pair_pae_min and chain_pair_iptm
       were present in summary_confidences.json. A new summary-only fallback
       block now populates PAE_min and cp_ipTM from the summary directly
-      when pae_matrix is absent, so DaVinci jobs are correctly ranked.
+      when pae_matrix is absent, so HPC jobs are correctly ranked.
 
   v2.0 (2026) — Public release
     • Consolidated all v1.x features into stable public release.
@@ -838,10 +838,9 @@ CHANGELOG
 
   v1.04 (2026) — EVcouplings coevolution tab (test, later removed)
 
-  v1.03 (2026) — DaVinci cluster integration & SLURM defaults
+  v1.03 (2026) — HPC cluster integration & SLURM defaults
     • SLURM Array anti-OOM export (batches + run_array.sh)
-    • max50 partition defaults: 7d walltime, 64G RAM, 64 CPUs
-    • Partition tooltips with DaVinci limits
+    • Partition tooltips with HPC limits
 
   v1.02 (2026) — Genome-wide interactome scan
     • 'Add All ORFs' button with size/HMM filter dialog
@@ -6963,64 +6962,6 @@ class AF3ProfileManager:
     def load(self):
         import copy as _copy
 
-        # ── v2.5 first-run migration: nuke ALL old user profiles ──────
-        # In v2.7 we tried to selectively filter the legacy "Davinci"
-        # profile by name/id substring matching.  Reports from the
-        # field show that even after v2.7 some installations still
-        # surface the legacy profile (probably because the local copy
-        # was created with characters that escape simple substring
-        # matching, or was re-saved by user action after v2.7's filter
-        # ran once).  v2.5 takes the bullet-proof route: on the first
-        # load that detects the v2.5 flag is missing, we BACK UP the
-        # current profiles file and start the user-profile space
-        # empty.  Any user profiles the user actually wants to keep
-        # are preserved verbatim in the backup file (next to the
-        # original), so nothing is irreversibly lost.
-        try:
-            cfg_dir = self.config_path.parent
-            flag_path = cfg_dir / "af3_profiles_migrated_v25.flag"
-            if not flag_path.exists() and self.config_path.exists():
-                # Make a timestamped backup of the current file before
-                # we wipe it.  Users can copy any profile they wanted
-                # to keep back into the active file.
-                ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-                backup_path = (
-                    cfg_dir
-                    / f"af3_server_profiles_pre_v25_backup_{ts}.json")
-                try:
-                    import shutil as _shutil
-                    _shutil.copy2(self.config_path, backup_path)
-                except Exception as _e:
-                    print(f"[AF3ProfileManager] backup error: {_e}")
-                # Truncate the user-profile file to an empty list
-                try:
-                    with open(self.config_path, 'w',
-                              encoding='utf-8') as f:
-                        json.dump([], f)
-                except Exception as _e:
-                    print(f"[AF3ProfileManager] truncate error: {_e}")
-                # Mark migration done so we never wipe again
-                try:
-                    flag_path.write_text(
-                        f"v2.5 migration completed at {ts}\n"
-                        f"backup: {backup_path.name}\n",
-                        encoding='utf-8')
-                except Exception:
-                    pass
-            elif not flag_path.exists():
-                # No existing config file → just write the flag so
-                # we don't re-trigger this path on the next load.
-                try:
-                    flag_path.write_text(
-                        "v2.5 migration: no prior config\n",
-                        encoding='utf-8')
-                except Exception:
-                    pass
-        except Exception as _e:
-            # If anything goes sideways, fall through to the normal
-            # filter (below), which still catches the common cases.
-            print(f"[AF3ProfileManager] v2.5 migration error: {_e}")
-
         # Built-ins are always rebuilt from AF3_DEFAULT_PROFILES
         self.profiles = [_copy.deepcopy(p) for p in AF3_DEFAULT_PROFILES]
         if self.config_path.exists():
@@ -7036,56 +6977,6 @@ class AF3ProfileManager:
                             self.profiles.append(up)
             except Exception as e:
                 print(f"[AF3ProfileManager] load error: {e}")
-
-        # ── Defense-in-depth filter ──────────────────────────────────
-        # Even after the v2.5 wipe above, every load still runs this
-        # filter.  Anything that smells like a hard-coded developer
-        # cluster gets dropped on the spot — covers the case where
-        # someone restores an old backup or imports a dev-time profile
-        # by mistake.  The check normalises against unicode look-alikes
-        # ("Dаvinci" with a Cyrillic а), strips non-alphanum separators
-        # ("Da_Vinci" / "Da-Vinci" / "Da Vinci"), and walks every text
-        # field on the profile dict.
-        legacy_markers = (
-            "davinci",        # original developer's cluster
-            "icb.usp.br",     # institutional hostname leak
-            "usp.br",         # broader institutional domain
-        )
-
-        # Map common Cyrillic/Greek look-alikes to their Latin equivalents,
-        # so a profile name like "Dаvinci" (with Cyrillic а) is still caught.
-        _lookalikes = str.maketrans({
-            'а': 'a', 'е': 'e', 'о': 'o', 'р': 'p', 'с': 'c',
-            'у': 'y', 'х': 'x', 'А': 'a', 'Е': 'e', 'О': 'o',
-            'Р': 'p', 'С': 'c', 'У': 'y', 'Х': 'x',
-            'Α': 'a', 'Ε': 'e', 'Ο': 'o',
-        })
-
-        def _is_legacy(prof):
-            if prof.get('is_builtin'):
-                return False
-            haystack_parts = [
-                prof.get('name', '') or '',
-                prof.get('id', '') or '',
-                prof.get('template', '') or '',
-                prof.get('description', '') or '',
-            ]
-            haystack = ' '.join(haystack_parts).lower()
-            haystack = haystack.translate(_lookalikes)
-            haystack_compact = re.sub(r'[^a-z0-9]+', '', haystack)
-            for m in legacy_markers:
-                if m in haystack or m in haystack_compact:
-                    return True
-            return False
-
-        before = len(self.profiles)
-        self.profiles = [p for p in self.profiles if not _is_legacy(p)]
-        if len(self.profiles) != before:
-            # Persist the cleaned-up state immediately
-            try:
-                self.save()
-            except Exception:
-                pass
 
     def clear_user_profiles(self):
         """Remove every user-created profile (built-ins survive).
@@ -7783,9 +7674,7 @@ class ppigFinderApp(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(
-            f'🧬 ppigFinder {APP_BUILD} ({APP_VERSION}) — '
-            'Protein-Protein Interaction Genomic Finder')
+        self.setWindowTitle(f"ppigFinder {APP_VERSION}")
         # ── Responsive window sizing (replaces fixed 1550×980) ──────
         self.win_mgr = WindowManager(self, app_name="ppigFinder",
                                       organisation="ppigFinder")
@@ -13104,12 +12993,10 @@ class ppigFinderApp(QMainWindow):
         if not rows:
             return
         row = rows[0].row()
-        if row >= len(self.filtered_orfs):
-            return
-        orf = self.filtered_orfs[row]
-        orf_idx = self.orfs.index(orf) if orf in self.orfs else -1
+        item = self._orf_table.item(row, 0)
+        orf_idx = self._parse_orf_idx_from_text(item.text()) if item else -1
         if orf_idx >= 0:
-            self._select_and_center_orf(orf_idx)
+            self._select_and_center_orf(orf_idx, select_table=False)
 
     def _on_map_orf_click(self, idx):
         if 0 <= idx < len(self.orfs):
@@ -13178,7 +13065,7 @@ class ppigFinderApp(QMainWindow):
                     self._select_and_center_orf(i)
                     return
 
-    def _select_and_center_orf(self, idx):
+    def _select_and_center_orf(self, idx, *, select_table=True):
         """Select an ORF in table, highlight on map, and center the map view on it."""
         if idx < 0 or idx >= len(self.orfs): return
         orf = self.orfs[idx]
@@ -13210,6 +13097,9 @@ class ppigFinderApp(QMainWindow):
                 self._genome_map._clamp_pan()
                 self._pending_center_idx = -1  # fulfilled
         self._genome_map.update()
+
+        if not select_table:
+            return
 
         # Select in table — set flag to block re-entrancy in _on_orf_table_select
         # Use index-based lookup (not identity) so annotations that modify
@@ -15353,12 +15243,12 @@ DOMAINS IN NEIGHBORHOOD:
 
         grid.addWidget(QLabel("Time per task (--time):"), 2, 0)
         time_edit = QLineEdit("7-00:00:00")
-        time_edit.setToolTip("SLURM format: D-HH:MM:SS\nDaVinci: basic=3d | max50=8d | max90=15d")
+        time_edit.setToolTip("Slurm format: D-HH:MM:SS. Check the target partition limits.")
         grid.addWidget(time_edit, 2, 1)
 
         grid.addWidget(QLabel("Partition:"), 3, 0)
-        part_edit = QLineEdit("max50")
-        part_edit.setToolTip("DaVinci partitions:\n  basic : 72h  | 16 CPUs | 100 GB | 0 GPU\n  max50 : 8d   | 64 CPUs | 500 GB | 1 GPU  (recomendada para AF3)\n  max90 : 15d  | 110 CPUs| 1 TB   | 4 GPUs (jobs muito grandes)")
+        part_edit = QLineEdit()
+        part_edit.setToolTip("Leave blank to use the Slurm default partition.")
         grid.addWidget(part_edit, 3, 1)
 
         grid.addWidget(QLabel("GPUs per task (--gres):"), 4, 0)
@@ -15367,7 +15257,7 @@ DOMAINS IN NEIGHBORHOOD:
 
         grid.addWidget(QLabel("CPUs per task (--cpus):"), 5, 0)
         cpu_spin = QSpinBox(); cpu_spin.setRange(1, 64); cpu_spin.setValue(16)
-        cpu_spin.setToolTip("DaVinci max50: até 64 CPUs | max90: até 110 CPUs")
+        cpu_spin.setToolTip("Check CPU limits on the selected partition.")
         grid.addWidget(cpu_spin, 5, 1)
 
         grid.addWidget(QLabel("AF3 command on cluster:"), 6, 0)
@@ -15405,7 +15295,9 @@ DOMAINS IN NEIGHBORHOOD:
         batch_size  = batch_spin.value()
         mem         = mem_edit.text().strip() or "32G"
         walltime    = time_edit.text().strip() or "7-00:00:00"
-        partition   = part_edit.text().strip() or "max50"
+        partition   = part_edit.text().strip()
+        partition_directive = f"#SBATCH --partition={partition}" if partition else ""
+        partition_flag = f"--partition={partition}" if partition else ""
         gres        = gpu_edit.text().strip() or "gpu:1"
         ncpus       = cpu_spin.value()
         af3cmd      = af3cmd_edit.text().strip() or "af3_run"
@@ -15462,7 +15354,7 @@ DOMAINS IN NEIGHBORHOOD:
 #SBATCH --array=1-{n_batches}
 #SBATCH --mem={mem}
 #SBATCH --time={walltime}
-#SBATCH --partition={partition}
+{partition_directive}
 #SBATCH --gres={gres}
 #SBATCH --cpus-per-task={ncpus}
 #SBATCH --output={remote_base}/logs/array_%A_%a.out
@@ -15511,7 +15403,7 @@ echo "[$(date)] Task $SLURM_ARRAY_TASK_ID complete."
 for i in $(seq -w 1 {n_batches}); do
     sbatch --job-name={genome_safe}_b${{i}} \
            --mem={mem} --time={walltime} \
-           --partition={partition} --gres={gres} \
+           {partition_flag} --gres={gres} \
            --cpus-per-task={ncpus} \
            --wrap="{af3cmd} --json_path={remote_base}/batches/batch_${{i}} --output_dir={remote_base}/results/batch_${{i}}"
 done
@@ -18321,7 +18213,7 @@ complexes that share the same architectural pattern.
         """Classify an AlphaFold JSON by content, with filename hints only as
         tie-breakers.
 
-        v2.8 fix: AF3 local/DaVinci jobs may store the full PAE matrix in
+        v2.8 fix: AF3 local/HPC jobs may store the full PAE matrix in
         files named *_full_data_0.json rather than *_confidences.json.  These
         files can also contain input-like keys such as ``sequences`` and
         ``modelSeeds``; therefore PAE-bearing JSONs must be treated as
@@ -18423,7 +18315,7 @@ complexes that share the same architectural pattern.
 
         v2.8: supports both AF3 Server-style folders
         (summary_confidences.json + confidences.json + model.cif) and local
-        AF3/DaVinci folders with replicate files
+        AF3/HPC folders with replicate files
         (*_summary_confidences_0.json, *_full_data_0.json, *_model_0.cif).
         The PAE matrix is selected from any JSON that actually carries PAE,
         not only from files named "confidences".
@@ -19336,7 +19228,7 @@ complexes that share the same architectural pattern.
 
             # Tier 6 (v2.6) — derive chain count from chain_pair_pae_min
             # matrix dimensions when all other tiers failed.  This handles
-            # DaVinci outputs whose confidences.json lacks token_chain_ids.
+            # HPC outputs whose confidences.json lacks token_chain_ids.
             # Chain lengths remain 0 (?aa) but at least A/B labels exist
             # so PAE_min and cp_ipTM can be extracted from the summary.
             if not chain_order and chain_pair_pae_min:
@@ -19636,7 +19528,7 @@ complexes that share the same architectural pattern.
                 print(f"[AF3 Analysis] inter-metric: {e}")
 
         # ── Summary-only fallback (v2.6) ─────────────────────────
-        # When pae_matrix is absent (e.g. DaVinci confidences.json lacks
+        # When pae_matrix is absent (e.g. HPC confidences.json lacks
         # the 'pae' field), chain_pair_pae_min and chain_pair_iptm from
         # summary_confidences.json are the only available focal metrics.
         # Populate pair_metrics directly from the summary so that PAE_min
@@ -19844,7 +19736,7 @@ complexes that share the same architectural pattern.
 
         v2.8: header-driven mmCIF parser.  It uses the _atom_site column
         names instead of fixed token positions, so it works with both AF3
-        Server and local/DaVinci CIF layouts.  Unique residues are counted
+        Server and local/HPC CIF layouts.  Unique residues are counted
         per label_asym_id, preferring label_seq_id and falling back to
         auth_seq_id when needed.
         """

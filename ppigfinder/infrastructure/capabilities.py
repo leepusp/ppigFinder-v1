@@ -102,9 +102,11 @@ def collect_capabilities(
         Capability("scheduler_script", "Scheduler script export", CapabilityStatus.NOT_CONFIGURED,
                    ("export_slurm_script",),
                    "Requires explicit site/cluster resource profile; not a remote scheduler connection"),
-        Capability("ssh_transport", "Remote SSH transport", CapabilityStatus.NOT_IMPLEMENTED,
+        Capability("ssh_transport", "Remote SSH/SFTP transport",
+                   CapabilityStatus.DETECTED if module_probe("paramiko") else CapabilityStatus.NOT_CONFIGURED,
                    ("connect", "upload", "download"),
-                   "Modular SSH round-trip is not implemented; legacy GUI pathways are separate"),
+                   "SSH/SFTP adapter installed; configure a user profile and test the remote host"
+                   if module_probe("paramiko") else "Install optional Paramiko to use remote SSH/SFTP"),
         Capability("remote_scheduler", "Remote job management", CapabilityStatus.NOT_IMPLEMENTED,
                    ("submit", "monitor", "cancel", "collect"),
                    "No verified pluggable Slurm/PBS/LSF lifecycle adapter"),

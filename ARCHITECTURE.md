@@ -62,7 +62,7 @@ Remote cluster integration:
 - file transfer
 - SLURM/PBS/LSF schedulers
 - job monitoring
-- cluster profiles such as DaVinci
+- cluster profiles defined by the user
 
 ### io/
 File input/output:

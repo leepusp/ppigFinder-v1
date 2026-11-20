@@ -138,7 +138,11 @@ class AF3RunnerDialog(QDialog):
         yes = QMessageBox.StandardButton.Yes if hasattr(QMessageBox, 'StandardButton') else QMessageBox.Yes
         if answer != yes:
             return
-        Path(self.output_dir.text()).expanduser().mkdir(parents=True, exist_ok=True)
+        try:
+            Path(self.output_dir.text()).expanduser().mkdir(parents=True, exist_ok=True)
+        except OSError as exc:
+            QMessageBox.warning(self, "AF3 output directory", str(exc))
+            return
         self.run_button.setEnabled(False)
         self.preview_button.setEnabled(False)
         self._active = True
@@ -173,6 +177,8 @@ class AF3RunnerDialog(QDialog):
         super().closeEvent(event)
 
 
-def show_af3_runner_dialog(window):
+def show_af3_runner_dialog(window, input_path=None):
     dialog = AF3RunnerDialog(window)
+    if input_path is not None:
+        dialog.input_json.setText(str(input_path))
     dialog.exec() if hasattr(dialog, "exec") else dialog.exec_()

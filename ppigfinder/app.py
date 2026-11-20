@@ -115,9 +115,7 @@ def main() -> int:
     with _PpigStartupTimer("QApplication"):
         app = QApplication(sys.argv)
     app.setApplicationName("ppigFinder")
-    app.setApplicationDisplayName(
-        "ppigFinder — Protein-Protein Interaction Genomic Finder"
-    )
+    app.setApplicationDisplayName("ppigFinder")
     app.setApplicationVersion("2.9.14")
     app.setStyle("Fusion")
 

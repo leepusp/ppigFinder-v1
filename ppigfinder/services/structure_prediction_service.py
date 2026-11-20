@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, List, Sequence
 
+from ppigfinder.structure_prediction.cluster_profiles import SlurmClusterProfile
 from ppigfinder.structure_prediction import (
     BatchSlurmScripts,
     PredictionBatchArtifacts,
@@ -25,7 +26,7 @@ class StructuralPredictionRequest:
     model_mode: str = "multicomponent_complex"
     priority: str = "normal"
     run_id: str | None = None
-    cluster: str = "generic_slurm"
+    cluster: str | SlurmClusterProfile = "generic_slurm"
     execution_mode: str = "export_only"  # export_only or slurm (explicit opt-in)
 
 
@@ -45,7 +46,7 @@ class StructuralPredictionPreparedBatch:
             f"base_job_id: {self.request.base_job_id}",
             f"root_dir: {self.request.root_dir}",
             f"backends: {','.join(self.request.backend_ids)}",
-            f"cluster: {self.request.cluster}",
+            f"cluster: {getattr(self.request.cluster, 'name', self.request.cluster)}",
             f"ok: {self.ok}",
             "",
             "Artifacts:",

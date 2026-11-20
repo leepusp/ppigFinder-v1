@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Mapping, Sequence
 
 from ppigfinder.structure_prediction.batch_builder import PlannedPredictionJob, PredictionBatchPlan
-from ppigfinder.structure_prediction.cluster_profiles import resolve_slurm_overrides
+from ppigfinder.structure_prediction.cluster_profiles import SlurmClusterProfile, resolve_slurm_overrides
 from ppigfinder.structure_prediction.output_layout import safe_job_name
 from ppigfinder.structure_prediction.slurm_renderer import render_sbatch_header
 
@@ -191,7 +191,7 @@ esac
 
 def write_batch_slurm_scripts(
     batch: PredictionBatchPlan,
-    cluster: str = "generic_slurm",
+    cluster: str | SlurmClusterProfile = "generic_slurm",
     module_commands: Mapping[str, str] | None = None,
     slurm_subdir: str = "slurm",
 ) -> BatchSlurmScripts:

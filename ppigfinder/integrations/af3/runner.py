@@ -51,6 +51,8 @@ def build_af3_command(config: AF3RunnerConfig, input_json: str | Path, output_di
         raise ValueError("Output directory is required")
     if out == input_path or out == input_path.parent:
         raise ValueError("Use a dedicated output directory separate from the input JSON")
+    if out.exists() and not out.is_dir():
+        raise ValueError(f"Output path is not a directory: {out}")
 
     if config.mode == "official":
         script = Path(config.script).expanduser().resolve()

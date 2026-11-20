@@ -104,7 +104,7 @@ flowchart LR
   J --> L
 ```
 
-**No DaVinci requirement.** The project can be used for core genomic analysis without a GPU, remote SSH access or Slurm. The `davinci` profile is an optional example of institutional infrastructure. Some HPC integration modules are still placeholders; see [execution architecture](docs/developer/feature_status.md).
+Core genomic analysis works without a GPU, SSH or Slurm. HPC execution uses cluster settings supplied by the user. See [execution architecture](docs/developer/feature_status.md).
 
 ## Documentation
 
@@ -116,6 +116,7 @@ flowchart LR
 | [AlphaFold Server and AF3](docs/user_manual/alphafold.md) | Distinct JSON dialects, manual server submission and result import. |
 | [AF3 install and local runner](docs/user_manual/af3_local_installation.md) | Native AF3 export, optional official/Docker/wrapper inference, CLI and GUI setup. |
 | [Local / HPC execution](docs/user_manual/hpc_submission.md) | Optional compute configuration and validation checks. |
+| [Optional remote connections](docs/user_manual/remote_connections.md) | User-owned SSH profiles, verified SFTP uploads/downloads; no job submission. |
 | [Implementation status](docs/developer/feature_status.md) | Implemented, provisional and not-yet-validated pathways. |
 | [Website](https://leepusp.github.io/ppigFinder-v1/) | Public, searchable MkDocs documentation. |
 

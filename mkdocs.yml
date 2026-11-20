@@ -78,12 +78,14 @@ nav:
       - Troubleshooting: user_manual/troubleshooting.md
   - Execution:
       - Where to run predictions: user_manual/hpc_submission.md
-      - DaVinci example: user_manual/davinci_hpc.md
+      - Optional remote connections: user_manual/remote_connections.md
+      - OpenSSH native transport: user_manual/openssh_native_transport.md
   - Development:
       - Feature status: developer/feature_status.md
       - Capabilities and integrations: developer/capabilities.md
       - Architecture: developer/software_architecture.md
       - HPC portability: developer/hpc_portability.md
+      - SSH/SFTP transport contract: developer/remote_transport.md
       - Directory map: developer/directory_layout.md
       - Prediction internals: developer/structure_prediction/README.md
   - Publication: publication.md

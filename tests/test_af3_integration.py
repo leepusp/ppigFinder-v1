@@ -49,7 +49,7 @@ class AF3IntegrationTests(unittest.TestCase):
         cfg = AF3RunnerConfig(mode="official", script=str(script), python=sys.executable,
                               model_dir=str(models), db_dir=str(db))
         args = build_af3_command(cfg, self.native, self.out)
-        self.assertIn(f"--json_path={self.native}", args)
+        self.assertIn(f"--json_path={self.native.resolve()}", args)
         self.assertNotIn("--json-path", args)
         self.assertEqual(args, run_af3(cfg, self.native, self.out))
         self.assertFalse(self.out.exists())
@@ -64,6 +64,12 @@ class AF3IntegrationTests(unittest.TestCase):
         self.assertIn("--gpus", args)
         self.assertIn("--json_path=/ppig_input/native.json", args)
         self.assertFalse(self.out.exists())
+
+    def test_preflight_rejects_existing_file_as_output(self):
+        self.out.write_text("existing data", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "Output path is not a directory"):
+            run_af3(AF3RunnerConfig(), self.native, self.out)
+        self.assertEqual(self.out.read_text(encoding="utf-8"), "existing data")
 
     def test_wrapper_uses_wrapper_flags_no_scheduler(self):
         cfg = AF3RunnerConfig(mode="wrapper", wrapper_command="af3")

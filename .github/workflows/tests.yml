@@ -1,6 +1,8 @@
 name: Python syntax and packaging smoke test
 
 on:
+  pull_request:
+    branches: [main]
   push:
     branches: [main]
     paths:
@@ -17,21 +19,35 @@ permissions:
 
 jobs:
   smoke:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      QT_QPA_PLATFORM: offscreen
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Install packaging dependencies
-        run: python -m pip install -e .
+        run: python -m pip install -e . PyQt6
       - name: Syntax check
         run: python -m compileall -q ppigfinder main.py
-      - name: Test optional execution modes
-        run: python -m unittest discover -s tests -p 'test_*.py'
-      - name: AF3 native format and execution adapter tests
-        run: python -m unittest discover -s tests -p 'test_af3_*.py' -v
+      - name: Run regression suite
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Scientific and Slurm script self-checks
+        if: runner.os == 'Linux'
+        run: |
+          python scripts/developer/check_alphafold_service_general.py
+          python scripts/developer/check_structure_prediction_backend.py
+          python scripts/developer/check_structure_prediction_service.py
+          python scripts/developer/check_structure_prediction_slurm_af3.py
+          python scripts/developer/check_af3_hotspot_v29_14.py
+          python scripts/developer/check_af3_parsed_result_v29_14.py
+          python scripts/developer/check_af3_results_export_v29_14.py
       - name: Import headless scientific modules
+        shell: bash
         run: |
           python - <<'PY'
           from ppigfinder.alphafold.af3_cli import AF3CliOptions

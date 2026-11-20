@@ -11,6 +11,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from ppigfinder.structure_prediction.cluster_profiles import SlurmClusterProfile
 from ppigfinder.structure_prediction import (
     SequenceTarget,
     build_multibackend_jobs,
@@ -48,7 +49,7 @@ def main() -> int:
         print(artifacts.summary())
         raise SystemExit("Artifact validation failed.")
 
-    scripts = write_batch_slurm_scripts(batch, cluster="davinci")
+    scripts = write_batch_slurm_scripts(batch, cluster=SlurmClusterProfile("test-hpc", {"gpu_shared_or_standard": "gpu-test", "gpu_standard": "gpu-test"}, {"standard_gpu_or_slice": "gpu:1", "one_standard_gpu": "gpu:1"}))
     if len(scripts.scripts) != 1:
         raise SystemExit(f"Expected one AF3 Slurm script, observed {len(scripts.scripts)}.")
 
@@ -64,8 +65,8 @@ def main() -> int:
         "--stage all",
         "--executor local",
         '"$AF3_CMD" "${AF3_ARGS[@]}"',
-        "#SBATCH --partition=max50",
-        "#SBATCH --gres=shard:10",
+        "#SBATCH --partition=gpu-test",
+        "#SBATCH --gres=gpu:1",
         "TASK_TABLE=",
     ]
 

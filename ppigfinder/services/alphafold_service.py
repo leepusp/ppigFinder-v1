@@ -20,7 +20,6 @@ from ppigfinder.alphafold.af3_cli import (
     write_af3_run_script,
 )
 from ppigfinder.hpc.profiles.generic import GENERIC_AF3
-from ppigfinder.hpc.profiles.davinci import DAVINCI_AF3
 from ppigfinder.alphafold.server_json import (
     build_pair_jobs_from_sequences,
     build_pair_jobs_from_legacy_orfs,
@@ -84,44 +83,6 @@ class AlphaFoldService:
             slurm_time=time or profile.default_time,
             dry_run=dry_run,
             force=force,
-        )
-
-    def build_davinci_options(
-        self,
-        job_name: str,
-        fasta: str | None = None,
-        json_path: str | None = None,
-        input_dir: str | None = None,
-        workdir: str | None = None,
-        mode: str | None = "auto",
-        dry_run: bool = False,
-        force: bool = False,
-        partition: str | None = None,
-        ntasks: int | None = None,
-        mem: str | None = None,
-        gres: str | None = None,
-        time: str | None = None,
-        resource_mode: str | None = None,
-    ) -> AF3CliOptions:
-        """
-        Backward-compatible alias using the optional DaVinci profile.
-        """
-        return self.build_slurm_options(
-            job_name=job_name,
-            fasta=fasta,
-            json_path=json_path,
-            input_dir=input_dir,
-            workdir=workdir,
-            mode=mode,
-            dry_run=dry_run,
-            force=force,
-            partition=partition,
-            ntasks=ntasks,
-            mem=mem,
-            gres=gres,
-            time=time,
-            resource_mode=resource_mode,
-            profile=DAVINCI_AF3,
         )
 
     def build_command(self, options: AF3CliOptions, adaptive: bool = True) -> list[str]:

@@ -33,6 +33,7 @@ class ProjectService:
         genome = {
             "name": getattr(window, "genome_name", ""),
             "sequence": getattr(window, "dna_sequence", "") or "",
+            "source_path": getattr(window, "current_fasta_path", "") or "",
             "topology": getattr(window, "topology", "linear"),
             "features": getattr(window, "sg_features", []) or [],
             "primers": getattr(window, "sg_primers", []) or [],
@@ -46,12 +47,13 @@ class ProjectService:
 
         hmm = {
             "hits": getattr(window, "hmm_hits_all", []) or [],
+            "profiles": getattr(window, "hmm_profiles", []) or [],
         }
 
         alphafold = {
             "jobs": getattr(window, "af3_jobs", []) or [],
-            "results": getattr(window, "af3_results", []) or [],
-            "analysis_dir": getattr(window, "af3_analysis_dir", ""),
+            "results": getattr(window, "_af3_analysis_results", getattr(window, "af3_results", [])) or [],
+            "analysis_dir": getattr(window, "_af3_analysis_dir", getattr(window, "af3_analysis_dir", "")),
         }
 
         hpc = {
@@ -84,20 +86,27 @@ class ProjectService:
 
         window.genome_name = genome.get("name", "")
         window.dna_sequence = genome.get("sequence", "") or ""
+        window.current_fasta_path = genome.get("source_path", "") or ""
         window.topology = genome.get("topology", "linear")
         window.sg_features = genome.get("features", []) or []
         window.sg_primers = genome.get("primers", []) or []
         window.notes = genome.get("notes", {}) or {}
 
         window.orfs = project.orfs or []
+        window.filtered_orfs = list(window.orfs)
+        window.blast_query = (project.blast or {}).get("query", "")
+        window.hmm_profiles = (project.hmm or {}).get("profiles", []) or []
 
         window.blast_results = (project.blast or {}).get("results", []) or []
         window.hmm_hits_all = (project.hmm or {}).get("hits", []) or []
         window.af3_jobs = (project.alphafold or {}).get("jobs", []) or []
         window.af3_results = (project.alphafold or {}).get("results", []) or []
+        window._af3_analysis_results = window.af3_results
+        window._af3_analysis_dir = (project.alphafold or {}).get("analysis_dir", "") or ""
 
         for method_name in [
             "_on_sequence_loaded",
+            "_update_orfs_list",
             "_update_orf_table",
             "update_orf_table",
             "_populate_orf_table",
@@ -110,7 +119,7 @@ class ProjectService:
 
             try:
                 if method_name == "_on_sequence_loaded":
-                    method("")
+                    method(window.current_fasta_path)
                 else:
                     method()
             except TypeError:
@@ -120,6 +129,10 @@ class ProjectService:
                     pass
             except Exception:
                 pass
+
+        genome_map = getattr(window, "_genome_map", None)
+        if genome_map is not None:
+            genome_map.set_data(len(window.dna_sequence), window.orfs, window.hmm_profiles, window.dna_sequence)
 
         try:
             window._status.showMessage("Project snapshot loaded")

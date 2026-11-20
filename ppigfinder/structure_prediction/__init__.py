@@ -32,7 +32,6 @@ from ppigfinder.structure_prediction.slurm_renderer import (
 )
 
 from ppigfinder.structure_prediction.cluster_profiles import (
-    DAVINCI_PROFILE,
     PROFILES,
     SlurmClusterProfile,
     SlurmDirectiveOverrides,
@@ -109,7 +108,6 @@ __all__ = [
     "SlurmDirectiveOverrides",
     "SlurmClusterProfile",
     "PROFILES",
-    "DAVINCI_PROFILE",
     "render_sbatch_header",
     "render_array_directive",
     "safe_job_name",

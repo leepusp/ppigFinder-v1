@@ -9,6 +9,7 @@ stored in legacy_v20.py.
 from __future__ import annotations
 
 from pathlib import Path
+from fnmatch import fnmatchcase
 
 from ppigfinder.infrastructure.cache import JsonCache, directory_signature
 from ppigfinder.infrastructure.parallel import parallel_map
@@ -18,8 +19,7 @@ def find_af3_job_dirs(root: str | Path) -> list[Path]:
     """
     Return candidate AF3 job directories.
 
-    A directory is considered a candidate when it contains JSON, CIF or CSV
-    files commonly produced by AlphaFold 3.
+    A directory is a candidate when it directly contains an AF3 result file.
     """
     root = Path(root)
 
@@ -28,16 +28,17 @@ def find_af3_job_dirs(root: str | Path) -> list[Path]:
 
     candidates: list[Path] = []
 
-    for path in root.rglob("*"):
+    patterns = ("*summary*.json", "*confidence*.json", "*ranking*.json", "*ranking*.csv", "*.cif", "*.pdb")
+    for path in (root, *sorted(root.rglob("*"))):
         if not path.is_dir():
             continue
 
         try:
-            names = {item.suffix.lower() for item in path.iterdir() if item.is_file()}
+            names = [item.name for item in path.iterdir() if item.is_file()]
         except OSError:
             continue
 
-        if names & {".json", ".cif", ".csv"}:
+        if any(fnmatchcase(name, pattern) for name in names for pattern in patterns):
             candidates.append(path)
 
     return candidates

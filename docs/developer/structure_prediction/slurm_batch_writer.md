@@ -19,4 +19,4 @@ This separates three phases:
 2. Slurm script rendering;
 3. final backend command integration and submission.
 
-The DaVinci profile resolves generic resource hints into local Slurm directives such as partition and GRES.
+A site-specific profile resolves generic resource hints into local Slurm directives such as partition and GRES.

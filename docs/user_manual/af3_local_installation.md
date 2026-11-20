@@ -68,7 +68,7 @@ Use the **same Python interpreter** that runs ppigFinder:
 
 After installation, the equivalent command is `ppigfinder-af3 prepare ...`. Protein input validation deliberately rejects ambiguous characters and stop codons. RNA, DNA, ligands, PTMs, templates and external MSA are **not yet supported by this ppigFinder FASTA helper**. They can be authored using the [upstream official JSON specification](https://github.com/google-deepmind/alphafold3/blob/main/docs/input.md), but require a corresponding validated adapter before executing through this tool.
 
-## 3. Preview and run with a pre-existing wrapper (DaVinci example)
+## 3. Preview and run with a pre-existing wrapper (HPC example)
 
 The local wrapper mode is not a Slurm submission. Do not run GPU inference on an HPC login node; use an allocated compute session or the institution's approved scheduler interface.
 
@@ -167,3 +167,11 @@ Use the existing **AlphaFold → Import AF3 Results Folder** action. Confirm tha
 - Output errors or GPU OOM: follow the upstream performance/installation documentation. Do not raise resource requests silently or automatically resubmit.
 
 All local and container paths in this document are **examples**, not preconfigured paths. No SSH identities, tokens, weights or private datasets should be committed to Git.
+## Prepare native JSON from the ORF table
+
+Select one or more proteins in the ORF table and choose **AlphaFold → Prepare
+Native AF3 JSON from Selected ORFs**. The selection becomes a single complex,
+with one chain per protein and model seed 1. Choose to save the input, open the
+local/container runner, or open the remote SSH/SFTP dialog with the saved file
+already selected. The remote dialog uploads the input and shows a command
+preview when you click **Upload prepared JSON + preview**.
