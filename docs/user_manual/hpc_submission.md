@@ -32,22 +32,16 @@ adapters require no scheduler, remote connection or SSH.
 5. Submit with `sbatch` according to local cluster policy.
 6. Inspect `squeue`, `sacct` and job logs with the correct account permissions; only after completion, transfer outputs for parsing.
 
-Example of commands to run **on the cluster** (substitute your validated script name):
+Run these commands **on a host with Slurm configured**, after installing ppigFinder there:
 
 ```bash
-sbatch path/to/reviewed_submit_af3.slurm
-squeue -u "$USER"
-sacct -u "$USER" --starttime today --format JobID,JobName,State,Elapsed,ExitCode
+ppigfinder-slurm validate path/to/reviewed_submit_af3.slurm
+ppigfinder-slurm submit path/to/reviewed_submit_af3.slurm --confirm
+ppigfinder-slurm status 12345
+ppigfinder-slurm logs 12345
+ppigfinder-slurm cancel 12345 --confirm
 ```
 
-Do not copy resource requests from DaVinci without checking the target cluster. The presence of `ppigfinder/hpc/ssh_client.py`, `job_monitor.py`, `hpc_service.py` and other files does **not** by itself prove a working automated UI connection: some are empty/placeholder modules in the imported version.
+Replace `12345` with the returned job ID. Validation asks Slurm to check the script without enqueuing it. The logs command reports the stdout and stderr paths while Slurm retains the job details. The CLI uses the Slurm configuration of the host where it runs. The graphical SSH/SFTP dialog handles file transfers separately.
 
-## DaVinci is an example, not a dependency
-
-The existing DaVinci profile and AF3 wrapper dry-run were validated previously for input preparation. The documented dry-run did not execute a full model inference. Default GRES/shard values and the choice of module activation vs `af3` in `PATH` differ across implementations and require reconciliation before production use.
-
-See [DaVinci example](davinci_hpc.md), [HPC portability](../developer/hpc_portability.md), and [implementation status](../developer/feature_status.md).
-
-## Security and reproducibility
-
-Use SSH keys or institutional authentication rather than storing passwords in repository files; do not commit tokens, private paths, or user datasets. Record runner versions, model/database versions where allowed, seeds, input hashes, resource requests, job IDs, failures and outputs. Do not execute downloaded job scripts without inspection.
+Set partition, GPU/GRES, account and other resources according to the target site's configuration. The generic script generator can also receive a user-defined `SlurmClusterProfile` with partition and GPU mappings.

@@ -396,10 +396,9 @@ CHANGELOG
 
   v1.04 (2026) — EVcouplings coevolution tab (test, later removed)
 
-  v1.03 (2026) — DaVinci cluster integration & SLURM defaults
+  v1.03 (2026) — HPC cluster integration & SLURM defaults
     • SLURM Array anti-OOM export (batches + run_array.sh)
-    • max50 partition defaults: 7d walltime, 64G RAM, 64 CPUs
-    • Partition tooltips with DaVinci limits
+    • Partition tooltips with HPC limits
 
   v1.02 (2026) — Genome-wide interactome scan
     • 'Add All ORFs' button with size/HMM filter dialog
@@ -2116,12 +2115,7 @@ Results       Download completed prediction folders via SFTP.
               "Auto-import" parses ipTM and pLDDT from AF3 output
               JSONs and updates the AlphaFold Analysis ranking.
 
-DaVinci (ICB/USP) quick reference:
-  --partition=basic   max 72 h,   16 CPU,  100 GB RAM,  0 GPU
-  --partition=max50   max  8 d,   64 CPU,  500 GB RAM,  1 GPU  ← AF3
-  --partition=max90   max 15 d,  110 CPU,    1 TB RAM,  4 GPU
-  AF3 module: module load alphafold3
-  Run command: af3_run
+HPC setup: use the target site's partition, resources and AF3 command.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 SECTION 9 — ALPHAFOLD 3 RESULT ANALYSIS
@@ -2517,7 +2511,7 @@ STEP 8 — Submit to an HPC cluster
 "Submit AF3 via Server" tab — four sub-tabs:
 
 Connect
-  Fill in: hostname (e.g. davinci.icb.usp.br), username, port (22),
+  Fill in: hostname (e.g. hpc.example.org), username, port (22),
   password, remote base directory (will hold all job subdirectories),
   AF3 run command (e.g. af3_run), module-load string
   (e.g. alphafold3). Click "Test connection" to verify SSH/SFTP access.
@@ -2540,12 +2534,7 @@ Results
   click "Download". ppigFinder downloads via SFTP and optionally
   auto-imports ipTM and pLDDT values into the Ranking tab.
 
-DaVinci (ICB/USP) cluster reference:
-  --partition=basic   max  72 h,  16 CPU,  100 GB,  0 GPU
-  --partition=max50   max   8 d,  64 CPU,  500 GB,  1 GPU  ← use for AF3
-  --partition=max90   max  15 d, 110 CPU,    1 TB,  4 GPU
-  Module:  module load alphafold3
-  Command: af3_run
+HPC setup: use the target site's partition, resources and AF3 command.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 STEP 9 — Analyse AlphaFold 3 predictions
@@ -10032,12 +10021,12 @@ DOMAINS IN NEIGHBORHOOD:
 
         grid.addWidget(QLabel("Time per task (--time):"), 2, 0)
         time_edit = QLineEdit("7-00:00:00")
-        time_edit.setToolTip("SLURM format: D-HH:MM:SS\nDaVinci: basic=3d | max50=8d | max90=15d")
+        time_edit.setToolTip("Slurm format: D-HH:MM:SS. Check the target partition limits.")
         grid.addWidget(time_edit, 2, 1)
 
         grid.addWidget(QLabel("Partition:"), 3, 0)
-        part_edit = QLineEdit("max50")
-        part_edit.setToolTip("DaVinci partitions:\n  basic : 72h  | 16 CPUs | 100 GB | 0 GPU\n  max50 : 8d   | 64 CPUs | 500 GB | 1 GPU  (recomendada para AF3)\n  max90 : 15d  | 110 CPUs| 1 TB   | 4 GPUs (jobs muito grandes)")
+        part_edit = QLineEdit()
+        part_edit.setToolTip("Leave blank to use the Slurm default partition.")
         grid.addWidget(part_edit, 3, 1)
 
         grid.addWidget(QLabel("GPUs per task (--gres):"), 4, 0)
@@ -10046,7 +10035,7 @@ DOMAINS IN NEIGHBORHOOD:
 
         grid.addWidget(QLabel("CPUs per task (--cpus):"), 5, 0)
         cpu_spin = QSpinBox(); cpu_spin.setRange(1, 64); cpu_spin.setValue(16)
-        cpu_spin.setToolTip("DaVinci max50: até 64 CPUs | max90: até 110 CPUs")
+        cpu_spin.setToolTip("Check CPU limits on the selected partition.")
         grid.addWidget(cpu_spin, 5, 1)
 
         grid.addWidget(QLabel("AF3 command on cluster:"), 6, 0)
@@ -10084,7 +10073,9 @@ DOMAINS IN NEIGHBORHOOD:
         batch_size  = batch_spin.value()
         mem         = mem_edit.text().strip() or "32G"
         walltime    = time_edit.text().strip() or "7-00:00:00"
-        partition   = part_edit.text().strip() or "max50"
+        partition   = part_edit.text().strip()
+        partition_directive = f"#SBATCH --partition={partition}" if partition else ""
+        partition_flag = f"--partition={partition}" if partition else ""
         gres        = gpu_edit.text().strip() or "gpu:1"
         ncpus       = cpu_spin.value()
         af3cmd      = af3cmd_edit.text().strip() or "af3_run"
@@ -10141,7 +10132,7 @@ DOMAINS IN NEIGHBORHOOD:
 #SBATCH --array=1-{n_batches}
 #SBATCH --mem={mem}
 #SBATCH --time={walltime}
-#SBATCH --partition={partition}
+{partition_directive}
 #SBATCH --gres={gres}
 #SBATCH --cpus-per-task={ncpus}
 #SBATCH --output={remote_base}/logs/array_%A_%a.out
@@ -10190,7 +10181,7 @@ echo "[$(date)] Task $SLURM_ARRAY_TASK_ID complete."
 for i in $(seq -w 1 {n_batches}); do
     sbatch --job-name={genome_safe}_b${{i}} \
            --mem={mem} --time={walltime} \
-           --partition={partition} --gres={gres} \
+           {partition_flag} --gres={gres} \
            --cpus-per-task={ncpus} \
            --wrap="{af3cmd} --json_path={remote_base}/batches/batch_${{i}} --output_dir={remote_base}/results/batch_${{i}}"
 done

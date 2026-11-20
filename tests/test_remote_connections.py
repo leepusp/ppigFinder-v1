@@ -56,16 +56,16 @@ class RemoteConnectorTests(unittest.TestCase):
     def test_profile_store_permissions_and_no_password_fields(self):
         with tempfile.TemporaryDirectory() as tmp:
             store = ProfileStore(Path(tmp) / "private" / "connections.json")
-            p = RemoteProfile("davinci", "davinci", remote_subdir="ppigfinder-runs")
+            p = RemoteProfile("research-hpc", "research-hpc", remote_subdir="ppigfinder-runs")
             store.save(p)
-            self.assertEqual(store.get("davinci"), p)
+            self.assertEqual(store.get("research-hpc"), p)
             data = store.path.read_text()
             self.assertNotIn("password", data)
             self.assertEqual(json.loads(data)["version"], 1)
             if os.name == "posix":
                 self.assertEqual(stat.S_IMODE(store.path.stat().st_mode), 0o600)
                 self.assertEqual(stat.S_IMODE(store.path.parent.stat().st_mode), 0o700)
-            store.delete("davinci")
+            store.delete("research-hpc")
             self.assertEqual(store.list(), ())
 
     def test_invalid_profiles_and_paths_rejected(self):
@@ -74,7 +74,7 @@ class RemoteConnectorTests(unittest.TestCase):
             with self.subTest(path=name), self.assertRaises(ValueError):
                 safe_relative_path(name)
         for obj in (
-            {"name": "bad;cmd", "host": "davinci"},
+            {"name": "bad;cmd", "host": "research-hpc"},
             {"name": "test", "host": "user@host"},
             {"name": "test", "host": "remote", "remote_subdir": "../../"},
             {"name": "test", "host": "remote", "password": "SECRET"},
@@ -181,7 +181,7 @@ class RemoteConnectorTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp, \
              patch.object(Path, "home", return_value=Path(tmp)), \
              patch.dict(sys.modules, {"paramiko": fake}):
-            with SSHTransport(RemoteProfile("davinci", "example.test"), password="test-secret") as conn:
+            with SSHTransport(RemoteProfile("research-hpc", "example.test"), password="test-secret") as conn:
                 self.assertEqual(conn.test()["status"], "SSH_SFTP_CONNECTED")
         self.assertEqual(len(calls), 1)
         self.assertEqual(calls[0]["password"], "test-secret")

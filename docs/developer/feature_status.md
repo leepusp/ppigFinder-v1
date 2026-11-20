@@ -1,6 +1,6 @@
 # Feature status and portability contract
 
-**Status snapshot: 20 November 2026** — based on the imported v2.9.14 software architecture, previous DaVinci wrapper dry-run records and source inspection. A module being present is **not** proof of complete integration in the packaged GUI.
+**Status snapshot: 20 November 2026** — based on the imported v2.9.14 software architecture, source inspection. A module being present is **not** proof of complete integration in the packaged GUI.
 
 ## What is present in source
 
@@ -13,10 +13,10 @@
 | Native AF3 protein JSON | `structure_prediction/af3_input_writer.py` | Protein-only initial native writer; not equivalent to full AF3 molecule support |
 | Local wrapper commands | `alphafold/af3_cli.py`, `services/alphafold_service.py` | Command construction and subprocess execution; requires an available wrapper |
 | Slurm scripts / arrays | `structure_prediction/slurm_batch_writer.py`, `slurm_renderer.py` | Script generation; inspect resource mapping and backend commands before production |
-| DaVinci AF3 | `hpc/profiles/davinci.py`, docs of dry-run | Institution-specific example; input/wrapper dry-run recorded, not real inference in that particular test |
 | Result parsing | `alphafold/result_parser.py`, `services/alphafold_results_service.py` | Sequential/parallel parsing code; supported metrics depend on output format |
 | Boltz-2 / FoldCP | `structure_prediction/*_input_writer.py` | Input scaffolding; job-runner code contains TODOs |
-| SSH/SFTP and monitoring | `integrations/remote/` implements optional SSH/SFTP file transfer and strict host-key checks; legacy `hpc/` monitoring modules remain empty | File-transfer adapter exists; **remote scheduler submit/monitor not implemented**; real-host GUI round-trip requires validation |
+| SSH/SFTP | `integrations/remote/` | Optional, checksum-verified transfers with strict host-key checks. GUI round-trip has been tested on one host. |
+| Slurm operations | `hpc/slurm.py`, `hpc/cli.py` | Script validation, submission, status, log paths and cancellation on a Slurm host. Command handling is covered by offline tests. |
 | Cross-platform packaging | `pyproject.toml`, `main.py`, PyQt launcher | Source install is documented; fresh OS install matrix needs verification |
 
 ## Architectural boundary (recommended)
@@ -73,6 +73,6 @@ their placeholder runner scripts fail explicitly with exit code 78.
 
 **Implemented separately:** optional SSH/SFTP connection profiles, strictly
 verified single-file transfer and AF3 command preview. **Not implemented:**
-remote job submission/monitoring or scheduler adapters (Slurm, PBS, LSF).
+job submission and monitoring over SSH from the GUI, or PBS and LSF adapters.
 AlphaFold Server remains a separate manual workflow. See the
 [remote connections guide](../user_manual/remote_connections.md).

@@ -104,7 +104,7 @@ flowchart LR
   J --> L
 ```
 
-**No DaVinci requirement.** The project can be used for core genomic analysis without a GPU, remote SSH access or Slurm. The `davinci` profile is an optional example of institutional infrastructure. Some HPC integration modules are still placeholders; see [execution architecture](docs/developer/feature_status.md).
+Core genomic analysis works without a GPU, SSH or Slurm. HPC execution uses cluster settings supplied by the user. See [execution architecture](docs/developer/feature_status.md).
 
 ## Documentation
 

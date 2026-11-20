@@ -85,7 +85,7 @@ class OpenSSHTests(unittest.TestCase):
             sftp.normalize = lambda path: "/home/testuser"
             created = []
             fake_codec = types.SimpleNamespace(SFTPClient=lambda stream: (created.append(stream) or sftp))
-            profile = RemoteProfile("davinci", "davinci", "testuser", remote_subdir="ppigfinder-runs")
+            profile = RemoteProfile("research-hpc", "research-hpc", "testuser", remote_subdir="ppigfinder-runs")
             with patch("ppigfinder.integrations.remote.openssh.shutil.which", return_value="/usr/bin/ssh"), \
                  patch("ppigfinder.integrations.remote.openssh.subprocess.run", side_effect=mock_run), \
                  patch("ppigfinder.integrations.remote.openssh.subprocess.Popen", return_value=StubProcess()) as popen, \

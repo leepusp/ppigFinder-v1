@@ -10,6 +10,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from ppigfinder.structure_prediction.cluster_profiles import SlurmClusterProfile
 from ppigfinder.services.structure_prediction_service import (
     StructuralPredictionRequest,
     make_sequence_target,
@@ -43,7 +44,7 @@ def main() -> int:
         backend_ids=("af3", "boltz2", "foldcp"),
         run_id="dry_run",
         execution_mode="slurm",
-        cluster="davinci",
+        cluster=SlurmClusterProfile("test-hpc", {"gpu_shared_or_standard": "gpu-test", "gpu_standard": "gpu-test"}, {"standard_gpu_or_slice": "gpu:1", "one_standard_gpu": "gpu:1"}),
     )
 
     prepared = prepare_structural_prediction_batch(request)
@@ -51,7 +52,7 @@ def main() -> int:
     summary = prepared.summary()
     print(summary)
 
-    if "cluster: davinci" not in summary:
+    if "cluster: test-hpc" not in summary:
         raise SystemExit("Explicit cluster profile was not reflected in the summary.")
 
     if not prepared.ok:

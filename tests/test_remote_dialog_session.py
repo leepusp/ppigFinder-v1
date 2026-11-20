@@ -64,8 +64,8 @@ class SSHSessionDialogTests(unittest.TestCase):
                  patch.object(dialog_module, "QInputDialog", types.SimpleNamespace(getText=lambda *a, **k: (prompts.append(1) or "secret", True))), \
                  patch.object(dialog_module, "QFileDialog", types.SimpleNamespace(getOpenFileName=lambda *a, **k: (str(fixture), "JSON"))):
                 window = dialog_module.RemoteConnectionsDialog()
-                window.name.setText("davinci")
-                window.host.setText("davinci")
+                window.name.setText("research-hpc")
+                window.host.setText("research-hpc")
                 window.user.setText("testuser")
                 window.port.setText("0")
                 window.use_agent.setChecked(False)

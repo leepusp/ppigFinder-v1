@@ -4,6 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from ppigfinder.structure_prediction.cluster_profiles import SlurmClusterProfile
 from ppigfinder.services.structure_prediction_service import (
     StructuralPredictionRequest,
     prepare_structural_prediction_batch,
@@ -40,15 +41,21 @@ class OptionalExecutionTests(unittest.TestCase):
                 )
             self.assertFalse((Path(tmp) / "slurm").exists())
 
-    def test_site_profile_is_optional(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            result = prepare_structural_prediction_batch(
-                self.make_request(tmp, execution_mode='slurm', cluster='davinci')
-            )
-            self.assertIsNotNone(result.slurm_scripts)
-            text = result.slurm_scripts.scripts[0].script_path.read_text()
-            self.assertIn('--partition=max50', text)
-            self.assertNotIn('module load alphafold3/1.0', text)
+    def test_user_profiles_supply_distinct_partitions_and_gpu_resources(self):
+        for partition, gres in (("gpu-test", "gpu:1"), ("accelerated", "gpu:a100:2")):
+            with self.subTest(partition=partition), tempfile.TemporaryDirectory() as tmp:
+                profile = SlurmClusterProfile(
+                    name=partition,
+                    partition_by_hint={"gpu_shared_or_standard": partition},
+                    gres_by_gpu_hint={"standard_gpu_or_slice": gres},
+                )
+                result = prepare_structural_prediction_batch(
+                    self.make_request(tmp, execution_mode="slurm", cluster=profile)
+                )
+                text = result.slurm_scripts.scripts[0].script_path.read_text()
+                self.assertIn(f"#SBATCH --partition={partition}", text)
+                self.assertIn(f"#SBATCH --gres={gres}", text)
+                self.assertNotIn("module load", text)
 
     def test_abstract_partition_is_not_rendered(self):
         job = PredictionJobSpec('A_B', 'af3', [SequenceTarget('A', 'M' * 40)])

@@ -46,27 +46,27 @@ to overwrite an existing local file. Directory synchronization is not yet
 implemented; import downloaded results through ppigFinder's current AF3
 results importer when a complete result directory is available.
 
-## Command line example: WSL → DaVinci
+## Command line example: WSL → HPC
 
-The following uses an **optional** DaVinci example. Substitute your own remote
+The following uses an **optional** HPC example. Substitute your own remote
 host for other users. Run on your **local machine**, not inside an SSH session:
 
 ```bash
 cd ~/git/ppigFinder-v1
 .venv/bin/ppigfinder-remote add \
-  --name davinci \
-  --host davinci \
+  --name research-hpc \
+  --host research-hpc \
   --user testuser \
   --remote-subdir ppigfinder-runs \
-  --af3-wrapper /home/public/davinci/bin/af3
+  --af3-wrapper af3
 
 .venv/bin/ppigfinder-remote list
 
 # Password-based SSH; do not put passwords on the command line.
-.venv/bin/ppigfinder-remote test davinci --ask-password
+.venv/bin/ppigfinder-remote test research-hpc --ask-password
 
 # Prepare input first, or use an already generated native JSON.
-.venv/bin/ppigfinder-remote upload davinci \
+.venv/bin/ppigfinder-remote upload research-hpc \
   --json ~/ppigfinder-tests/af3/test_complex.json \
   --ask-password
 ```
@@ -78,7 +78,7 @@ execution environment. No inference or queue submission occurs.
 To retrieve one **known** file, once it exists:
 
 ```bash
-.venv/bin/ppigfinder-remote download davinci \
+.venv/bin/ppigfinder-remote download research-hpc \
   --remote-relative results/experiment1/summary_confidences.json \
   --out ~/ppigfinder-results/summary_confidences.json \
   --ask-password

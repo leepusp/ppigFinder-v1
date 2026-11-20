@@ -38,6 +38,7 @@ dev = [
 ppigfinder = "ppigfinder.app:main"
 ppigfinder-af3 = "ppigfinder.integrations.af3.cli:main"
 ppigfinder-remote = "ppigfinder.integrations.remote.cli:main"
+ppigfinder-slurm = "ppigfinder.hpc.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

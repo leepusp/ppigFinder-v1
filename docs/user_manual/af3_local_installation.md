@@ -68,7 +68,7 @@ Use the **same Python interpreter** that runs ppigFinder:
 
 After installation, the equivalent command is `ppigfinder-af3 prepare ...`. Protein input validation deliberately rejects ambiguous characters and stop codons. RNA, DNA, ligands, PTMs, templates and external MSA are **not yet supported by this ppigFinder FASTA helper**. They can be authored using the [upstream official JSON specification](https://github.com/google-deepmind/alphafold3/blob/main/docs/input.md), but require a corresponding validated adapter before executing through this tool.
 
-## 3. Preview and run with a pre-existing wrapper (DaVinci example)
+## 3. Preview and run with a pre-existing wrapper (HPC example)
 
 The local wrapper mode is not a Slurm submission. Do not run GPU inference on an HPC login node; use an allocated compute session or the institution's approved scheduler interface.
 

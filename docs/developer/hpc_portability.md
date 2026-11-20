@@ -4,7 +4,7 @@
 
 ## Goal
 
-A ppigFinder installation must be useful without DaVinci, Slurm, SSH or local GPUs. Cluster functionality is an optional adapter. The core application owns selection, validated job specifications, manifests, outputs and result parsing; the HPC backend owns transport and scheduling. AlphaFold 3 code, model weights and databases are **not bundled**.
+A ppigFinder installation must be useful without Slurm, SSH or local GPUs. Cluster functionality is an optional adapter. The core application owns selection, validated job specifications, manifests, outputs and result parsing; the HPC backend owns transport and scheduling. AlphaFold 3 code, model weights and databases are **not bundled**.
 
 ## Current code map
 
@@ -15,7 +15,7 @@ A ppigFinder installation must be useful without DaVinci, Slurm, SSH or local GP
 | AF3 input writer | `ppigfinder/structure_prediction/af3_input_writer.py` | Writes AF3 JSON, initially protein-only |
 | Batch orchestration | `ppigfinder/services/structure_prediction_service.py` | Plans jobs, creates artifacts/scripts |
 | Slurm scripts | `ppigfinder/structure_prediction/slurm_batch_writer.py` | Arrays and task tables; runs wrapper with `--executor local` |
-| Cluster resource hints | `ppigfinder/structure_prediction/cluster_profiles.py` | `generic_slurm` and optional `davinci` mappings |
+| Cluster resource hints | `ppigfinder/structure_prediction/cluster_profiles.py` | `generic_slurm` and user-defined mappings |
 | Result parsing | `ppigfinder/services/alphafold_results_service.py` | Sequential/parallel folder parsing |
 | Modular SSH/monitoring | `ppigfinder/hpc/ssh_client.py`, `job_monitor.py`, `ppigfinder/services/hpc_service.py` | Empty in reviewed revision; do not advertise complete automation |
 | Stable desktop | `ppigfinder/app.py` | Loads active `legacy_v29_14.py` GUI |
@@ -37,7 +37,7 @@ Each institution must document these site-specific settings:
 | `jump_host` | Optional bastion | Disabled by default |
 | `remote_root` | Cluster-visible workspace | Required for remote submission |
 | `scheduler` | Scheduler adapter | `slurm`, otherwise manual |
-| `partition`, `account`, `qos` | Scheduling policy | Site-defined; never hard-code DaVinci |
+| `partition`, `account`, `qos` | Scheduling policy | Site-defined; set by the HPC administrator |
 | `cpus`, `memory`, `walltime` | Resource plan | Estimate, then review per site |
 | `gpu_request` | Actual scheduler directive | Site-defined; `gres/shard` is not universal |
 | `environment_setup` | Module/conda/container | User/admin approved commands |
@@ -49,10 +49,8 @@ Do not store secrets, private keys, passwords, database credentials or personal 
 
 ## Technical defects / caveats found during review
 
-- `slurm_batch_writer.py` currently defaults to `module load alphafold3/1.0`, which is **not portable** and contradicts `ppigfinder/hpc/profiles/davinci.py`, which assumes `af3` is already on PATH. The provided `scripts/hpc/af3_slurm_generic.sh` is a **reference template**, not a connected fix in the existing GUI.
 - Generated task tables contain **absolute paths**. Copying them from a laptop to an HPC server without rewriting/re-rendering paths will cause failures. Plan artifacts directly under the remote root or provide an explicit path-rebasing step.
 - `AF3_SCRIPT` is a configurable command in Slurm scripts, but module/environment initialization is currently hard-coded unless the caller passes an explicit `module_commands` override.
-- The resource planner maps generic GPU size classes to DaVinci-specific `shard:10/32/50`; these values must be checked against the current Slurm configuration before use.
 - The package's `hpc_service.py`, `ssh_client.py` and `job_monitor.py` do not implement the promised remote lifecycle. Legacy GUI may use other routines; those should be audited before migration.
 - Current AF3 writer supports proteins, not complete AF3 DNA/RNA/ligand functionality.
 

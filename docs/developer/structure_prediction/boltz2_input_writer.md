@@ -7,7 +7,7 @@ Current output per Boltz-2 job:
 - input/boltz2_input.fasta
 - input/boltz2_job_spec.yaml
 
-This is intentionally conservative. The writer does not assume a final Boltz-2 CLI syntax yet. It creates reproducible intermediate inputs that can later be connected to the installed DaVinci Boltz-2 module or command.
+This is intentionally conservative. The writer does not assume a final Boltz-2 CLI syntax yet. It creates reproducible intermediate inputs that can later be connected to the installed HPC Boltz-2 module or command.
 
 The generic input files are still written separately:
 

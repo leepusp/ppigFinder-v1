@@ -11,17 +11,17 @@ supported OpenSSH executable, the dialog and CLI default to Paramiko.
 
 Open the GUI, choose the saved server profile, and leave **Use existing SSH
 session, agent or keys** unchecked to enter an account password in the dialog. Select **Test SSH/SFTP**,
-enter the same password used by `ssh davinci`, and confirm
+enter the same password used by `ssh research-hpc`, and confirm
 `SSH_SFTP_CONNECTED`. The GUI keeps one OpenSSH master connection for further
 upload/download operations until the window is closed or an error occurs.
 
 To authenticate in the terminal, configure a `ControlPath` for the same SSH
 alias in `~/.ssh/config`, for example `ControlPath ~/.ssh/ppig-%C` in the
-`Host davinci` block. Start a master with `ssh -o StrictHostKeyChecking=yes -MNf davinci`
+`Host research-hpc` block. Start a master with `ssh -o StrictHostKeyChecking=yes -MNf research-hpc`
 and enter your password in the terminal. In the GUI, select a profile using
 the same alias, user and port, enable **Use existing SSH session, agent or keys**,
 and click **Test SSH/SFTP**. Closing the dialog closes its SFTP channel. Close
-the terminal-owned master when you finish with `ssh -O exit davinci`.
+the terminal-owned master when you finish with `ssh -O exit research-hpc`.
 
 To send a prepared native AF3 JSON, select **Upload AF3 JSON + preview**. The
 file's SHA-256 is validated against the remote copy by SFTP readback. The
@@ -40,8 +40,8 @@ On Linux, WSL and macOS with OpenSSH installed, the CLI defaults to the
 OpenSSH-authenticated backend:
 
 ```bash
-.venv/bin/ppigfinder-remote test davinci --ask-password
-.venv/bin/ppigfinder-remote upload davinci \
+.venv/bin/ppigfinder-remote test research-hpc --ask-password
+.venv/bin/ppigfinder-remote upload research-hpc \
   --json ~/ppigfinder-tests/af3/test_complex.json --ask-password
 ```
 
@@ -60,5 +60,5 @@ Paramiko login path explicitly, add `--transport paramiko`.
 - Results are downloaded individually and existing local files are never
   silently overwritten.
 - The tests exercise command construction, temporary askpass, fake SFTP
-  roundtrips and path checks. Actual OpenSSH/DaVinci login must still be
+  roundtrips and path checks. Actual OpenSSH login must still be
   verified in the user's environment.

@@ -137,13 +137,11 @@ After generating the job list, export AF3-compatible JSON files for local, serve
 
 ### 9. Export and submit jobs
 
-Use the AlphaFold export tools to generate JSON batches for AlphaFold 3 prediction. Depending on the target execution environment, jobs may be submitted manually to a compatible AlphaFold 3 Server or prepared for generic SSH/Slurm/HPC execution. DaVinci is only an optional preconfigured cluster profile.
+Use the AlphaFold export tools to generate JSON batches for AlphaFold 3 prediction. Depending on the target execution environment, jobs may be submitted manually to a compatible AlphaFold 3 Server or prepared for generic SSH/Slurm/HPC execution.
 
-For generic HPC and optional DaVinci-specific workflows, refer to:
+For the HPC workflow, refer to:
 
 ```text
-docs/user_manual/davinci_hpc.md
-docs/developer/structure_prediction/davinci_af3_validation.md
 ```
 
 ## Notes for documentation maintenance

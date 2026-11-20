@@ -11,12 +11,11 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from ppigfinder.hpc.profiles.generic import GENERIC_AF3
-from ppigfinder.hpc.profiles.davinci import DAVINCI_AF3
 from ppigfinder.services.alphafold_service import AlphaFoldService
 
 
 def main() -> int:
-    service = AlphaFoldService(command="/bin/echo")
+    service = AlphaFoldService(command=sys.executable)
 
     if service.profile is not GENERIC_AF3:
         raise SystemExit("AlphaFoldService default profile should be GENERIC_AF3.")
@@ -32,16 +31,6 @@ def main() -> int:
     if generic.slurm_gres is not None:
         raise SystemExit("Generic profile should not impose a GRES value.")
 
-    davinci = service.build_davinci_options(
-        job_name="davinci_job",
-        json_path="/tmp/input.json",
-        dry_run=True,
-    )
-
-    if davinci.slurm_partition != DAVINCI_AF3.default_partition:
-        raise SystemExit("DaVinci alias did not use DaVinci partition default.")
-    if davinci.slurm_gres != DAVINCI_AF3.default_gres:
-        raise SystemExit("DaVinci alias did not use DaVinci GRES default.")
 
     cmd = service.build_command(generic, adaptive=False)
     if "--job-name" not in cmd or "--json-path" not in cmd:
@@ -60,7 +49,6 @@ def main() -> int:
 
     print("OK: AlphaFoldService generic profile self-check passed.")
     print("default_profile:", service.profile)
-    print("davinci_partition:", davinci.slurm_partition)
     return 0
 
 
