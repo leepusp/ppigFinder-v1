@@ -167,3 +167,11 @@ Use the existing **AlphaFold → Import AF3 Results Folder** action. Confirm tha
 - Output errors or GPU OOM: follow the upstream performance/installation documentation. Do not raise resource requests silently or automatically resubmit.
 
 All local and container paths in this document are **examples**, not preconfigured paths. No SSH identities, tokens, weights or private datasets should be committed to Git.
+## Prepare native JSON from the ORF table
+
+Select one or more proteins in the ORF table and choose **AlphaFold → Prepare
+Native AF3 JSON from Selected ORFs**. The selection becomes a single complex,
+with one chain per protein and model seed 1. Choose to save the input, open the
+local/container runner, or open the remote SSH/SFTP dialog with the saved file
+already selected. The remote dialog uploads the input and shows a command
+preview when you click **Upload prepared JSON + preview**.

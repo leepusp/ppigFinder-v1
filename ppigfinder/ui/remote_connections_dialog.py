@@ -42,7 +42,7 @@ class _ConnectionWorker(QObject):
 
 
 class RemoteConnectionsDialog(QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, *, input_path=None):
         super().__init__(parent)
         self.setWindowTitle("Remote Connections — OpenSSH / SFTP" if USE_OPENSSH else "Remote Connections — SSH / SFTP")
         self.resize(880, 640)
@@ -52,6 +52,7 @@ class RemoteConnectionsDialog(QDialog):
         self._worker = None
         self._session = None  # Authenticated SSH/SFTP, only while this dialog is open
         self._last_af3_json = ""
+        self._prepared_af3_json = str(input_path) if input_path is not None else ""
         self._controls = []
         layout = QVBoxLayout(self)
         note = QLabel(
@@ -99,7 +100,9 @@ class RemoteConnectionsDialog(QDialog):
         self.test_button = QPushButton("Test SSH/SFTP")
         self.test_button.clicked.connect(self._test)
         row.addWidget(self.test_button)
-        self.upload_button = QPushButton("Upload AF3 JSON + preview")
+        self.upload_button = QPushButton(
+            "Upload prepared JSON + preview" if self._prepared_af3_json else "Upload AF3 JSON + preview"
+        )
         self.upload_button.clicked.connect(self._upload)
         row.addWidget(self.upload_button)
         self.download_button = QPushButton("Download one result file")
@@ -275,10 +278,12 @@ class RemoteConnectionsDialog(QDialog):
         except ValueError as exc:
             QMessageBox.warning(self, "Invalid connection", str(exc))
             return
-        initial = self._last_af3_json or str(Path.home())
-        filename, _ = QFileDialog.getOpenFileName(
-            self, "Upload native AF3 JSON", initial, "JSON (*.json)"
-        )
+        filename = self._prepared_af3_json
+        if not filename:
+            initial = self._last_af3_json or str(Path.home())
+            filename, _ = QFileDialog.getOpenFileName(
+                self, "Upload native AF3 JSON", initial, "JSON (*.json)"
+            )
         if not filename:
             return
         self._last_af3_json = filename  # Retry starts at the chosen file
@@ -323,6 +328,6 @@ class RemoteConnectionsDialog(QDialog):
         super().done(result)
 
 
-def show_remote_connections_dialog(window):
-    dialog = RemoteConnectionsDialog(window)
+def show_remote_connections_dialog(window, input_path=None):
+    dialog = RemoteConnectionsDialog(window, input_path=input_path)
     dialog.exec() if hasattr(dialog, "exec") else dialog.exec_()

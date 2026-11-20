@@ -13102,12 +13102,10 @@ class ppigFinderApp(QMainWindow):
         if not rows:
             return
         row = rows[0].row()
-        if row >= len(self.filtered_orfs):
-            return
-        orf = self.filtered_orfs[row]
-        orf_idx = self.orfs.index(orf) if orf in self.orfs else -1
+        item = self._orf_table.item(row, 0)
+        orf_idx = self._parse_orf_idx_from_text(item.text()) if item else -1
         if orf_idx >= 0:
-            self._select_and_center_orf(orf_idx)
+            self._select_and_center_orf(orf_idx, select_table=False)
 
     def _on_map_orf_click(self, idx):
         if 0 <= idx < len(self.orfs):
@@ -13176,7 +13174,7 @@ class ppigFinderApp(QMainWindow):
                     self._select_and_center_orf(i)
                     return
 
-    def _select_and_center_orf(self, idx):
+    def _select_and_center_orf(self, idx, *, select_table=True):
         """Select an ORF in table, highlight on map, and center the map view on it."""
         if idx < 0 or idx >= len(self.orfs): return
         orf = self.orfs[idx]
@@ -13208,6 +13206,9 @@ class ppigFinderApp(QMainWindow):
                 self._genome_map._clamp_pan()
                 self._pending_center_idx = -1  # fulfilled
         self._genome_map.update()
+
+        if not select_table:
+            return
 
         # Select in table — set flag to block re-entrancy in _on_orf_table_select
         # Use index-based lookup (not identity) so annotations that modify

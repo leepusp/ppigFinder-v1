@@ -21,6 +21,7 @@ try:
         QCheckBox,
         QLineEdit,
         QDialogButtonBox,
+        QInputDialog,
     )
 except Exception:
     from PyQt5.QtWidgets import (
@@ -35,9 +36,11 @@ except Exception:
         QCheckBox,
         QLineEdit,
         QDialogButtonBox,
+        QInputDialog,
     )
 
 from ppigfinder.services.alphafold_service import AlphaFoldService
+from ppigfinder.integrations.af3.schema import prepare_native_job, write_native_json
 
 
 class AF3ServerJsonExportDialog(QDialog):
@@ -117,7 +120,7 @@ class AF3ServerJsonExportDialog(QDialog):
         return self.window_spin.value()
 
 
-def _selected_orf_indexes_from_table(table) -> list[int]:
+def _selected_orf_indexes_from_table(table, parse_orf_index=None) -> list[int]:
     """
     Try to recover selected ORF indexes from a QTableWidget-like object.
     """
@@ -129,7 +132,12 @@ def _selected_orf_indexes_from_table(table) -> list[int]:
         return indexes
 
     for row in rows:
-        indexes.append(row)
+        if parse_orf_index is None:
+            indexes.append(row)
+        else:
+            item = table.item(row, 0)
+            if item is not None:
+                indexes.append(parse_orf_index(item.text()))
 
     return indexes
 
@@ -194,7 +202,10 @@ def _build_pairs(window, dialog: AF3ServerJsonExportDialog) -> list[tuple[int, i
     selected = []
 
     if table is not None:
-        selected = _valid_orf_indexes(_selected_orf_indexes_from_table(table), n_orfs)
+        selected = _valid_orf_indexes(
+            _selected_orf_indexes_from_table(table, getattr(window, "_parse_orf_idx_from_text", None)),
+            n_orfs,
+        )
 
     mode = dialog.mode()
     neighbor_window = dialog.neighbor_window()
@@ -304,4 +315,54 @@ def export_selected_orfs_as_server_json(window) -> bool:
         f"Exported {len(pairs)} pairwise jobs:\n{f}",
     )
 
+    return True
+
+
+def prepare_selected_orfs_for_native_af3(window) -> bool:
+    """Save a native protein complex and optionally hand it to a destination."""
+    title = "Prepare Native AF3 JSON"
+    orfs = getattr(window, "orfs", []) or []
+    table = _find_orf_table(window)
+    selected = _valid_orf_indexes(
+        _selected_orf_indexes_from_table(table, getattr(window, "_parse_orf_idx_from_text", None)),
+        len(orfs),
+    ) if table is not None else []
+    if not selected:
+        QMessageBox.warning(window, title, "Select one or more proteins in the ORF table.")
+        return False
+
+    records = [
+        (f"ORF{index + 1}", str(orfs[index].get("protein", "")).rstrip("*"))
+        for index in selected
+    ]
+    name = "_".join(label for label, _ in records)
+    seeds = [1]
+    try:
+        job = prepare_native_job(records, name, seeds)
+    except ValueError as exc:
+        QMessageBox.warning(window, title, str(exc))
+        return False
+
+    destinations = ["Save JSON only", "Local / container runner", "Remote SSH/SFTP upload"]
+    destination, accepted = QInputDialog.getItem(
+        window, title, "Choose a destination", destinations, 0, False,
+    )
+    if not accepted:
+        return False
+    filename, _ = QFileDialog.getSaveFileName(window, title, job["name"] + ".json", "JSON (*.json)")
+    if not filename:
+        return False
+    try:
+        path = write_native_json(filename, records, name, seeds)
+    except (OSError, ValueError) as exc:
+        QMessageBox.warning(window, title, str(exc))
+        return False
+
+    window.statusBar().showMessage(f"Saved native AF3 JSON to {path.name}", 5000)
+    if destination == destinations[1]:
+        from ppigfinder.ui.af3_runner_dialog import show_af3_runner_dialog
+        show_af3_runner_dialog(window, path)
+    elif destination == destinations[2]:
+        from ppigfinder.ui.remote_connections_dialog import show_remote_connections_dialog
+        show_remote_connections_dialog(window, path)
     return True
