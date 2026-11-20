@@ -80,6 +80,7 @@ nav:
       - DaVinci example: user_manual/davinci_hpc.md
   - Development:
       - Feature status: developer/feature_status.md
+      - Capabilities and integrations: developer/capabilities.md
       - Architecture: developer/software_architecture.md
       - HPC portability: developer/hpc_portability.md
       - Directory map: developer/directory_layout.md

@@ -1,92 +1,55 @@
 #!/usr/bin/env python3
-"""
-Backend status table widget.
-
-Shows availability of external and optional ppigFinder backends without
-depending on emoji or system icon fonts.
-"""
-
+"""Pure presentation widget for optional tool and integration capabilities."""
 from __future__ import annotations
 
 try:
-    from PyQt6.QtWidgets import (
-        QWidget,
-        QVBoxLayout,
-        QTableWidget,
-        QTableWidgetItem,
-        QHeaderView,
-    )
+    from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QHeaderView
     from PyQt6.QtGui import QColor
     QT6 = True
-except Exception:
-    from PyQt5.QtWidgets import (
-        QWidget,
-        QVBoxLayout,
-        QTableWidget,
-        QTableWidgetItem,
-        QHeaderView,
-    )
+except ImportError:
+    from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QHeaderView
     from PyQt5.QtGui import QColor
     QT6 = False
 
 
+_STATUS = {
+    "available": ("Available", "#2e7d32"),
+    "detected": ("Detected (unverified)", "#1565c0"),
+    "not_configured": ("Not configured", "#b26a00"),
+    "not_implemented": ("Not implemented", "#757575"),
+}
+
+
 class BackendStatusWidget(QWidget):
-    """
-    Small table showing backend availability.
-    """
+    """Display capability metadata supplied by the backend-neutral registry."""
 
     def __init__(self, parent=None):
         super().__init__(parent)
-
         layout = QVBoxLayout(self)
-
         self.table = QTableWidget(0, 4, self)
-        self.table.setHorizontalHeaderLabels(
-            ["Backend", "Status", "Version", "Details"]
-        )
-
+        self.table.setHorizontalHeaderLabels(["Integration", "Status", "Operations", "Details"])
         header = self.table.horizontalHeader()
-        try:
-            header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch if QT6 else QHeaderView.Stretch)
-        except Exception:
-            pass
-
+        header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch if QT6 else QHeaderView.Stretch)
         self.table.setAlternatingRowColors(True)
-
-        try:
-            self.table.setEditTriggers(
-                QTableWidget.EditTrigger.NoEditTriggers
-                if QT6
-                else QTableWidget.NoEditTriggers
-            )
-        except Exception:
-            pass
-
+        self.table.setEditTriggers(
+            QTableWidget.EditTrigger.NoEditTriggers if QT6 else QTableWidget.NoEditTriggers
+        )
         layout.addWidget(self.table)
 
     def set_backends(self, rows: list[dict]) -> None:
-        """
-        Populate table from backend rows.
-        """
         self.table.setRowCount(len(rows))
-
-        for row_index, row in enumerate(rows):
-            backend = row.get("backend", "")
-            available = bool(row.get("available", False))
-            version = row.get("version", "")
-            details = row.get("details", "")
-
-            status_text = "Available" if available else "Missing"
-
-            items = [
-                QTableWidgetItem(str(backend)),
+        for index, row in enumerate(rows):
+            raw_status = row.get("status")
+            if raw_status is None:  # Compatibility with old boolean rows.
+                raw_status = "available" if row.get("available") else "not_configured"
+            status_text, color = _STATUS.get(raw_status, (str(raw_status), "#757575"))
+            cells = [
+                QTableWidgetItem(str(row.get("backend", ""))),
                 QTableWidgetItem(status_text),
-                QTableWidgetItem(str(version or "")),
-                QTableWidgetItem(str(details or "")),
+                QTableWidgetItem(str(row.get("operations", row.get("version", "")) or "")),
+                QTableWidgetItem(str(row.get("details", "") or "")),
             ]
-
-            for col_index, item in enumerate(items):
-                self.table.setItem(row_index, col_index, item)
-
-            color = QColor("#2e7d32") if available else QColor("#b71c1c")
-            items[1].setForeground(color)
+            for column, item in enumerate(cells):
+                self.table.setItem(index, column, item)
+                item.setToolTip(item.text())
+            cells[1].setForeground(QColor(color))

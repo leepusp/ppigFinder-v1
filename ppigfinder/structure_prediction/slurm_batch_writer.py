@@ -199,12 +199,26 @@ def write_batch_slurm_scripts(
     if module_commands:
         commands.update({key.lower(): value for key, value in module_commands.items()})
 
+    # Validate the entire scheduler request before writing any Slurm artifacts.
+    # Export-only scientific inputs are deliberately independent of this step.
+    grouped = group_planned_jobs_for_slurm(batch.planned_jobs)
+    validated_overrides = {}
+    for group_id, items in sorted(grouped.items()):
+        first = items[0]
+        backend = first.job.backend_id.lower()
+        overrides = resolve_slurm_overrides(first.plan, cluster=cluster)
+        if backend in {"af3", "boltz2"} and not overrides.gres:
+            raise ValueError(
+                f"Slurm GPU resources are unconfigured for profile {cluster!r}. "
+                "Select a validated site profile or use execution_mode='export_only'."
+            )
+        validated_overrides[group_id] = overrides
+
     slurm_dir = batch.root_dir / slurm_subdir
     log_dir = slurm_dir / "logs"
     slurm_dir.mkdir(parents=True, exist_ok=True)
     log_dir.mkdir(parents=True, exist_ok=True)
 
-    grouped = group_planned_jobs_for_slurm(batch.planned_jobs)
     written: List[BackendSlurmFiles] = []
 
     for group_id, items in sorted(grouped.items()):
@@ -217,15 +231,7 @@ def write_batch_slurm_scripts(
             slurm_dir / f"tasks_{group_id}.tsv",
         )
 
-        overrides = resolve_slurm_overrides(first.plan, cluster=cluster)
-
-        # Never generate an apparently runnable GPU job without a configured
-        # scheduler GPU resource request; exporting inputs remains available.
-        if backend in {"af3", "boltz2"} and not overrides.gres:
-            raise ValueError(
-                f"Slurm GPU resources are unconfigured for profile {cluster!r}. "
-                "Select a validated site profile or use execution_mode='export_only'."
-            )
+        overrides = validated_overrides[group_id]
 
         header = render_sbatch_header(
             first.plan,

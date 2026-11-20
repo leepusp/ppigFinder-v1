@@ -14,7 +14,11 @@ try:
 except Exception:
     from PyQt5.QtWidgets import QAction
 
+import logging
+
 from ppigfinder.ui.text_fallback import clean_ui_text
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _normalized_menu_title(text: str) -> str:
@@ -76,7 +80,7 @@ def install_modular_gui_actions(window) -> None:
 
         install_backend_status_action(window)
     except Exception:
-        pass
+        LOGGER.exception("Optional ppigFinder menu action could not be installed")
 
     try:
         from ppigfinder.ui.af3_export import export_selected_orfs_as_server_json
@@ -90,7 +94,7 @@ def install_modular_gui_actions(window) -> None:
             separator_before=False,
         )
     except Exception:
-        pass
+        LOGGER.exception("Optional ppigFinder menu action could not be installed")
 
     try:
         from ppigfinder.ui.af3_results_import import import_af3_results_folder
@@ -104,7 +108,7 @@ def install_modular_gui_actions(window) -> None:
             separator_before=False,
         )
     except Exception:
-        pass
+        LOGGER.exception("Optional ppigFinder menu action could not be installed")
 
     try:
         from ppigfinder.ui.af3_table_export import export_af3_results_table
@@ -118,7 +122,7 @@ def install_modular_gui_actions(window) -> None:
             separator_before=False,
         )
     except Exception:
-        pass
+        LOGGER.exception("Optional ppigFinder menu action could not be installed")
 
     try:
         from ppigfinder.ui.project_bridge import (
@@ -144,4 +148,4 @@ def install_modular_gui_actions(window) -> None:
             separator_before=False,
         )
     except Exception:
-        pass
+        LOGGER.exception("Optional ppigFinder menu action could not be installed")

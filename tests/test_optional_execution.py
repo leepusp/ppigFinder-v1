@@ -38,6 +38,7 @@ class OptionalExecutionTests(unittest.TestCase):
                 prepare_structural_prediction_batch(
                     self.make_request(tmp, execution_mode='slurm', cluster='generic_slurm')
                 )
+            self.assertFalse((Path(tmp) / "slurm").exists())
 
     def test_site_profile_is_optional(self):
         with tempfile.TemporaryDirectory() as tmp:

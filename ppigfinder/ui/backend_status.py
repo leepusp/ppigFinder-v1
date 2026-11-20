@@ -1,76 +1,49 @@
 #!/usr/bin/env python3
-"""
-Backend status dialog and GUI installer.
-"""
-
+"""Capabilities and optional integrations dialog for the existing Qt GUI."""
 from __future__ import annotations
 
 try:
     from PyQt6.QtGui import QAction
     from PyQt6.QtWidgets import QDialog, QVBoxLayout, QPushButton, QHBoxLayout
-except Exception:
+except ImportError:
     from PyQt5.QtWidgets import QAction, QDialog, QVBoxLayout, QPushButton, QHBoxLayout
 
-from ppigfinder.infrastructure.backends import refresh_backends, BACKENDS
+from ppigfinder.infrastructure.capabilities import collect_capabilities
 from ppigfinder.ui.widgets.backend_status_widget import BackendStatusWidget
 
 
 def _backend_rows(detailed: bool = False) -> list[dict]:
-    """
-    Build rows from backend detection.
-    """
-    backends = refresh_backends(detailed=True) if detailed else BACKENDS
-
-    rows = []
-
-    for key, label in [
-        ("blast+", "BLAST+"),
-        ("hmmer3", "HMMER3"),
-        ("pyrodigal", "Pyrodigal"),
-        ("paramiko", "Paramiko/SSH"),
-    ]:
-        item = backends.get(key, {}) or {}
-
-        rows.append(
-            {
-                "backend": label,
-                "available": item.get("available", False),
-                "version": item.get("version", ""),
-                "details": item.get("path", ""),
-            }
-        )
-
-    return rows
+    """Keep the previous UI helper contract; detection is always offline/fast."""
+    return [
+        {
+            "backend": capability.label,
+            "status": capability.status.value,
+            "operations": ", ".join(capability.operations),
+            "details": capability.detail,
+        }
+        for capability in collect_capabilities()
+    ]
 
 
 class BackendStatusDialog(QDialog):
-    """
-    Dialog showing backend availability.
-    """
-
     def __init__(self, parent=None):
         super().__init__(parent)
-
-        self.setWindowTitle("Backend Status")
-        self.resize(720, 320)
-
+        self.setWindowTitle("Capabilities and Integrations")
+        self.resize(920, 480)
         layout = QVBoxLayout(self)
 
         self.widget = BackendStatusWidget(self)
-        self.widget.set_backends(_backend_rows(detailed=False))
+        self.widget.set_backends(_backend_rows())
         layout.addWidget(self.widget)
 
-        button_row = QHBoxLayout()
-
-        refresh_button = QPushButton("Refresh detailed status")
+        buttons = QHBoxLayout()
+        refresh_button = QPushButton("Refresh local detection")
         refresh_button.clicked.connect(self.refresh_detailed)
-        button_row.addWidget(refresh_button)
-
+        buttons.addWidget(refresh_button)
         close_button = QPushButton("Close")
         close_button.clicked.connect(self.accept)
-        button_row.addWidget(close_button)
-
-        layout.addLayout(button_row)
+        buttons.addWidget(close_button)
+        layout.addLayout(buttons)
 
     def refresh_detailed(self) -> None:
         self.widget.set_backends(_backend_rows(detailed=True))
@@ -82,32 +55,21 @@ def show_backend_status_dialog(window) -> None:
 
 
 def install_backend_status_action(window) -> None:
-    """
-    Add Backend Status action without modifying legacy_v20.py.
-    """
+    """Install in the existing GUI; no edits to legacy_v29_14.py."""
     if getattr(window, "_ppig_backend_status_action_installed", False):
         return
-
     menu_bar = window.menuBar()
-
     system_menu = None
     for action in menu_bar.actions():
         text = action.text().replace("&", "").strip().lower()
         if text in {"system", "tools", "window"}:
             system_menu = action.menu()
             break
-
     if system_menu is None:
         system_menu = menu_bar.addMenu("System")
 
-    # Expose as a dynamic method for the workflow navigator.
-    try:
-        window.show_backend_status = lambda: show_backend_status_dialog(window)
-    except Exception:
-        pass
-
-    action = QAction("Backend Status", window)
+    window.show_backend_status = lambda: show_backend_status_dialog(window)
+    action = QAction("Capabilities and Integrations", window)
     action.triggered.connect(lambda checked=False: show_backend_status_dialog(window))
     system_menu.addAction(action)
-
     window._ppig_backend_status_action_installed = True
