@@ -11,7 +11,7 @@ Current scope:
 - protein targets only
 - one AF3 job per PredictionJobSpec
 - configurable model seeds
-- optional top-level list wrapping
+- native `alphafold3` one-object JSON **by default**; list wrapping is legacy opt-in only
 
 The writer intentionally rejects non-protein targets for now. DNA, RNA, ligands and covalent modifications should be added later with explicit schema handling.
 

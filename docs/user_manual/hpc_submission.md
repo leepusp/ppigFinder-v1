@@ -19,6 +19,10 @@
 
 An institution-specific profile should contain values such as hostname, SSH port, remote workspace, scheduler type, queue/partition name, GPU request syntax, module commands, executable locations, database roots and resource limits. None belongs in general-purpose source code as an irrevocable default.
 
+For local AF3 (official Python runner, Docker or institutional wrapper) see
+[AF3 installation and local execution](af3_local_installation.md). These local
+adapters require no scheduler, remote connection or SSH.
+
 ## Generic Slurm process (advanced users)
 
 1. Confirm the intended native AF3 schema and run-command syntax on the target cluster.

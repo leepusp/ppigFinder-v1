@@ -36,6 +36,7 @@ dev = [
 
 [project.scripts]
 ppigfinder = "ppigfinder.app:main"
+ppigfinder-af3 = "ppigfinder.integrations.af3.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

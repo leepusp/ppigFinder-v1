@@ -83,6 +83,20 @@ def install_modular_gui_actions(window) -> None:
         LOGGER.exception("Optional ppigFinder menu action could not be installed")
 
     try:
+        from ppigfinder.ui.af3_runner_dialog import show_af3_runner_dialog
+
+        install_action_once(
+            window,
+            menu_title="AlphaFold",
+            action_text="AF3 Local/Container Runner",
+            attribute_name="_ppig_af3_runner_dialog_installed",
+            callback=show_af3_runner_dialog,
+        )
+    except Exception:
+        import logging
+        logging.getLogger(__name__).exception("AF3 runner dialog could not be registered")
+
+    try:
         from ppigfinder.ui.af3_export import export_selected_orfs_as_server_json
 
         install_action_once(

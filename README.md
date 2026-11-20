@@ -51,18 +51,15 @@ The images below come from the **earlier user guide (ppigFinder v2.2)**. They do
 
 ## Install from source
 
-**Recommended starting point:** Python **3.11**, a graphical desktop, and a local virtual environment. The package metadata currently advertises Python >=3.8, but that is not a substitute for a tested cross-platform compatibility matrix.
+**Required:** Python **3.11+**, a graphical desktop and a local virtual environment. Local AF3 inference is optional; the app does not ship model parameters, databases or inference executables.
 
 ### Linux / macOS
 
 ```bash
 git clone https://github.com/leepusp/ppigFinder-v1.git
 cd ppigFinder-v1
-python3.11 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -e ".[gui,recommended]"
-python main.py
+bash scripts/install_ppigfinder.sh
+.venv/bin/python main.py
 ```
 
 ### Windows PowerShell
@@ -70,11 +67,8 @@ python main.py
 ```powershell
 git clone https://github.com/leepusp/ppigFinder-v1.git
 cd ppigFinder-v1
-py -3.11 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -e ".[gui,recommended]"
-python main.py
+powershell -ExecutionPolicy Bypass -File .\scripts\install_ppigfinder.ps1
+.\.venv\Scripts\python.exe main.py
 ```
 
 These are **documented source-install commands, not yet a formally validated installer**. BLAST+ and HMMER must be installed separately if you need their external executables. For platform-specific issues, see [installation](docs/user_manual/installation.md) and [troubleshooting](docs/user_manual/troubleshooting.md).
@@ -120,6 +114,7 @@ flowchart LR
 | [Interface tour](docs/user_manual/interface_tour.md) | Annotated schematic and historical screenshots. |
 | [Xanthomonas tutorial](docs/tutorials/xanthomonas.md) | Reproducible study-inspired walkthrough. |
 | [AlphaFold Server and AF3](docs/user_manual/alphafold.md) | Distinct JSON dialects, manual server submission and result import. |
+| [AF3 install and local runner](docs/user_manual/af3_local_installation.md) | Native AF3 export, optional official/Docker/wrapper inference, CLI and GUI setup. |
 | [Local / HPC execution](docs/user_manual/hpc_submission.md) | Optional compute configuration and validation checks. |
 | [Implementation status](docs/developer/feature_status.md) | Implemented, provisional and not-yet-validated pathways. |
 | [Website](https://leepusp.github.io/ppigFinder-v1/) | Public, searchable MkDocs documentation. |
@@ -131,11 +126,10 @@ ppigFinder-v1/
 ├── ppigfinder/               # application modules and GUI
 │   ├── bioseq/ annotation/ neighborhood/
 │   ├── alphafold/ structure_prediction/
-│   ├── services/ ui/ hpc/
+│   ├── services/ ui/ hpc/ integrations/af3/
 │   └── ...
 ├── scripts/                  # developer checks and optional runner templates
 ├── docs/                     # manuals, diagrams and historical screenshots
-├── legacy_sources/           # provenance-preserving historical code
 ├── main.py                   # desktop entry point
 ├── pyproject.toml            # package metadata and optional dependencies
 ├── CITATION.cff / LICENSE    # attribution and MIT license

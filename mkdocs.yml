@@ -73,6 +73,7 @@ nav:
       - ORF Browser: user_manual/orfs.md
       - Annotation: user_manual/annotation.md
       - Protein Interactions / AlphaFold: user_manual/alphafold.md
+      - AlphaFold 3 local installation: user_manual/af3_local_installation.md
       - Results and Reports: user_manual/reports.md
       - Troubleshooting: user_manual/troubleshooting.md
   - Execution:

@@ -17,6 +17,14 @@ ppigFinder is a Python desktop application, not a hosted web service. The **core
 
 The current `pyproject.toml` requires Python `>=3.11`, aligned with the implementation described in the preprint. This documentation **recommends 3.11 until CI and fresh installations validate a broader matrix**. PyQt5 support may exist in legacy code, but the documented install below uses PyQt6.
 
+## Recommended installers
+
+Use `bash scripts/install_ppigfinder.sh` on Linux/macOS or
+`powershell -ExecutionPolicy Bypass -File .\scripts\install_ppigfinder.ps1`
+on Windows. Both install the desktop in `.venv` without installing AF3 inference,
+models, databases or any scheduler. Python 3.11+ is mandatory. See the
+[complete AlphaFold 3 setup guide](af3_local_installation.md).
+
 ## Linux
 
 ```bash

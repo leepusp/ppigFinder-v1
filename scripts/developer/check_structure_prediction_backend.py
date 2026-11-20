@@ -85,13 +85,16 @@ def main() -> int:
     require(foldcp_yaml)
 
     payload = json.loads(af3_json.read_text(encoding="utf-8"))
-    if not isinstance(payload, list):
-        raise SystemExit("AF3 JSON should be list-wrapped.")
+    if not isinstance(payload, dict):
+        raise SystemExit("Native AF3 JSON must be one object (not a Server list).")
 
-    if payload[0]["modelSeeds"] != [1]:
+    if payload["dialect"] != "alphafold3":
+        raise SystemExit("Unexpected AF3 JSON dialect.")
+
+    if payload["modelSeeds"] != [1]:
         raise SystemExit("Unexpected AF3 modelSeeds.")
 
-    if len(payload[0]["sequences"]) != 3:
+    if len(payload["sequences"]) != 3:
         raise SystemExit("AF3 JSON should contain 3 sequences.")
 
     for yaml_path in [boltz_yaml, foldcp_yaml]:

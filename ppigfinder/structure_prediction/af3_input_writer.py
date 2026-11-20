@@ -85,7 +85,7 @@ def render_af3_job_dict(
 def render_af3_input_json(
     job: PredictionJobSpec,
     model_seeds: Sequence[int] = (1,),
-    wrap_as_list: bool = True,
+    wrap_as_list: bool = False,
     dialect: str = "alphafold3",
     version: int = 1,
 ) -> str:
@@ -106,7 +106,7 @@ def write_af3_input_json(
     job: PredictionJobSpec,
     output_path: str | Path,
     model_seeds: Sequence[int] = (1,),
-    wrap_as_list: bool = True,
+    wrap_as_list: bool = False,
     dialect: str = "alphafold3",
     version: int = 1,
 ) -> Path:
@@ -129,7 +129,7 @@ def write_af3_backend_inputs(
     job: PredictionJobSpec,
     layout: PredictionOutputLayout,
     model_seeds: Sequence[int] = (1,),
-    wrap_as_list: bool = True,
+    wrap_as_list: bool = False,
 ) -> AF3InputFiles:
     layout.create()
 
@@ -146,7 +146,7 @@ def write_af3_backend_inputs(
 def write_batch_af3_inputs(
     batch: PredictionBatchPlan,
     model_seeds: Sequence[int] = (1,),
-    wrap_as_list: bool = True,
+    wrap_as_list: bool = False,
 ) -> List[AF3InputFiles]:
     written: List[AF3InputFiles] = []
 

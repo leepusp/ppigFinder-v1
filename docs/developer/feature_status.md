@@ -51,6 +51,16 @@ flowchart TD
 
 These gates are a **roadmap**, not an assertion that all are passing.
 
+## Native AF3 integration (2026-11-20)
+
+The optional `ppigfinder/integrations/af3/` adapter now supports protein FASTA
+conversion to **native one-object** AF3 JSON, local preflight, official
+`run_alphafold.py`, Docker and compatible institutional wrapper **execution on
+explicit opt-in**. AF3 itself, model parameters and databases are separate
+external prerequisites. Container/runtime/GPU effectiveness has not been
+validated end-to-end on every platform. AlphaFold Server manual JSON export
+remains independent. Refer to the [AF3 setup manual](../user_manual/af3_local_installation.md).
+
 ## Opt-in execution contract (2026-11-20)
 
 Scientific job input preparation now defaults to `execution_mode="export_only"`;
