@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 try:
-    from PyQt6.QtGui import QAction
     from PyQt6.QtWidgets import QDialog, QVBoxLayout, QPushButton, QHBoxLayout
 except ImportError:
-    from PyQt5.QtWidgets import QAction, QDialog, QVBoxLayout, QPushButton, QHBoxLayout
+    from PyQt5.QtWidgets import QDialog, QVBoxLayout, QPushButton, QHBoxLayout
 
 from ppigfinder.infrastructure.capabilities import collect_capabilities
 from ppigfinder.ui.widgets.backend_status_widget import BackendStatusWidget
@@ -56,20 +55,10 @@ def show_backend_status_dialog(window) -> None:
 
 def install_backend_status_action(window) -> None:
     """Install in the existing GUI; no edits to legacy_v29_14.py."""
-    if getattr(window, "_ppig_backend_status_action_installed", False):
-        return
-    menu_bar = window.menuBar()
-    system_menu = None
-    for action in menu_bar.actions():
-        text = action.text().replace("&", "").strip().lower()
-        if text in {"system", "tools", "window"}:
-            system_menu = action.menu()
-            break
-    if system_menu is None:
-        system_menu = menu_bar.addMenu("System")
+    from ppigfinder.ui.menu_installers import install_action_once
 
     window.show_backend_status = lambda: show_backend_status_dialog(window)
-    action = QAction("Capabilities and Integrations", window)
-    action.triggered.connect(lambda checked=False: show_backend_status_dialog(window))
-    system_menu.addAction(action)
-    window._ppig_backend_status_action_installed = True
+    install_action_once(
+        window, "System", "Capabilities and Integrations",
+        "_ppig_backend_status_action_installed", show_backend_status_dialog,
+    )

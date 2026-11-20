@@ -7783,9 +7783,7 @@ class ppigFinderApp(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(
-            f'🧬 ppigFinder {APP_BUILD} ({APP_VERSION}) — '
-            'Protein-Protein Interaction Genomic Finder')
+        self.setWindowTitle(f"ppigFinder {APP_VERSION}")
         # ── Responsive window sizing (replaces fixed 1550×980) ──────
         self.win_mgr = WindowManager(self, app_name="ppigFinder",
                                       organisation="ppigFinder")

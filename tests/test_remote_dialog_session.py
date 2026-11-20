@@ -79,6 +79,8 @@ class SSHSessionDialogTests(unittest.TestCase):
                 self.assertEqual(len(calls), 1)
                 self.assertEqual(len(prompts), 1)  # No second password prompt!
                 self.assertIn("REMOTE_AF3_UPLOAD=PASS", window.log.toPlainText())
+                self.assertEqual(window.log.toPlainText().count("Opening SSH/SFTP channel"), 1)
+                self.assertIn("Reusing authenticated SSH/SFTP session", window.log.toPlainText())
                 self.assertEqual(window._last_af3_json, str(fixture))
                 window.done(0)
                 self.assertTrue(calls[0].closed)

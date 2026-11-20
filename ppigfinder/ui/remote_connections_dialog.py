@@ -205,6 +205,7 @@ class RemoteConnectionsDialog(QDialog):
             password, ok = self._credentials()
             if not ok:
                 return
+            self.log.appendPlainText("Opening SSH/SFTP channel (strict host-key verification)...")
         else:
             password = None
             self.log.appendPlainText(
@@ -231,7 +232,6 @@ class RemoteConnectionsDialog(QDialog):
         self._busy = True
         for control in self._controls:
             control.setEnabled(False)
-        self.log.appendPlainText("Connecting (strict host-key verification)...")
         self._thread = QThread(self)
         self._worker = _ConnectionWorker(fn)
         self._worker.moveToThread(self._thread)
