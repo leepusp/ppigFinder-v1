@@ -26,6 +26,7 @@ class StructuralPredictionRequest:
     priority: str = "normal"
     run_id: str | None = None
     cluster: str = "generic_slurm"
+    execution_mode: str = "export_only"  # export_only or slurm (explicit opt-in)
 
 
 @dataclass(frozen=True)
@@ -33,7 +34,7 @@ class StructuralPredictionPreparedBatch:
     request: StructuralPredictionRequest
     batch: PredictionBatchPlan
     artifacts: PredictionBatchArtifacts
-    slurm_scripts: BatchSlurmScripts
+    slurm_scripts: BatchSlurmScripts | None
 
     @property
     def ok(self) -> bool:
@@ -51,7 +52,8 @@ class StructuralPredictionPreparedBatch:
             self.artifacts.summary(),
             "",
             "Slurm:",
-            self.slurm_scripts.summary(),
+            self.slurm_scripts.summary() if self.slurm_scripts is not None
+            else "No scheduler scripts generated (export_only mode).",
         ]
 
         return "\n".join(lines)
@@ -77,10 +79,16 @@ def prepare_structural_prediction_batch(
     )
 
     artifacts = write_prediction_batch_artifacts(batch)
-    slurm_scripts = write_batch_slurm_scripts(
-        batch,
-        cluster=request.cluster,
-    )
+    # Generating scientific inputs must not depend on HPC or Slurm.
+    if request.execution_mode == "export_only":
+        slurm_scripts = None
+    elif request.execution_mode == "slurm":
+        slurm_scripts = write_batch_slurm_scripts(batch, cluster=request.cluster)
+    else:
+        raise ValueError(
+            f"Unsupported execution_mode: {request.execution_mode}. "
+            "Use export_only or explicitly opt into slurm."
+        )
 
     return StructuralPredictionPreparedBatch(
         request=request,

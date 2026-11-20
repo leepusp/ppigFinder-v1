@@ -15,7 +15,7 @@ ppigFinder is a Python desktop application, not a hosted web service. The **core
 | Paramiko >= 2.9 | SSH/SFTP client library | Optional remote-compute use |
 | AF3 installation, models, databases, GPU | Structural inference | Only when running AF3 locally or remotely |
 
-The current `pyproject.toml` declares Python `>=3.8`, but the preprint describes a Python 3.11 implementation. This documentation **recommends 3.11 until CI and fresh installations validate a broader matrix**. PyQt5 support may exist in legacy code, but the documented install below uses PyQt6.
+The current `pyproject.toml` requires Python `>=3.11`, aligned with the implementation described in the preprint. This documentation **recommends 3.11 until CI and fresh installations validate a broader matrix**. PyQt5 support may exist in legacy code, but the documented install below uses PyQt6.
 
 ## Linux
 

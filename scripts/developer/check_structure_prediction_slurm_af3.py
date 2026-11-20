@@ -58,7 +58,6 @@ def main() -> int:
     script = script_path.read_text(encoding="utf-8")
 
     required_fragments = [
-        "module load alphafold3/1.0",
         'AF3_CMD="${AF3_SCRIPT:-af3}"',
         "AF3_ARGS=(",
         '--json-path "$AF3_JSON"',

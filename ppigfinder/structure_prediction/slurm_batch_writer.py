@@ -10,10 +10,12 @@ from ppigfinder.structure_prediction.output_layout import safe_job_name
 from ppigfinder.structure_prediction.slurm_renderer import render_sbatch_header
 
 
+# Execution environments are chosen explicitly by the user/site.
+# AF3 executable must already be available on PATH or via AF3_SCRIPT.
 DEFAULT_BACKEND_MODULE_COMMANDS: Dict[str, str] = {
-    "af3": "module load alphafold3/1.0",
-    "boltz2": "echo 'TODO: load Boltz-2 environment/module'",
-    "foldcp": "echo 'TODO: load FoldCP environment/module'",
+    "af3": ":",
+    "boltz2": ":",
+    "foldcp": ":",
 }
 
 
@@ -170,12 +172,14 @@ case "{backend_id}" in
   boltz2)
     echo "Boltz-2 FASTA: $INPUT_DIR/boltz2_input.fasta"
     echo "Boltz-2 YAML: $INPUT_DIR/boltz2_job_spec.yaml"
-    echo "TODO: call the validated local Boltz-2 runner here."
+    echo "ERROR: Boltz-2 runner not implemented. Input generation only." >&2
+    exit 78
     ;;
   foldcp)
     echo "FoldCP FASTA: $INPUT_DIR/foldcp_input.fasta"
     echo "FoldCP YAML: $INPUT_DIR/foldcp_job_spec.yaml"
-    echo "TODO: call the validated local FoldCP workflow here."
+    echo "ERROR: FoldCP runner not implemented. Input generation only." >&2
+    exit 78
     ;;
   *)
     echo "ERROR: unsupported backend: {backend_id}" >&2
@@ -215,6 +219,14 @@ def write_batch_slurm_scripts(
 
         overrides = resolve_slurm_overrides(first.plan, cluster=cluster)
 
+        # Never generate an apparently runnable GPU job without a configured
+        # scheduler GPU resource request; exporting inputs remains available.
+        if backend in {"af3", "boltz2"} and not overrides.gres:
+            raise ValueError(
+                f"Slurm GPU resources are unconfigured for profile {cluster!r}. "
+                "Select a validated site profile or use execution_mode='export_only'."
+            )
+
         header = render_sbatch_header(
             first.plan,
             job_name=f"ppig_{group_id}",
@@ -227,7 +239,7 @@ def write_batch_slurm_scripts(
         body = _render_backend_body(
             backend_id=backend,
             task_table_path=task_table,
-            module_command=commands.get(backend, "echo 'TODO: load backend environment'"),
+            module_command=commands.get(backend, ":"),
         )
 
         script_path = slurm_dir / f"submit_{group_id}.slurm"

@@ -30,7 +30,8 @@ def render_sbatch_header(
     error_log: str = "logs/%x_%A_%a.err",
 ) -> str:
     effective_job_name = job_name or plan.job_id
-    effective_partition = partition or plan.partition_hint
+    # Resource hints are not real scheduler partition names.
+    effective_partition = partition
     effective_gres = gres
 
     if overrides is not None:

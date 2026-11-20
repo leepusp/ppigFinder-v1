@@ -113,7 +113,7 @@ def main() -> int:
     app.setApplicationDisplayName(
         "ppigFinder — Protein-Protein Interaction Genomic Finder"
     )
-    app.setApplicationVersion("2.0")
+    app.setApplicationVersion("2.9.14")
     app.setStyle("Fusion")
 
     _setup_emoji_font(app)

@@ -91,3 +91,12 @@ Implement separate `LocalTransport`, `SSHTransport`, `SlurmScheduler`, and `Manu
 8. Verify result-import round trip and no false biological 'confirmed interaction' status.
 
 Only after those tests should the user manual describe GUI-driven remote submission as automatic.
+
+## Update: optional scheduler script generation
+
+Current scientific batch preparation has `execution_mode="export_only"` as
+its default. Slurm is invoked only as an explicit script-generation option.
+The legacy backend-specific defaults previously documented above should be
+read as historical audit findings; the missing-module assumption and fake
+generic partition have been corrected. Connection lifecycle adapters for
+arbitrary HPC schedulers are still pending and must not be advertised as ready.

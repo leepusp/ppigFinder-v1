@@ -6,11 +6,9 @@
 |---|---|
 | `main.py` | Stable entry point for the current application. |
 | `pyproject.toml` | Python packaging/build configuration and future command entry-points. |
-| `environment.yml` | Conda environment definition. |
 | `README.md` | Short project overview. |
 | `ARCHITECTURE.md` | High-level technical architecture notes. |
 | `docs/` | User manuals, workflow documentation and developer notes. |
-| `legacy_sources/` | Historical standalone scripts and archived upstream legacy sources preserved for provenance. |
 
 ## Main package layout
 
@@ -46,6 +44,8 @@ main.py
 ## Legacy source archive
 
 Historical standalone scripts and upstream source snapshots are preserved under
-`legacy_sources/`. They are not the active application entry point, but they are
 kept to support reproducibility, provenance tracking and comparison against
 earlier ppigFinder versions.
+
+Historical standalone scripts were removed from the active tree to reduce
+repository duplication; they remain accessible in Git history.

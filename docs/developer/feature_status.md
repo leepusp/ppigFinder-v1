@@ -50,3 +50,17 @@ flowchart TD
 - **Recommended:** reproducible end-to-end fixture (a small FASTA + expected outputs), CI smoke tests, model-format fixture tests, documented benchmark results and current-version UI screenshots.
 
 These gates are a **roadmap**, not an assertion that all are passing.
+
+## Opt-in execution contract (2026-11-20)
+
+Scientific job input preparation now defaults to `execution_mode="export_only"`;
+this requires neither SSH nor Slurm. `execution_mode="slurm"` is an explicit
+opt-in for a configured scheduler profile. Unconfigured GPU resources fail
+before a scheduler script is produced. The available AF3 wrapper must be
+supplied by the execution environment, rather than loaded through an assumed
+institutional module. Boltz-2 and FoldCP export inputs but do not execute;
+their placeholder runner scripts fail explicitly with exit code 78.
+
+**Not implemented yet:** backend-neutral connection management and remote
+scheduler adapters (Slurm, PBS, LSF, etc.). AlphaFold Server is a separate,
+manual export workflow. This update does not claim remote automation.

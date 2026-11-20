@@ -42,6 +42,8 @@ def main() -> int:
         targets=targets,
         backend_ids=("af3", "boltz2", "foldcp"),
         run_id="dry_run",
+        execution_mode="slurm",
+        cluster="davinci",
     )
 
     prepared = prepare_structural_prediction_batch(request)
@@ -49,8 +51,8 @@ def main() -> int:
     summary = prepared.summary()
     print(summary)
 
-    if "cluster: generic_slurm" not in summary:
-        raise SystemExit("Default cluster profile should be generic_slurm.")
+    if "cluster: davinci" not in summary:
+        raise SystemExit("Explicit cluster profile was not reflected in the summary.")
 
     if not prepared.ok:
         raise SystemExit("Prepared batch is not OK.")
@@ -81,7 +83,6 @@ def main() -> int:
     af3_text = af3_script.read_text(encoding="utf-8")
 
     for fragment in [
-        "module load alphafold3/1.0",
         'AF3_CMD="${AF3_SCRIPT:-af3}"',
         "AF3_ARGS=(",
         "--executor local",

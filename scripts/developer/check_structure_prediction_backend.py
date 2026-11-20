@@ -119,7 +119,6 @@ def main() -> int:
 
         if item.backend_id == "af3":
             for fragment in [
-                "module load alphafold3/1.0",
                 'AF3_CMD="${AF3_SCRIPT:-af3}"',
                 "AF3_ARGS=(",
                 "--executor local",
