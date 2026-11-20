@@ -65,6 +65,12 @@ class AF3IntegrationTests(unittest.TestCase):
         self.assertIn("--json_path=/ppig_input/native.json", args)
         self.assertFalse(self.out.exists())
 
+    def test_preflight_rejects_existing_file_as_output(self):
+        self.out.write_text("existing data", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "Output path is not a directory"):
+            run_af3(AF3RunnerConfig(), self.native, self.out)
+        self.assertEqual(self.out.read_text(encoding="utf-8"), "existing data")
+
     def test_wrapper_uses_wrapper_flags_no_scheduler(self):
         cfg = AF3RunnerConfig(mode="wrapper", wrapper_command="af3")
         with patch("ppigfinder.integrations.af3.runner._binary", return_value="/usr/bin/af3"):

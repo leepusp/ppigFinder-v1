@@ -15,6 +15,7 @@ from typing import Any
 import csv
 import json
 
+from ppigfinder.alphafold.result_loader import find_af3_job_dirs
 from ppigfinder.alphafold.metrics import (
     InteractionMetrics,
     contact_percent_from_pae,
@@ -68,9 +69,9 @@ def _read_first_csv_row(path: Path) -> dict[str, str]:
     return {}
 
 
-def _find_first(root: Path, patterns: list[str]) -> Path | None:
+def _find_first(root: Path, patterns: list[str], *, exclude: Path | None = None) -> Path | None:
     for pattern in patterns:
-        matches = sorted(root.rglob(pattern))
+        matches = sorted(path for path in root.rglob(pattern) if path.is_file() and path != exclude)
         if matches:
             return matches[0]
     return None
@@ -101,14 +102,14 @@ def _extract_chain_lengths(data: dict) -> tuple[int | None, int | None]:
     """
     for key in ["chain_lengths", "token_chain_lengths"]:
         value = data.get(key)
-        if isinstance(value, list) and len(value) >= 2:
+        if isinstance(value, list) and len(value) == 2:
             try:
                 return int(value[0]), int(value[1])
             except Exception:
                 pass
 
     chains = data.get("chains")
-    if isinstance(chains, list) and len(chains) >= 2:
+    if isinstance(chains, list) and len(chains) == 2:
         lengths = []
         for chain in chains[:2]:
             if isinstance(chain, dict):
@@ -122,6 +123,16 @@ def _extract_chain_lengths(data: dict) -> tuple[int | None, int | None]:
             except Exception:
                 pass
 
+    token_ids = data.get("token_chain_ids")
+    if isinstance(token_ids, list) and all(isinstance(value, str) for value in token_ids):
+        runs: list[tuple[str, int]] = []
+        for chain_id in token_ids:
+            if runs and runs[-1][0] == chain_id:
+                runs[-1] = (chain_id, runs[-1][1] + 1)
+            else:
+                runs.append((chain_id, 1))
+        if len(runs) == 2:
+            return runs[0][1], runs[1][1]
     return None, None
 
 
@@ -151,7 +162,12 @@ def _metrics_from_confidence_json(confidence: dict, current: InteractionMetrics)
     pae_min = current.pae_min
     contact_percent = current.contact_percent
 
-    if pae_matrix is not None and chain_a_len and chain_b_len:
+    token_count = (chain_a_len or 0) + (chain_b_len or 0)
+    if (
+        chain_a_len and chain_a_len > 0 and chain_b_len and chain_b_len > 0
+        and isinstance(pae_matrix, list) and len(pae_matrix) == token_count
+        and all(isinstance(row, list) and len(row) == token_count for row in pae_matrix)
+    ):
         ab, ba = off_diagonal_blocks(pae_matrix, chain_a_len, chain_b_len)
 
         computed_pae_inter = pae_inter_from_blocks(ab, ba)
@@ -220,6 +236,7 @@ def parse_af3_result_directory(path: str | Path) -> dict:
             "*confidence*.json",
             "confidences.json",
         ],
+        exclude=summary_file,
     )
 
     ranking_file = _find_first(
@@ -300,30 +317,4 @@ def parse_af3_results_root(root: str | Path) -> list[dict]:
     if not root.exists():
         raise FileNotFoundError(f"AF3 results root not found: {root}")
 
-    candidates = []
-
-    for directory in sorted([root] + [p for p in root.rglob("*") if p.is_dir()]):
-        has_result_file = any(
-            directory.glob(pattern)
-            for pattern in [
-                "*summary*.json",
-                "*confidences*.json",
-                "*confidence*.json",
-                "*ranking_scores*.csv",
-                "*.cif",
-                "*.pdb",
-            ]
-        )
-        if has_result_file:
-            candidates.append(directory)
-
-    seen = set()
-    unique_candidates = []
-
-    for item in candidates:
-        resolved = str(item.resolve())
-        if resolved not in seen:
-            seen.add(resolved)
-            unique_candidates.append(item)
-
-    return [parse_af3_result_directory(path) for path in unique_candidates]
+    return [parse_af3_result_directory(path) for path in find_af3_job_dirs(root)]
