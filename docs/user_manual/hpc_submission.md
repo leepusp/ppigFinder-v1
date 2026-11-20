@@ -1,53 +1,49 @@
-# Generic HPC / Server Submission
+# Execution environments: from desktop to HPC
 
-## Purpose
+**HPC is optional.** ppigFinder's candidate discovery and JSON export are distinct from executing structure prediction. The application should not assume one cluster, SSH host, scheduler, GPU model or institutional account.
 
-ppigFinder is not tied to a specific HPC environment. It can prepare structural-prediction jobs for different execution targets, including generic SSH/Slurm servers, institution-specific HPC profiles, and manual AlphaFold 3 Server submission.
+## Choose your route
 
-## Supported execution targets
+| Route | Required access | Current path |
+|---|---|---|
+| **AlphaFold Server** | Web browser/account | Export JSON; submit manually; download/import outputs |
+| **Local AF3 wrapper** | Installed runner, models, databases, appropriate resources | Command preparation via `AlphaFoldService`; end-to-end environment-specific validation required |
+| **Slurm cluster** | Cluster account, installed AF3 and suitable allocation | Native job preparation and Slurm batch scripts; inspect all directives before submitting |
+| **PBS / LSF** | Cluster-specific tools | Files for adapters exist; modular submission path is not established as complete |
+| **Boltz-2 / FoldCP** | Validated independent installations | Input writer scaffolding available; runner integration remains provisional |
 
-ppigFinder supports three broad workflows:
+## Distinguish two independent settings
 
-1. **AlphaFold 3 Server export**
-   - Generate AlphaFold-compatible JSON files.
-   - Split large job lists into batches when needed.
-   - Upload JSON files manually to a compatible AlphaFold 3 server.
-   - Import completed result folders back into ppigFinder for analysis.
+- **Prediction backend**: AlphaFold Server, native AF3, or a future validated alternative. Determines input schema and resulting file formats.
+- **Execution target**: manual web submission, local process, or a scheduler/cluster. Determines job execution, monitoring, transfer and cancellation.
 
-2. **Generic HPC / SSH / Slurm**
-   - Generate job manifests and Slurm submission scripts.
-   - Upload files to a remote Linux/HPC server when SSH/SFTP is configured.
-   - Adapt partition, memory, CPU, wall-time and GPU/GRES directives to the target cluster.
+An institution-specific profile should contain values such as hostname, SSH port, remote workspace, scheduler type, queue/partition name, GPU request syntax, module commands, executable locations, database roots and resource limits. None belongs in general-purpose source code as an irrevocable default.
 
-3. **Preconfigured cluster profiles**
-   - Use a named profile when available.
-   - The DaVinci profile is provided as an institutional example.
-   - Additional clusters should be represented as separate profiles rather than hard-coded into the core workflow.
+## Generic Slurm process (advanced users)
 
-## Generic Slurm profile
+1. Confirm the intended native AF3 schema and run-command syntax on the target cluster.
+2. Generate AF3 JSONs, a job manifest, and scheduler scripts from ppigFinder.
+3. Review `#SBATCH` directives for CPU, RAM, wall time, partition, GPU/GRES and array concurrency.
+4. Activate the actual AF3 environment **inside** the allocation. Ensure that any wrapper's local executor does not submit nested Slurm jobs.
+5. Submit with `sbatch` according to local cluster policy.
+6. Inspect `squeue`, `sacct` and job logs with the correct account permissions; only after completion, transfer outputs for parsing.
 
-The default profile is `generic_slurm`. It does not assume a specific partition name, GPU model, GRES syntax or module system. Users should review the generated `.slurm` files before production submission.
+Example of commands to run **on the cluster** (substitute your validated script name):
 
-Typical items to edit for a new cluster include:
+```bash
+sbatch path/to/reviewed_submit_af3.slurm
+squeue -u "$USER"
+sacct -u "$USER" --starttime today --format JobID,JobName,State,Elapsed,ExitCode
+```
 
-- partition or queue name
-- CPU count
-- memory request
-- wall-time limit
-- GPU/GRES syntax
-- module or conda activation commands
-- AlphaFold 3 runner command
-- database/model paths
-- scratch/work directory layout
+Do not copy resource requests from DaVinci without checking the target cluster. The presence of `ppigfinder/hpc/ssh_client.py`, `job_monitor.py`, `hpc_service.py` and other files does **not** by itself prove a working automated UI connection: some are empty/placeholder modules in the imported version.
 
-## DaVinci profile
+## DaVinci is an example, not a dependency
 
-`davinci` is an optional preconfigured profile for the DaVinci cluster. It maps ppigFinder resource hints to DaVinci Slurm partitions and GRES values. It should be treated as an example profile, not as a required runtime environment.
+The existing DaVinci profile and AF3 wrapper dry-run were validated previously for input preparation. The documented dry-run did not execute a full model inference. Default GRES/shard values and the choice of module activation vs `af3` in `PATH` differ across implementations and require reconciliation before production use.
 
-## AlphaFold 3 Server export
+See [DaVinci example](davinci_hpc.md), [HPC portability](../developer/hpc_portability.md), and [implementation status](../developer/feature_status.md).
 
-Users without HPC access can still use ppigFinder to generate AlphaFold 3 JSON files. These files can be submitted manually to a compatible AlphaFold 3 server, subject to that server's current limits and accepted JSON dialect.
+## Security and reproducibility
 
-## Recommended practice
-
-Always inspect generated JSON, manifest and Slurm files before submission. Cluster policies vary, and resource directives that work on one system may need adjustment on another.
+Use SSH keys or institutional authentication rather than storing passwords in repository files; do not commit tokens, private paths, or user datasets. Record runner versions, model/database versions where allowed, seeds, input hashes, resource requests, job IDs, failures and outputs. Do not execute downloaded job scripts without inspection.

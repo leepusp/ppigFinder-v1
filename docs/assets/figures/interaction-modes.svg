@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" font-family="Inter, Roboto, Arial, sans-serif">
+  <title>The seven interaction modes</title>
+  <rect width="1200" height="520" rx="16" fill="#f5f6fc"/>
+  <text x="600" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#1a237e">Seven ways to design an AlphaFold 3 screen</text>
+  <g stroke="#9fa8da" stroke-width="2" fill="none">
+    <!-- 1 pairs hit vs neighbor -->
+    <rect x="30" y="60" width="270" height="200" rx="12" fill="#fff"/>
+    <!-- 2 selected vs selected -->
+    <rect x="320" y="60" width="270" height="200" rx="12" fill="#fff"/>
+    <!-- 3 all vs all -->
+    <rect x="610" y="60" width="270" height="200" rx="12" fill="#fff"/>
+    <!-- 4 HMM hits vs each other -->
+    <rect x="900" y="60" width="270" height="200" rx="12" fill="#fff"/>
+    <!-- 5 hit vs all selected -->
+    <rect x="30" y="290" width="270" height="200" rx="12" fill="#fff"/>
+    <!-- 6 neighbors interactome -->
+    <rect x="320" y="290" width="270" height="200" rx="12" fill="#fff"/>
+    <!-- 7 genomic interactome -->
+    <rect x="610" y="290" width="270" height="200" rx="12" fill="#fff"/>
+    <rect x="900" y="290" width="270" height="200" rx="12" fill="#e8eaf6" stroke-dasharray="6 6"/>
+  </g>
+
+  <!-- 1: hub with neighbours (hit in middle, 2 each side) -->
+  <g>
+    <circle cx="165" cy="150" r="16" fill="#ef6c00"/>
+    <g fill="#9fa8da"><circle cx="85" cy="150" r="10"/><circle cx="115" cy="150" r="10"/><circle cx="215" cy="150" r="10"/><circle cx="245" cy="150" r="10"/></g>
+    <g stroke="#ef6c00" stroke-width="2"><line x1="149" y1="150" x2="125" y2="150"/><line x1="181" y1="150" x2="205" y2="150"/></g>
+    <text x="165" y="205" text-anchor="middle" font-size="13" font-weight="700" fill="#1a237e">1 · Pairs</text>
+    <text x="165" y="225" text-anchor="middle" font-size="11" fill="#546e7a">Hit vs genomic Neighbor</text>
+  </g>
+  <!-- 2: selected vs selected -->
+  <g>
+    <circle cx="420" cy="130" r="12" fill="#ef6c00"/><circle cx="490" cy="110" r="12" fill="#ef6c00"/><circle cx="500" cy="175" r="12" fill="#ef6c00"/><circle cx="430" cy="185" r="12" fill="#ef6c00"/>
+    <g stroke="#ef6c00" stroke-width="2"><line x1="420" y1="130" x2="490" y2="110"/><line x1="420" y1="130" x2="500" y2="175"/><line x1="420" y1="130" x2="430" y2="185"/><line x1="490" y1="110" x2="500" y2="175"/><line x1="490" y1="110" x2="430" y2="185"/><line x1="500" y1="175" x2="430" y2="185"/></g>
+    <text x="455" y="225" text-anchor="middle" font-size="13" font-weight="700" fill="#1a237e">2 · Selected vs Selected</text>
+    <text x="455" y="245" text-anchor="middle" font-size="11" fill="#546e7a">every pair in your list</text>
+  </g>
+  <!-- 3: all vs all -->
+  <g>
+    <g fill="#9fa8da"><circle cx="680" cy="110" r="8"/><circle cx="745" cy="100" r="8"/><circle cx="800" cy="125" r="8"/><circle cx="700" cy="170" r="8"/><circle cx="770" cy="175" r="8"/><circle cx="820" cy="180" r="8"/></g>
+    <g stroke="#c5cae9" stroke-width="1.5"><line x1="680" y1="110" x2="745" y2="100"/><line x1="680" y1="110" x2="800" y2="125"/><line x1="680" y1="110" x2="700" y2="170"/><line x1="680" y1="110" x2="770" y2="175"/><line x1="745" y1="100" x2="800" y2="125"/><line x1="745" y1="100" x2="700" y2="170"/><line x1="745" y1="100" x2="770" y2="175"/><line x1="800" y1="125" x2="770" y2="175"/><line x1="800" y1="125" x2="820" y2="180"/><line x1="700" y1="170" x2="770" y2="175"/><line x1="770" y1="175" x2="820" y2="180"/></g>
+    <text x="745" y="225" text-anchor="middle" font-size="13" font-weight="700" fill="#1a237e">3 · All vs All</text>
+    <text x="745" y="245" text-anchor="middle" font-size="11" fill="#546e7a">every selected ORF vs every other</text>
+  </g>
+  <!-- 4: hmm hits vs each other -->
+  <g>
+    <circle cx="975" cy="140" r="13" fill="#ffb300"/><circle cx="1035" cy="115" r="13" fill="#ffb300"/><circle cx="1095" cy="145" r="13" fill="#ffb300"/>
+    <g fill="#e0e0e0"><circle cx="985" cy="190" r="8"/><circle cx="1050" cy="185" r="8"/><circle cx="1110" cy="190" r="8"/></g>
+    <g stroke="#ffb300" stroke-width="2"><line x1="975" y1="140" x2="1035" y2="115"/><line x1="1035" y1="115" x2="1095" y2="145"/><line x1="975" y1="140" x2="1095" y2="145"/></g>
+    <text x="1035" y="225" text-anchor="middle" font-size="13" font-weight="700" fill="#1a237e">4 · HMM Hits vs Each Other</text>
+    <text x="1035" y="245" text-anchor="middle" font-size="11" fill="#546e7a">only domain-positive ORFs</text>
+  </g>
+  <!-- 5: hit vs all selected -->
+  <g>
+    <circle cx="165" cy="385" r="17" fill="#ef6c00"/>
+    <g fill="#9fa8da"><circle cx="85" cy="340" r="9"/><circle cx="245" cy="340" r="9"/><circle cx="75" cy="395" r="9"/><circle cx="255" cy="395" r="9"/><circle cx="110" cy="445" r="9"/><circle cx="220" cy="445" r="9"/></g>
+    <g stroke="#ef6c00" stroke-width="2"><line x1="165" y1="385" x2="85" y2="340"/><line x1="165" y1="385" x2="245" y2="340"/><line x1="165" y1="385" x2="75" y2="395"/><line x1="165" y1="385" x2="255" y2="395"/><line x1="165" y1="385" x2="110" y2="445"/><line x1="165" y1="385" x2="220" y2="445"/></g>
+    <text x="165" y="462" text-anchor="middle" font-size="13" font-weight="700" fill="#1a237e">5 · Hit vs All Selected</text>
+    <text x="165" y="480" text-anchor="middle" font-size="11" fill="#546e7a">one bait, many preys</text>
+  </g>
+  <!-- 6: neighbors interactome -->
+  <g>
+    <rect x="350" y="360" width="210" height="14" rx="3" fill="#cfd8dc"/>
+    <g fill="#9fa8da"><rect x="360" y="350" width="22" height="34" rx="3"/><rect x="392" y="350" width="22" height="34" rx="3"/><rect x="424" y="350" width="22" height="34" rx="3"/><rect x="456" y="350" width="22" height="34" rx="3"/><rect x="488" y="350" width="22" height="34" rx="3"/><rect x="520" y="350" width="22" height="34" rx="3"/></g>
+    <g fill="none" stroke="#ef6c00" stroke-width="2"><path d="M371 350 Q405 320 435 350"/><path d="M403 350 Q460 305 499 350"/><path d="M435 350 Q478 322 467 350"/><path d="M467 350 Q500 322 531 350"/></g>
+    <text x="455" y="440" text-anchor="middle" font-size="13" font-weight="700" fill="#1a237e">6 · Neighbors Interactome</text>
+    <text x="455" y="460" text-anchor="middle" font-size="11" fill="#546e7a">all pairs inside a genomic window</text>
+  </g>
+  <!-- 7: genomic interactome -->
+  <g>
+    <rect x="640" y="375" width="210" height="14" rx="3" fill="#cfd8dc"/>
+    <g fill="#9fa8da"><rect x="648" y="365" width="8" height="34"/><rect x="662" y="365" width="8" height="34"/><rect x="676" y="365" width="8" height="34"/><rect x="690" y="365" width="8" height="34"/><rect x="704" y="365" width="8" height="34"/><rect x="718" y="365" width="8" height="34"/><rect x="732" y="365" width="8" height="34"/><rect x="746" y="365" width="8" height="34"/><rect x="760" y="365" width="8" height="34"/><rect x="774" y="365" width="8" height="34"/><rect x="788" y="365" width="8" height="34"/><rect x="802" y="365" width="8" height="34"/><rect x="816" y="365" width="8" height="34"/><rect x="830" y="365" width="8" height="34"/></g>
+    <g fill="none" stroke="#ef6c00" stroke-width="2"><path d="M652 365 Q745 300 834 365"/></g>
+    <text x="745" y="440" text-anchor="middle" font-size="13" font-weight="700" fill="#1a237e">7 · Genomic Interactome</text>
+    <text x="745" y="460" text-anchor="middle" font-size="11" fill="#546e7a">whole-genome interactome</text>
+  </g>
+  <!-- custom -->
+  <g>
+    <rect x="1000" y="340" width="70" height="46" rx="8" fill="#fff" stroke="#3f51b5" stroke-width="2"/><text x="1035" y="368" text-anchor="middle" font-size="11" fill="#1a237e">A</text>
+    <rect x="1085" y="340" width="50" height="46" rx="8" fill="#fff" stroke="#3f51b5" stroke-width="2"/><text x="1110" y="368" text-anchor="middle" font-size="11" fill="#1a237e">B</text>
+    <rect x="1000" y="396" width="135" height="30" rx="8" fill="#fff" stroke="#3f51b5" stroke-width="2"/><text x="1067" y="416" text-anchor="middle" font-size="11" fill="#1a237e">C · custom chain</text>
+    <text x="1035" y="458" text-anchor="middle" font-size="13" font-weight="700" fill="#1a237e">+ Custom complex builder</text>
+    <text x="1035" y="476" text-anchor="middle" font-size="11" fill="#546e7a">protein chains (validated path)</text>
+  </g>
+</svg>

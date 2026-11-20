@@ -1,14 +1,18 @@
 site_name: ppigFinder
-site_description: Protein–Protein Interaction Genomic Finder
+site_description: Genomic analysis and protein–protein interaction candidate discovery
 site_url: https://leepusp.github.io/ppigFinder-v1/
 repo_url: https://github.com/leepusp/ppigFinder-v1
-repo_name: leepusp/ppigfinder
+repo_name: leepusp/ppigFinder-v1
 edit_uri: edit/main/docs/
 docs_dir: docs
+
+copyright: ppigFinder — open-source research software, MIT license
 
 theme:
   name: material
   language: en
+  logo: assets/figures/favicon.svg
+  favicon: assets/figures/favicon.svg
   palette:
     - scheme: default
       primary: indigo
@@ -18,16 +22,23 @@ theme:
         name: Switch to dark mode
     - scheme: slate
       primary: indigo
-      accent: blue
+      accent: light-blue
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
   features:
     - navigation.tabs
     - navigation.sections
+    - navigation.expand
     - navigation.top
+    - navigation.footer
     - search.highlight
+    - search.suggest
     - content.code.copy
+    - content.tabs.link
+
+extra_css:
+  - stylesheets/extra.css
 
 plugins:
   - search
@@ -35,28 +46,42 @@ plugins:
 markdown_extensions:
   - admonition
   - attr_list
+  - md_in_html
   - tables
   - toc:
       permalink: true
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
 
 nav:
   - Home: index.md
-  - User Guide:
-      - Complete Guide: user_manual/complete_guide.md
-      - Quick Start: user_manual/quick_start_v29_14.md
+  - Start:
       - Installation: user_manual/installation.md
-      - Genome Loading: user_manual/genome.md
+      - Quick Start: user_manual/quick_start_v29_14.md
+      - Xanthomonas Tutorial: tutorials/xanthomonas.md
+      - Interface Tour: user_manual/interface_tour.md
+  - User Manual:
+      - Complete Guide: user_manual/complete_guide.md
+      - Genome: user_manual/genome.md
       - ORF Prediction: user_manual/orf_prediction.md
+      - ORF Browser: user_manual/orfs.md
       - Annotation: user_manual/annotation.md
-      - AlphaFold and PPI: user_manual/alphafold.md
-      - HPC Submission: user_manual/hpc_submission.md
-      - DaVinci Example: user_manual/davinci_hpc.md
+      - Protein Interactions / AlphaFold: user_manual/alphafold.md
       - Results and Reports: user_manual/reports.md
       - Troubleshooting: user_manual/troubleshooting.md
-  - Developer Guide:
+  - Execution:
+      - Where to run predictions: user_manual/hpc_submission.md
+      - DaVinci example: user_manual/davinci_hpc.md
+  - Development:
+      - Feature status: developer/feature_status.md
       - Architecture: developer/software_architecture.md
-      - Directory Layout: developer/directory_layout.md
-      - HPC Portability: developer/hpc_portability.md
-      - Structure Prediction: developer/structure_prediction/README.md
+      - HPC portability: developer/hpc_portability.md
+      - Directory map: developer/directory_layout.md
+      - Prediction internals: developer/structure_prediction/README.md
+  - Publication: publication.md

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" font-family="Inter, Roboto, Arial, sans-serif">
+  <title>ppigFinder pipeline</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5c6bc0"/></marker>
+  </defs>
+  <rect width="1200" height="300" rx="16" fill="#f5f6fc"/>
+  <g stroke="#5c6bc0" stroke-width="2.5" marker-end="url(#a)">
+    <line x1="166" y1="140" x2="190" y2="140"/><line x1="326" y1="140" x2="350" y2="140"/>
+    <line x1="486" y1="140" x2="510" y2="140"/><line x1="646" y1="140" x2="670" y2="140"/>
+    <line x1="806" y1="140" x2="830" y2="140"/><line x1="966" y1="140" x2="990" y2="140"/>
+  </g>
+  <g>
+    <rect x="30" y="70" width="136" height="140" rx="12" fill="#fff" stroke="#c5cae9" stroke-width="2"/>
+    <circle cx="98" cy="108" r="18" fill="#3f51b5"/><text x="98" y="114" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">1</text>
+    <text x="98" y="150" text-anchor="middle" font-size="16" font-weight="700" fill="#1a237e">Genome</text>
+    <text x="98" y="172" text-anchor="middle" font-size="12" fill="#546e7a">FASTA / GenBank</text>
+    <text x="98" y="190" text-anchor="middle" font-size="12" fill="#546e7a">nucleotides</text>
+
+    <rect x="190" y="70" width="136" height="140" rx="12" fill="#fff" stroke="#c5cae9" stroke-width="2"/>
+    <circle cx="258" cy="108" r="18" fill="#3f51b5"/><text x="258" y="114" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">2</text>
+    <text x="258" y="150" text-anchor="middle" font-size="16" font-weight="700" fill="#1a237e">ORFs</text>
+    <text x="258" y="172" text-anchor="middle" font-size="12" fill="#546e7a">Pyrodigal</text>
+    <text x="258" y="190" text-anchor="middle" font-size="12" fill="#546e7a">ORFeome (proteins)</text>
+
+    <rect x="350" y="70" width="136" height="140" rx="12" fill="#fff" stroke="#c5cae9" stroke-width="2"/>
+    <circle cx="418" cy="108" r="18" fill="#3f51b5"/><text x="418" y="114" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">3</text>
+    <text x="418" y="150" text-anchor="middle" font-size="16" font-weight="700" fill="#1a237e">Annotate</text>
+    <text x="418" y="172" text-anchor="middle" font-size="12" fill="#546e7a">HMMER (HMM)</text>
+    <text x="418" y="190" text-anchor="middle" font-size="12" fill="#546e7a">+ optional BLASTp</text>
+
+    <rect x="510" y="70" width="136" height="140" rx="12" fill="#fff" stroke="#c5cae9" stroke-width="2"/>
+    <circle cx="578" cy="108" r="18" fill="#3f51b5"/><text x="578" y="114" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">4</text>
+    <text x="578" y="150" text-anchor="middle" font-size="16" font-weight="700" fill="#1a237e">Inspect</text>
+    <text x="578" y="172" text-anchor="middle" font-size="12" fill="#546e7a">genomic context</text>
+    <text x="578" y="190" text-anchor="middle" font-size="12" fill="#546e7a">neighborhood map</text>
+
+    <rect x="670" y="70" width="136" height="140" rx="12" fill="#fff" stroke="#c5cae9" stroke-width="2"/>
+    <circle cx="738" cy="108" r="18" fill="#3f51b5"/><text x="738" y="114" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">5</text>
+    <text x="738" y="150" text-anchor="middle" font-size="16" font-weight="700" fill="#1a237e">Design</text>
+    <text x="738" y="172" text-anchor="middle" font-size="12" fill="#546e7a">7 interaction modes</text>
+    <text x="738" y="190" text-anchor="middle" font-size="12" fill="#546e7a">custom complexes</text>
+
+    <rect x="830" y="70" width="136" height="140" rx="12" fill="#fff" stroke="#c5cae9" stroke-width="2"/>
+    <circle cx="898" cy="108" r="18" fill="#3f51b5"/><text x="898" y="114" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">6</text>
+    <text x="898" y="150" text-anchor="middle" font-size="16" font-weight="700" fill="#1a237e">Predict</text>
+    <text x="898" y="172" text-anchor="middle" font-size="12" fill="#546e7a">AlphaFold 3 JSON /</text>
+    <text x="898" y="190" text-anchor="middle" font-size="12" fill="#546e7a">ColabFold / HPC (SSH)</text>
+
+    <rect x="990" y="70" width="180" height="140" rx="12" fill="#3f51b5"/>
+    <circle cx="1080" cy="108" r="18" fill="#fff"/><text x="1080" y="114" text-anchor="middle" font-size="16" font-weight="700" fill="#3f51b5">7</text>
+    <text x="1080" y="150" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">Analyze</text>
+    <text x="1080" y="172" text-anchor="middle" font-size="12" fill="#e8eaf6">PAE_min · ipTM ranking</text>
+    <text x="1080" y="190" text-anchor="middle" font-size="12" fill="#e8eaf6">PPI map · interfaces</text>
+  </g>
+  <text x="600" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a237e">From nucleotides to ranked protein–protein interactions</text>
+  <text x="600" y="262" text-anchor="middle" font-size="13" fill="#78909c">One desktop application · Linux · macOS · Windows</text>
+</svg>

@@ -1,0 +1,38 @@
+/* ppigFinder public documentation · visual style · 2026 */
+:root {
+  --pf-ink: #14223d;
+  --pf-blue: #4359b6;
+  --pf-cyan: #19a7c7;
+  --pf-border: rgba(100,123,179,.26);
+}
+.pf-hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(122deg,#101e3d 0%,#293d87 62%,#3857aa 100%);
+  border-radius: 20px;
+  text-align: center;
+  padding: 3.25rem 1.4rem 2.65rem;
+  margin-bottom: 2rem;
+  color: #fff;
+  box-shadow: 0 20px 42px rgba(17, 30, 66, .15);
+}
+.pf-hero::before,
+.pf-hero::after {content:"";position:absolute;pointer-events:none;border:1px solid rgba(255,255,255,.1);border-radius:50%;width:340px;height:340px;right:-190px;top:-175px;}
+.pf-hero::after {width:260px;height:260px;left:-150px;right:auto;top:auto;bottom:-135px;}
+.pf-hero .pf-kicker {font-size:.67rem;text-transform:uppercase;letter-spacing:.14em;color:#9ae2ff;font-weight:700;margin:0 auto 1rem;}
+.pf-hero h1 {color:#fff;font-size:clamp(2.25rem,5vw,4.1rem);letter-spacing:-.055em;margin:0;line-height:1.02;font-weight:800;}
+.pf-hero h2 {color:#eaf2ff;font-size:clamp(1.08rem,2.2vw,1.5rem);font-weight:500;margin:.65rem auto 1.6rem;line-height:1.35;max-width:640px;}
+.pf-hero .md-button {border-radius:8px;margin:.24rem .17rem;font-weight:650;padding:.4em .9em;font-size:.83rem;border-color:#9fc5f8;color:#fff;}
+.pf-hero .md-button--primary {background:#fff;color:#233d88;border-color:#fff;}
+.pf-hero .md-button:hover {background:#b9eaff;color:#172a65;border-color:#b9eaff;}
+.pf-badges {margin:1.4rem auto 0;font-size:.72rem;letter-spacing:.03em;color:#cbdaf6;}
+.md-typeset .grid.cards > ul > li {border-radius:13px;border-color:var(--pf-border);transition:transform .17s ease,border-color .17s ease;}
+.md-typeset .grid.cards > ul > li:hover {transform:translateY(-3px);border-color:var(--pf-blue);}
+.md-typeset .pf-figure {margin:1.4rem auto;text-align:center;}
+.md-typeset .pf-figure img {display:block;width:100%;border-radius:13px;box-shadow:0 9px 26px rgba(12,24,52,.09);}
+.md-typeset .pf-figure figcaption {font-size:.75rem;color:var(--md-default-fg-color--light);margin-top:.55rem;}
+.pf-gallery {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;align-items:start;}
+.pf-gallery img {width:100%;border-radius:11px;border:1px solid var(--pf-border);box-shadow:0 5px 16px rgba(20,35,70,.08);}
+[data-md-color-scheme="slate"] .pf-figure img[src$=".svg"] {background:#f5f6fc;}
+@media (max-width:760px) {.pf-hero{padding:2.2rem .75rem 1.9rem}.pf-gallery{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce) {.md-typeset .grid.cards > ul > li{transition:none}}

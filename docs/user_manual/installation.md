@@ -1,36 +1,71 @@
-# Installation and Dependencies
+# Installation and first launch
 
-## Purpose
+ppigFinder is a Python desktop application, not a hosted web service. The **core genome-analysis workflow does not require HPC**, Slurm, AlphaFold weights or an internet connection after tools and data are installed. Some analysis features use optional external executables.
 
-This section summarizes the software requirements needed to run ppigFinder.
+## Requirements
 
-## Python environment
+| Component | Purpose | Required for |
+|---|---|---|
+| Python **3.11** (recommended starting point) | Application runtime | Desktop and scientific Python modules |
+| PyQt6 >= 6.4 | Graphical interface | Desktop mode |
+| NumPy >= 1.21, Matplotlib >= 3.5 | Numerical work and plotting | Core package |
+| Pyrodigal >= 2.0 | Gene calling | Recommended prokaryotic ORF mode |
+| NCBI BLAST+ | Similarity search | BLAST-based annotation only |
+| HMMER3 | Domain/profile search | External HMM searches only |
+| Paramiko >= 2.9 | SSH/SFTP client library | Optional remote-compute use |
+| AF3 installation, models, databases, GPU | Structural inference | Only when running AF3 locally or remotely |
 
-ppigFinder is a Python desktop application. A supported environment should include:
+The current `pyproject.toml` declares Python `>=3.8`, but the preprint describes a Python 3.11 implementation. This documentation **recommends 3.11 until CI and fresh installations validate a broader matrix**. PyQt5 support may exist in legacy code, but the documented install below uses PyQt6.
 
-- Python 3.8 or newer
-- PyQt6 6.4 or newer, or PyQt5 5.15 or newer
-- NumPy
-- Matplotlib
-- Pyrodigal
-- Paramiko, when SSH/HPC submission is used
+## Linux
 
-## External tools
+```bash
+git clone https://github.com/leepusp/ppigFinder-v1.git
+cd ppigFinder-v1
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e ".[gui,recommended]"
+python main.py
+```
 
-Some analysis modules require external command-line tools:
+You need a graphical session (`DISPLAY` or equivalent). On headless SSH login nodes, Qt may fail with messages about the `xcb` display plugin; run on a workstation or a supported graphical session rather than launching the GUI on a headless login node.
 
-- BLAST+ for similarity searches
-- HMMER3 for profile-HMM searches
-- AlphaFold 3 access, either through exported JSON files or a configured server/HPC workflow
+## Windows 10/11 PowerShell
 
-## Backend check
+Install Python 3.11 and Git first, then open PowerShell:
 
-After launching ppigFinder, inspect the Backends panel. Green check marks indicate that required tools were detected. Missing tools should be installed or added to the system PATH before running the corresponding analysis.
+```powershell
+git clone https://github.com/leepusp/ppigFinder-v1.git
+cd ppigFinder-v1
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -e ".[gui,recommended]"
+python main.py
+```
 
-## Windows notes
+If PowerShell blocks activation, use `.\.venv\Scripts\python.exe` directly to run `-m pip` and `main.py`. BLAST+ and HMMER executables may require separate installations or a WSL environment; confirm how the selected backend is detected before using it.
 
-On Windows, ppigFinder can be launched from a Python IDE such as Spyder or from a configured Python environment. BLAST+ and HMMER3 must still be available locally or through the configured workflow.
+## macOS
 
-## Linux / HPC notes
+Install a Python 3.11 distribution compatible with your hardware. Use the Linux/macOS commands above in Terminal. Verify that PyQt6 imports successfully in your environment before proceeding.
 
-On Linux or HPC systems, prefer a reproducible environment with explicit module or conda activation. For DaVinci-specific execution, see `davinci_hpc.md`.
+## Quick diagnostic
+
+```bash
+python -c "import sys, numpy, matplotlib; from PyQt6 import QtWidgets; print(sys.version.split()[0], 'Qt OK')"
+python -m pip show ppigfinder
+```
+
+Within the UI, inspect the backend status indicators. They represent **availability in your environment**, not universal requirements. If a tool is missing, first check the corresponding user-manual section.
+
+## Source-package status
+
+The repository currently contains a `pyproject.toml` entry point named `ppigfinder`, and `main.py` is the documented stable desktop launcher. A full install/launch matrix across Linux, Windows and macOS is **not yet recorded as passing**. Consequently, the commands here are instructions to test a source installation; they are not a promise of a published wheel, standalone installer or guaranteed 5-minute setup.
+
+## No HPC? You can still use the software
+
+You can prepare ORFs, annotations, candidate pairs and **AlphaFold Server**-compatible JSON files on a regular computer. Submit supported jobs manually through the [AlphaFold Server](https://alphafoldserver.com/) web interface (subject to its current account policies) and import results after downloading them.
+
+Proceed to the [complete guide](complete_guide.md) or [first tutorial](../tutorials/xanthomonas.md).

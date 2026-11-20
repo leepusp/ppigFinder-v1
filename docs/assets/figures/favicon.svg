@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ppigFinder icon">
+  <rect width="64" height="64" rx="15" fill="#243e8c"/>
+  <g fill="none" stroke="#a0ecff" stroke-width="4" stroke-linecap="round">
+    <path d="M18 10c26 12 3 32 28 44M46 10c-26 12-3 32-28 44"/>
+    <path d="M23 16h18M21 27h22M21 38h22M23 49h18" stroke="#fff" stroke-width="3"/>
+  </g>
+</svg>

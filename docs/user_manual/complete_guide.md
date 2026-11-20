@@ -1,174 +1,168 @@
-# ppigFinder — User Guide
+# Complete user guide
 
-**Protein–Protein Interaction Genomic Finder · Documentation draft for v2.9.14**
+**ppigFinder — Protein–Protein Interaction Genomic Finder**
 
-> **Documentation status:** This guide is based on the 27-page preliminary guide by Gabriel U. Oka, together with the repository's v2.9.14 code and technical documentation reviewed on 18 November 2026. Screenshots in the preliminary guide show an earlier interface. Menu names may differ in newer builds; verify against the installed application. The generated file is a proposed documentation update, not evidence of a new software release.
+This guide consolidates the user-supplied preliminary 27-page slide manual, the packaged source code and the public documentation. It focuses on a **reproducible, guided scientific workflow**: genome → ORFs → annotation → candidate selection → structural job preparation → confidence analysis. Screen names and positions may vary across versions; the historical screenshots below were extracted from the **v2.2 manual**. The current codebase identifies software version 2.9.14 in package metadata.
 
-## 1. Purpose, availability and scientific scope
+## 1. Scientific scope and limitations
 
-ppigFinder is an open-source desktop application designed to help researchers investigate candidate protein–protein interactions in bacterial genomes. Its main workflow combines ORF prediction, homology and domain annotation, genomic-neighbourhood evidence, selection of plausible interaction partners, AlphaFold 3-compatible job preparation, and subsequent result interpretation.
+ppigFinder supports *hypothesis generation* for bacterial PPIs. It can analyze nucleotide sequences, predict open reading frames, identify putative homologs/domains, inspect genomic context, build structural prediction jobs and parse selected outputs. It does not replace experimental evidence of physical binding, functional genetics or biochemical characterization.
 
-The key scientific principle is **candidate prioritization**, not assuming that genomic adjacency proves physical interaction. Structural predictions and scores are computational evidence, not experimental confirmation. ppigFinder is distributed under the repository's MIT license. See the root `CITATION.cff` for the software authors and release metadata.
+**Software dependencies are modular:** genomic analysis does not require Slurm, HPC, AF3 inference or a GPU. The AlphaFold Server route allows manually uploading compatible JSON jobs when compute resources are not available.
 
-Repository: https://github.com/leepusp/ppigfinder
+## 2. Install and check your environment
 
-## 2. Install and launch
-
-### 2.1 Supported setup
-
-Use a Python environment. The packaging metadata specifies Python >=3.8, NumPy >=1.21 and Matplotlib >=3.5; PyQt6 >=6.4 is supplied as the `gui` extra. Pyrodigal and Paramiko are recommended optional packages. BLAST+ and HMMER3 are **external executables** and are not installed by pip with ppigFinder.
+Follow the [platform-specific installation guide](installation.md). Use a local Python 3.11 virtual environment as the conservative starting point:
 
 ```bash
-# From a checked-out repository:
-python -m venv .venv
-source .venv/bin/activate            # Windows PowerShell: .venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -e '.[gui,recommended]'
+git clone https://github.com/leepusp/ppigFinder-v1.git
+cd ppigFinder-v1
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e ".[gui,recommended]"
 python main.py
 ```
 
-On Windows, the source can also be opened in Spyder, as shown in the original guide. Launching from `main.py` remains the documented stable entry point; do not assume that all experimental launchers are production ready. Install BLAST+ and HMMER3 separately when those analyses are required, and ensure the tools are accessible on `PATH`. A GUI workstation does not need AF3 weights or GPUs to prepare/export inputs.
+On Windows, use `py -3.11 -m venv .venv`, activate the environment with PowerShell or run `.venv\Scripts\python.exe` directly, then run `python main.py`.
 
-**Backend indicators:** After startup, inspect the dependency/backend status panel. An available tool is typically marked in green. A missing optional backend does not prevent all other workflows from running; it disables or limits the corresponding operation.
+If the GUI does not open, first verify that you have a graphical desktop and PyQt6 is installed. On remote Linux login nodes, lack of an active display can cause Qt/xcb failures even if the Python code is otherwise valid.
 
-### 2.2 Installation checks
+Optional backend indicators report which utilities are detected locally. For example, BLAST+ and HMMER3 must be available in the executable `PATH` (or through the configured backend) to run their external search modes.
 
-```bash
-python --version
-python -c 'import numpy, matplotlib; print("Core Python packages OK")'
-python -c 'import PyQt6; print("PyQt6 OK")'
-blastp -version      # optional
-hmmsearch -h         # optional
-```
+![Historical ppigFinder main window and backend panel](../assets/screenshots/legacy-main-window.webp)
 
-For graphics errors on a headless cluster, run the desktop GUI on a supported graphical session or workstation. CLI and batch components must be tested separately before claiming a fully headless workflow.
+*Historical v2.2 window, shown to explain the layout, not to assert the current UI is identical.*
 
-## 3. Tutorial dataset: *Xanthomonas citri* strain 306
+## 3. Obtain a genome
 
-The preliminary guide uses the chromosome reference **AE008923.1**. Obtain the nucleotide FASTA from the NCBI Nucleotide record; the source guide demonstrates the **Send to → File → FASTA → Create File** workflow. Record the accession and download date in the project metadata. Subsequent counts depend on genome version, prediction mode, software version and parameters.
+For the worked example, use *Xanthomonas citri* strain 306, accession **AE008923.1**, from [NCBI Nucleotide](https://www.ncbi.nlm.nih.gov/nuccore/AE008923.1). Download a nucleotide FASTA file, keeping the assembly/accession information and source date in your notes.
 
-### 3.1 Open the genome
+In the UI, select **File → Open FASTA** (or the equivalent current action) and choose the genome file. Confirm that the Genome panel reports the expected approximate sequence size and GC fraction. The original slides show a 5,175,554 bp example with GC about 64%; these are data-specific and should not be assumed for every input.
 
-1. Select **File → Open FASTA**.
-2. Choose the downloaded nucleotide FASTA.
-3. Inspect the **Genome** information panel for sequence length, GC content, number of predicted ORFs and annotation state.
-4. Save the project using **File → Save Project** to preserve inputs and intermediate results. Verify that the project contains the genome data and project metadata before beginning large analyses.
+**Important:** a chromosome FASTA and a multi-record assembly are not necessarily equivalent. Preserve record identifiers and review handling of plasmids and coordinate systems for your dataset.
 
-The preliminary guide illustrates an initial ORF count of zero before translation. Avoid interpreting this as zero coding sequences in the biological genome.
+## 4. Save the project early
 
-### 3.2 Predict ORFs
+Use **File → Save Project** before expensive work, if supported by your current GUI. The guide describes separate locations for input genome, BLAST, HMM, structural predictions and reports. Keep project JSON, original FASTA and derived tables together in a versioned workspace. A project snapshot is not a backup of external databases or remote AF3 models.
 
-Use **Translate genome** and choose **Pyrodigal**, **Hybrid** or **Automatic**. The preliminary tutorial uses Pyrodigal. The example run reported **4,303 predicted ORFs**, which is a tutorial observation and not a universal expected count. Record prediction method and thresholds in your analysis notes.
+Recommended project metadata to record:
 
-After completion, confirm that the ORF table is populated and the genome map renders. If table/map synchronization appears delayed, allow the display to finish and avoid repeated rapid zoom operations. The original guide describes reopening the saved project as a recovery action.
+| Field | Example |
+|---|---|
+| Project ID | `xanthomonas_306_ppi` |
+| Genome accession | `AE008923.1` |
+| FASTA checksum | SHA-256 of the downloaded file |
+| ppigFinder version | Version shown by the local application |
+| ORF method | Pyrodigal / Hybrid / six-frame, plus options |
+| Annotation sources | BLAST database and HMM profile versions |
+| Structural backend | AlphaFold Server JSON, AF3 local, or selected validated alternative |
+| Execution path | Manual web, local, Slurm, or other; include job IDs if applicable |
 
-### 3.3 Explore the map and ORF table
+## 5. Predict protein-coding ORFs
 
-- Select an ORF in the table to locate it on the map; select a map feature to inspect the related record.
-- Use zoom and navigation controls carefully on large genomes.
-- Right-click an ORF for contextual actions, including sequence extraction, annotation and interaction-candidate preparation. Exact action labels depend on the installed build.
-- Export relevant protein/DNA sequences and retain the original ORF identifiers to preserve traceability.
+Open the **Translate genome** action and select an available ORF prediction method. The initial guide describes **Pyrodigal**, **Hybrid**, and **Automatic/six-frame** approaches. Start with Pyrodigal for typical prokaryotic coding regions, then inspect alternative methods where small ORFs, unusual starts or fragmented assemblies are important.
 
-## 4. Find proteins of interest
+1. Verify the genetic code/translation table.
+2. Select the prediction method and any minimum-length parameters.
+3. Run the prediction and allow the table/map to populate.
+4. Record counts and method versions; export the protein FASTA and ORF table when possible.
+5. Inspect questionable ORFs manually, particularly candidates from unexpected coordinates or strand assignments.
 
-### 4.1 BLAST similarity search
+![Historical completed ORF prediction](../assets/screenshots/legacy-orf-prediction.webp)
 
-Paste a protein query into the **BLAST Query** panel. Configure E-value and, where appropriate, scoring parameters. Perform the search against predicted ORFs; inspect hits and return to the genome map to view their local context. Similarity suggests homology or related function and does not by itself establish an interaction.
+The example in the original guide resulted in **4,303 predicted ORFs** using Pyrodigal on the reference chromosome. This count is not a universal threshold and may change with version and parameters.
 
-### 4.2 HMMER and domain profiles
+## 6. Explore the genome map and ORF table
 
-Load one or more `.hmm` profiles (for example, curated profiles from InterPro/Pfam resources or profiles constructed from alignments). Run the search against predicted proteins, inspect sequence/domain E-values, and link the results back to the ORF table and map. The preliminary guide illustrates **Search all ORFs**, **Annotate HMM**, and separate sequence/domain reporting thresholds. Confirm the exact names in the installed interface.
+The map and table are linked in the historical UI: selecting an ORF can center the genome view, while selecting a map feature can highlight the corresponding row. For large genomes, zoom gradually and wait for the map to update.
 
-### 4.3 Genomic neighbourhood
+![Historical ORF browser](../assets/screenshots/legacy-genome-map.webp)
 
-Inspect the ORFs surrounding a candidate. Adjacency, shared orientation, and putative operon-like context can improve candidate prioritization. These observations must be reported separately from evidence for a physical protein–protein interface.
+Common context actions include extracting DNA/protein sequences, viewing neighbors, applying annotation/color labels, and adding ORFs to structural candidate lists. The exact context-menu labels must be checked against your installed GUI.
 
-## 5. Build AlphaFold 3 prediction jobs
+If map/table synchronization fails, save and reopen the project and review the current log messages rather than repeatedly clicking controls while a render is in progress.
 
-In the AlphaFold tab or the ORF context menu, add candidate proteins to the selection. The preliminary guide documents these selection strategies:
+## 7. Identify homologs using BLAST
 
-| Mode | Use |
-| --- | --- |
-| Add to AF3 list | Build a queue without immediate prediction |
-| Hit versus neighbours | Examine genomic proximity around a candidate |
-| Selected versus selected | Select explicit pairs or a defined protein set |
-| All versus all | Enumerate pairwise combinations in the selected set |
-| Homodimer | Test a candidate's self-association |
-| HMM-hit combinations | Prioritize sequences matching selected profiles |
-| Custom complex | Define a multichain assembly and stoichiometry |
+Open the BLAST query panel, provide a protein sequence and choose suitable scoring parameters. For a putative partner or domain-related protein, record sequence ID, query length, database, BLAST program/version, E-value, coverage and sequence identity.
 
-**Worked example:** The original manual selected **16 HMM-annotated T4SS candidates**, yielding **120 unordered non-self protein pairs** (`16 × 15 / 2`). Those 120 pairs are prediction jobs, not 120 confirmed physical interactions. Add homodimers separately where scientifically justified.
+![Historical BLAST results view](../assets/screenshots/legacy-blast.webp)
 
-### 5.1 Export format matters
+BLAST finds sequence similarity, **not proof of physical interaction**. Inspect genomic coordinates, possible paralogs, domain architecture and alternative hits before selecting PPI candidates.
 
-The **AlphaFold Server** JSON export and the **local AlphaFold 3** JSON dialect are related but are not necessarily interchangeable. Use the exporter appropriate to the intended backend and validate the JSON before submission. The repository has both server-JSON generation and a local AF3 JSON writer; the latter initially handles **protein targets only**, using the `alphafold3` dialect and model seed configuration.
+## 8. Annotate domains using HMMER
 
-The upstream AlphaFold Server may change account quotas and accepted batch sizes. **Do not rely on the preliminary manual's old numeric quotas**; consult the current official submission interface before uploading.
+HMM profiles can be built from aligned homologs or obtained from curated resources such as Pfam/InterPro. Load profile `.hmm` files, perform the available search (e.g. against predicted proteins), and assess both sequence and domain E-values.
 
-## 6. Run predictions: choose an execution target
+![Historical HMM hit view](../assets/screenshots/legacy-hmmer.webp)
 
-ppigFinder is **not dependent on the DaVinci cluster**. The desktop application prepares predictions independently of where AF3 is installed. The actual inference requires a separately installed and licensed/authorized backend, appropriate model/database access, and suitable computational resources.
+Be explicit about thresholds and profile versions. A domain hit may support functional classification, but the biological interpretation often requires coverage, architecture and neighborhood assessment.
 
-### 6.1 Option A — Web AlphaFold Server
+In the original guide, the HMM-positive ORFs were visually linked to the map and table for further inspection.
 
-Export server-compatible JSON, submit it manually through the server interface, follow the server's current policy, and download the outputs. Import the output folder into ppigFinder for interpretation. No SSH or Slurm connection is required.
+## 9. Use genomic context to narrow PPI hypotheses
 
-### 6.2 Option B — Generic Linux HPC with Slurm
+Inspect upstream and downstream ORFs around a candidate. Genomic proximity, predicted operon-like organization, conserved functional domains and co-occurrence can make some candidate interactions more plausible. However, genomic neighborhood alone does not demonstrate a direct protein interaction.
 
-1. Prepare predictions locally and export an AF3 batch.
-2. Select a target HPC profile; for unknown clusters start with `generic_slurm`.
-3. Ask the cluster administrator for SSH address, user, optional jump host, work/scratch paths, partition, GPU request syntax, walltime policy, runtime environment and AF3 invocation.
-4. Review generated job manifests and `.slurm` files, especially input paths, resources and environment initialization.
-5. Transfer the prepared **entire job directory** to a cluster-accessible location. A generated script often contains absolute paths: generating locally and copying it without path adaptation will not work.
-6. Connect using your institution's permitted SSH mechanism and run `sbatch <script>` **only after the above checks**. Save the returned job ID.
-7. Monitor with `squeue -j <jobid>` and, where configured, `sacct -j <jobid>`; inspect stderr/stdout and final output files.
-8. Transfer completed results back to the workstation and import them into ppigFinder.
+Before selecting pairs, document **why** each candidate is included: co-localization, homologous domain, secretion-system membership, co-expression, literature evidence, or negative controls. This rationale is especially important when screening large candidate sets.
 
-> **Current implementation boundary:** The repository generates local AF3 inputs, manifests and Slurm arrays. Its modular `hpc_service.py`, `ssh_client.py` and `job_monitor.py` were found empty on 18 November 2026. Therefore, remote upload, submission and monitoring should not be described as a verified automatic end-to-end GUI feature. Legacy GUI code may contain older functionality; test it rather than assuming equivalence.
+## 10. Prepare interaction prediction jobs
 
-### 6.3 Option C — DaVinci (optional example)
+Select ORFs in the list or genome map and use the AlphaFold/PPI job actions. The earlier manual includes an “Add to AF3 List” queue and options for interactions with neighbors, selected pairs and custom complexes.
 
-DaVinci is a named institutional profile, not a requirement. The repository maps resource hints to partitions such as `max50` and `max90` and to site-specific GPU/GRES values. These are **illustrative defaults** and need an administrator check before submission. A documented dry-run validated compatibility of one local-AF3 JSON with the DaVinci wrapper, but **did not execute real inference**.
+![Historical AlphaFold pair generation](../assets/screenshots/legacy-af3-pairs.webp)
 
-The generated Slurm job calls `af3 --executor local` **inside an already allocated Slurm job** so that the AF3 wrapper does not submit a nested job. The `af3` executable must be available on the target cluster; when necessary, initialize it through the cluster's module/conda/container configuration.
+![Interaction-screen concepts](../assets/figures/interaction-modes.svg)
 
-See [HPC portability and integration](../developer/hpc_portability.md) and the existing [DaVinci validation note](../developer/structure_prediction/davinci_af3_validation.md).
+**Conceptual choices:** a selected protein against neighbors; all unique selected pairs; homodimer; HMM-positive pairs; or a custom protein multimer. The diagram captures strategies from the provided draft; it does not certify that every mode is independently accessible in the current UI.
 
-## 7. Interpret and export structural results
+A set of **16 distinct candidate proteins** contains `16 choose 2 = 120` unique unordered heteromeric pairs, excluding self-combinations. Record which pairs were excluded, how stoichiometry was chosen and whether duplicates were suppressed.
 
-Use the application's result-import workflow to read completed AF3 output directories. The repository contains an `AlphaFoldResultsService` with sequential/parallel parsing and optional caching. Report the input pair IDs and chain mapping alongside result paths, model seeds, ranking and confidence metrics.
+For large pair sets, estimate sequence/token sizes and batch throughput before submitting any predictions. All-vs-all screens grow quadratically in the number of proteins.
 
-Typical reported quantities include **ipTM**, **pTM**, interchain PAE, contact percentages and interaction classifications. Do not claim that a high score proves biological binding; assess interfaces, chain-specific confidence, sequence evidence and experimental support. Keep track of failed or incomplete jobs separately from successfully parsed predictions.
+## 11. Choose the prediction path
 
-Export TSV/CSV result tables, FASTA files, project snapshots and HTML reports as needed. Keep the exact ppigFinder release/commit and external backend versions in the publication record.
+### Option A — AlphaFold Server (no HPC required)
 
-## 8. Troubleshooting
+Export the **server-specific JSON** using the appropriate option, verify the accepted schema, and submit through [AlphaFold Server](https://alphafoldserver.com/) manually. Limits and service features can change, so consult the server at submission time. Keep the exported JSON and the downloaded results with the project.
 
-| Problem | Check |
-| --- | --- |
-| GUI does not start | Python/Qt installation, display/X11, application tracebacks |
-| BLAST/HMM unavailable | Independent binary installation, PATH, permissions |
-| ORF map slow or unsynchronized | Wait for rendering, save/reopen project, reduce rapid zoom |
-| Incorrect AF3 JSON | Export dialect, sequence validity, chain IDs, model seeds |
-| `af3: command not found` | Remote module/conda/container and `PATH` |
-| Slurm rejects job | Partition, account, QoS, GRES, walltime, node resources |
-| Job cannot find inputs | Local vs remote absolute paths; transfer and layout |
-| AF3 out-of-memory | Adjust backend resources, shorten/separate complexes, retry |
-| Import finds no results | Exact prediction directory, completed backend stage, file integrity |
+### Option B — Native AF3, local runner
 
-## 9. Reproducibility checklist
+Use native AF3 JSON generated by the modular `af3_input_writer.py`. Execution requires an AF3 installation, any legally required model/data access and sufficient compute. The `af3` wrapper in the repository integration is not a packaged AF3 inference engine. Review the actual accepted command flags before execution.
 
-Before communicating results, record: genome accession and version; prediction method and thresholds; BLAST database/version; HMM profiles/version; candidate-selection rationale; proteins/chains and stoichiometry; JSON dialect; model seeds; cluster and scheduler details; AF3 version/environment; result timestamps; missing/failed predictions; software commit and source license.
+### Option C — AF3 on a Slurm cluster
 
-## 10. Source-to-guide map
+Prepare the job manifest and scripts, select or customize a cluster profile, review resource directives and execute inside the cluster allocation. `--executor local` is used in the documented DaVinci wrapper scenario to avoid nested scheduler submissions. Do **not** assume that other clusters have the same wrapper or GRES syntax.
 
-This user guide preserves the tutorial sequence from **Gabriel U. Oka's 27-page preliminary manual**:
+### Option D — Other engines
 
-- Pages 1–7: purpose, requirements, Windows/Spyder launch and backend indicators → Sections 1–2.
-- Pages 8–15: *X. citri*, FASTA, project saving, ORFs and map navigation → Section 3.
-- Pages 16–19: BLAST and HMM annotation → Section 4.
-- Pages 20–25: AF3 pair/complex builders and 16→120 candidate-screen example → Section 5.
-- Page 26: server export → Section 6.1, with numeric quota claims deliberately omitted pending official verification.
-- Page 27: incomplete DaVinci heading → Sections 6.2–6.3, explicitly generalized to other clusters.
+Boltz-2 and FoldCP input-generation modules exist, but not every inference runner is complete. Refer to [implementation status](../developer/feature_status.md) before planning production computation.
 
-Original screenshots should be version-labeled when added to the repository, and any new screenshot must be captured from the actual released GUI. Do not represent old screenshots as verified v2.9.14 layouts.
+See [AlphaFold/PPI details](alphafold.md) and [execution](hpc_submission.md).
+
+## 12. Import and analyze results
+
+For supported result folders, use the results import action or the parsing service. Keep chain identifiers and input sequences aligned with the original ORFs. Inspect pTM, ipTM, interchain PAE, ranking scores and contacts where applicable.
+
+A high ipTM and low interchain PAE can support structural plausibility, yet neither is a direct observation of binding. Review interface geometry, disordered regions, chain permutations, domain boundaries, model consistency and alternative biological explanations.
+
+If a metric is absent or differently defined by a backend, report it as **unavailable**, not zero. Avoid comparing metrics between different model types as though they were calibrated identically.
+
+## 13. Export and report
+
+Export ORF tables, candidate pair manifests, original JSON input, model output summaries and a project snapshot as appropriate. A reproducible report should state: organism, accession, ORF method, homology/profile sources, sequence-selection rationale, model/runner/software versions, seeds, compute context, confidence cutoffs, and limitations.
+
+## 14. Example research application: VirD4
+
+The 2026 [ppigFinder preprint](https://doi.org/10.64898/2026.08.23.746524) describes screening *X. citri* VirD4 against a 4,303-ORF predicted proteome and prioritization of XVIPCD-containing candidate effectors. The reported ranking is a **case study result**, not a guarantee that the same ranking will arise from a different set of parameters or model versions. See the [study-inspired tutorial](../tutorials/xanthomonas.md) for a more explicit evidence trail.
+
+## 15. Known limitations and next steps
+
+- Source installation on each OS must be tested on fresh machines.
+- The current desktop launcher still imports a large legacy GUI module; the ongoing modularization should not be presented as complete.
+- Some HPC SSH/job-monitoring modules are placeholders; no universal automated submission is guaranteed.
+- Native AF3 input writing is initially protein-only.
+- Historical screenshots show v2.2; current-version screenshots should be added separately after capture and verification.
+- Structural predictions identify **candidates for validation** rather than proving biochemical interaction.
+
+Continue with [feature status](../developer/feature_status.md) and [contributing](https://github.com/leepusp/ppigFinder-v1/blob/main/CONTRIBUTING.md).
