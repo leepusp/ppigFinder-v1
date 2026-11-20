@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Build artifacts
+build/
+dist/
+
+# Local backups
+*.bak
+*.backup
+*.tmp
+*.old
+
+# Logs
+*.log
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Runtime/export folders
+outputs/
+results/
+tmp/
+
+# Local AF3 test artifacts
+af3_server_example.json
+run_test_af3.sh
