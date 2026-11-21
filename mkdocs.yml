@@ -11,7 +11,8 @@ copyright: ppigFinder — open-source research software, MIT license
 theme:
   name: material
   language: en
-  favicon: assets/figures/blank.svg
+  logo: assets/figures/ppigfinder-mark.svg
+  favicon: assets/figures/ppigfinder-mark.svg
   palette:
     - scheme: default
       primary: white
@@ -37,7 +38,7 @@ theme:
     - content.tabs.link
 
 extra_css:
-  - stylesheets/extra.css
+  - stylesheets/ppigfinder-white.css
 
 plugins:
   - search

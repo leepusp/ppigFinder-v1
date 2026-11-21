@@ -5,10 +5,6 @@
   --pf-cyan: #19a7c7;
   --pf-border: rgba(100,123,179,.26);
 }
-.md-header .md-logo,
-.md-nav__title .md-logo {
-  display: none;
-}
 .pf-hero {
   background: var(--md-default-bg-color);
   text-align: center;
