@@ -19,7 +19,69 @@ The current `pyproject.toml` requires Python `>=3.11`, aligned with the implemen
 
 ## Recommended installers
 
-Use `bash scripts/install_ppigfinder.sh` on Linux/macOS or
+### Download from this site
+
+[Download ppigFinder 2.9.14 (.whl)](https://leepusp.github.io/ppigFinder-v1/downloads/ppigfinder-2.9.14-py3-none-any.whl){ .md-button .md-button--primary }
+
+The wheel works with Python 3.11 or newer on Windows, Linux and macOS, subject
+to the availability of dependencies for your Python version and hardware.
+Open a terminal in the folder where you saved the wheel:
+
+=== "Windows PowerShell"
+
+    ```powershell
+    py -3.11 -m venv ppigfinder-env
+    .\ppigfinder-env\Scripts\python.exe -m pip install '.\ppigfinder-2.9.14-py3-none-any.whl[gui,recommended]'
+    .\ppigfinder-env\Scripts\ppigfinder.exe
+    ```
+
+=== "Linux / macOS"
+
+    ```bash
+    python3 -m venv ppigfinder-env
+    ./ppigfinder-env/bin/python -m pip install './ppigfinder-2.9.14-py3-none-any.whl[gui,recommended]'
+    ./ppigfinder-env/bin/ppigfinder
+    ```
+
+### Install with the graphical assistant
+
+[Download the source ZIP](https://github.com/leepusp/ppigFinder-v1/archive/refs/heads/main.zip){ .md-button }
+
+From a source checkout, open the graphical setup assistant. On Windows,
+double-click **scripts → Install ppigFinder.vbs** in File Explorer. This uses
+a windowless Python launcher. If you downloaded the ZIP, extract it before
+opening the script. You can also start the assistant from a terminal:
+
+```powershell
+# Windows
+py -3.11 scripts/install_ppigfinder.py
+```
+
+```bash
+# Linux and macOS
+python3 scripts/install_ppigfinder.py
+```
+
+Choose an empty installation folder or an existing virtual environment, select
+the optional Pyrodigal and SSH/SFTP dependencies, then select **Install**.
+Select **Open ppigFinder** when the installation is complete. The default
+destination is `.venv` in the checkout.
+
+The graphical installer needs Tk and a graphical session. Add `--terminal`
+to the command for a terminal-only installation or `--desktop-only` to omit
+optional Python dependencies. An initial installation normally downloads
+Python packages. BLAST+, HMMER and AlphaFold engines are installed separately.
+
+The terminal installer prints the package name, the manual link and the path
+to the installed launcher. Run `py -3.11 scripts/install_ppigfinder.py --terminal`
+on Windows or `python3 scripts/install_ppigfinder.py --terminal` on Linux/macOS.
+
+To reinstall only ppigFinder, run the installed environment's Python with
+`-m pip uninstall ppigfinder`, then open the setup assistant again and select
+the same environment. Projects and other Python packages remain in place.
+For a fresh dependency check, choose a new empty environment instead.
+
+For an editable development installation, use `bash scripts/install_ppigfinder.sh` on Linux/macOS or
 `powershell -ExecutionPolicy Bypass -File .\scripts\install_ppigfinder.ps1`
 on Windows. Both install the desktop in `.venv` without installing AF3 inference,
 models, databases or any scheduler. Python 3.11+ is mandatory. See the
@@ -68,9 +130,15 @@ python -m pip show ppigfinder
 
 Within the UI, inspect the backend status indicators. They represent **availability in your environment**, not universal requirements. If a tool is missing, first check the corresponding user-manual section.
 
-## Source-package status
+## Installed launcher and execution modes
 
-The repository currently contains a `pyproject.toml` entry point named `ppigfinder`, and `main.py` is the documented stable desktop launcher. A full install/launch matrix across Linux, Windows and macOS is **not yet recorded as passing**. Consequently, the commands here are instructions to test a source installation; they are not a promise of a published wheel, standalone installer or guaranteed 5-minute setup.
+Open `.venv\Scripts\ppigfinder.exe` on Windows or run `.venv/bin/ppigfinder` on Linux/macOS. Use the corresponding path under your selected folder if you changed the destination.
+
+- **Local desktop:** genome analysis, ORFs, annotations and AF3 JSON preparation.
+- **Local structural prediction:** configure the official AF3, Docker or wrapper runner. See [local AF3 setup](af3_local_installation.md).
+- **Optional HPC:** configure a host and use SSH/SFTP for transfers. On a Slurm host, `ppigfinder-slurm resources` lists configured resources and `validate` checks a batch script before submission. See [execution environments](hpc_submission.md) and [remote connections](remote_connections.md).
+
+The source installer has been exercised on Windows. The terminal install is configured for Windows, Linux and macOS in CI.
 
 ## No HPC? You can still use the software
 

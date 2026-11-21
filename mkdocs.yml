@@ -11,11 +11,10 @@ copyright: ppigFinder — open-source research software, MIT license
 theme:
   name: material
   language: en
-  logo: assets/figures/favicon.svg
-  favicon: assets/figures/favicon.svg
+  favicon: assets/figures/blank.svg
   palette:
     - scheme: default
-      primary: indigo
+      primary: white
       accent: blue
       toggle:
         icon: material/brightness-7
@@ -63,11 +62,14 @@ nav:
   - Home: index.md
   - Start:
       - Installation: user_manual/installation.md
+      - First launch: user_manual/getting_started.md
       - Quick Start: user_manual/quick_start_v29_14.md
+      - Analysis workflow: workflows/analysis_workflow.md
       - Xanthomonas Tutorial: tutorials/xanthomonas.md
       - Interface Tour: user_manual/interface_tour.md
   - User Manual:
       - Complete Guide: user_manual/complete_guide.md
+      - Data and projects: user_manual/data_project.md
       - Genome: user_manual/genome.md
       - ORF Prediction: user_manual/orf_prediction.md
       - ORF Browser: user_manual/orfs.md
@@ -87,5 +89,17 @@ nav:
       - HPC portability: developer/hpc_portability.md
       - SSH/SFTP transport contract: developer/remote_transport.md
       - Directory map: developer/directory_layout.md
-      - Prediction internals: developer/structure_prediction/README.md
+      - Prediction internals:
+          - Overview: developer/structure_prediction/README.md
+          - Service layer: developer/structure_prediction/service_layer.md
+          - Batch builder: developer/structure_prediction/batch_builder.md
+          - Batch artifacts: developer/structure_prediction/batch_artifacts.md
+          - Input writers: developer/structure_prediction/input_writers.md
+          - AF3 input writer: developer/structure_prediction/af3_input_writer.md
+          - Boltz-2 input writer: developer/structure_prediction/boltz2_input_writer.md
+          - FoldCP input writer: developer/structure_prediction/foldcp_input_writer.md
+          - Job manifest: developer/structure_prediction/job_manifest.md
+          - Manifest validation: developer/structure_prediction/manifest_validation.md
+          - Slurm and layout: developer/structure_prediction/slurm_and_layout.md
+          - Slurm batch writer: developer/structure_prediction/slurm_batch_writer.md
   - Publication: publication.md

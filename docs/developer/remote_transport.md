@@ -1,8 +1,8 @@
-# Remote transport v1: explicit contracts and security boundaries
+# Remote transport
 
 The optional `ppigfinder.integrations.remote` package has three independent
-layers: `profiles.py` (stdlib-only, non-secret persistence), `transport.py`
-(Paramiko SSH/SFTP only when requested), `cli.py` (manual commands). GUI action
+layers: `profiles.py` (stdlib-only, non-secret persistence), `openssh.py` and
+`transport.py` (SFTP with OpenSSH or Paramiko authentication), and `cli.py` (manual commands). GUI action
 is in `ppigfinder.ui.remote_connections_dialog`, with blocking operations run
 in a worker thread.
 
@@ -16,14 +16,13 @@ in a worker thread.
 | `SSHTransport.download_file` | Download one restricted relative path; verify checksum |
 | `preview_af3_wrapper` | Build text preview only; no subprocess or scheduler |
 
-**Do not use this module to execute AF3 on a login node.** Scheduler and
-inference capabilities are distinct optional layers. Current remote execution
-is intentionally **not implemented**.
+Use the SFTP module to transfer files. Submit compute jobs from the HPC environment
+with the [Slurm adapter](../user_manual/hpc_submission.md).
 
 ## Threat model, limits and tests
 
-- `RejectPolicy`: unknown or changed SSH host keys fail closed. Never use
-  `AutoAddPolicy` or disable key verification.
+- OpenSSH uses strict host-key checking. Paramiko rejects unknown or changed
+  host keys with `RejectPolicy`.
 - No saved secrets; profiles have a strict allow-list of six fields.
 - Private remote subdirectory is relative to the remote SFTP home; `..`, shell
   metacharacters, absolute paths and symlinked project components are refused.
@@ -33,9 +32,8 @@ is intentionally **not implemented**.
 - Atomic local download refuses overwriting existing results.
 - Paramiko is imported lazily, so core ppigFinder and offline tests do not
   require a cluster, network or Paramiko.
-- Tests use an isolated fake SFTP filesystem. Cross-platform production
-  readiness requires a real-remote round trip, with actual authentication.
+- Tests use an isolated fake SFTP filesystem. A real upload and download through
+  the GUI also matched the original SHA-256 on one host.
 
-The current adapter supports direct SSH or straightforward `~/.ssh/config`
-Host entries. ProxyJump, MFA keyboard-interactive, persistent background jobs,
-remote shell execution and scheduler adapters remain intentionally separate.
+OpenSSH uses the user's `~/.ssh/config` and can reuse an authenticated master
+connection. See [OpenSSH setup](../user_manual/openssh_native_transport.md).

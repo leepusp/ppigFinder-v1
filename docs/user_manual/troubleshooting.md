@@ -1,5 +1,12 @@
 # Troubleshooting
 
+## Setup assistant does not open
+
+Check that Python 3.11 or newer includes Tcl/Tk and that you have a graphical
+session. On Windows, run the Python installer script from PowerShell to see
+its startup error. Add `--terminal` to install without Tcl/Tk. See the
+[installation guide](installation.md) for the commands and installed launcher.
+
 ## Backend not detected
 
 Check whether BLAST+, HMMER3, Pyrodigal and Python dependencies are installed and available in the active environment. Restart ppigFinder after changing PATH, modules or conda environments.

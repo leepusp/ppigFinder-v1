@@ -35,6 +35,7 @@ adapters require no scheduler, remote connection or SSH.
 Run these commands **on a host with Slurm configured**, after installing ppigFinder there:
 
 ```bash
+ppigfinder-slurm resources
 ppigfinder-slurm validate path/to/reviewed_submit_af3.slurm
 ppigfinder-slurm submit path/to/reviewed_submit_af3.slurm --confirm
 ppigfinder-slurm status 12345
@@ -44,4 +45,4 @@ ppigfinder-slurm cancel 12345 --confirm
 
 Replace `12345` with the returned job ID. Validation asks Slurm to check the script without enqueuing it. The logs command reports the stdout and stderr paths while Slurm retains the job details. The CLI uses the Slurm configuration of the host where it runs. The graphical SSH/SFTP dialog handles file transfers separately.
 
-Set partition, GPU/GRES, account and other resources according to the target site's configuration. The generic script generator can also receive a user-defined `SlurmClusterProfile` with partition and GPU mappings.
+Use `resources` to inspect partition availability, time limits, node states, CPU, memory and configured GRES. Multiple rows for the same partition represent distinct node groups. These values describe the cluster configuration and do not guarantee job placement. Set partition, GPU/GRES, account and other resources according to the target site's policy. The generic script generator can receive a user-defined `SlurmClusterProfile` with partition and GPU mappings.

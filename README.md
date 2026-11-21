@@ -58,8 +58,7 @@ The images below come from the **earlier user guide (ppigFinder v2.2)**. They do
 ```bash
 git clone https://github.com/leepusp/ppigFinder-v1.git
 cd ppigFinder-v1
-bash scripts/install_ppigfinder.sh
-.venv/bin/python main.py
+python3 scripts/install_ppigfinder.py
 ```
 
 ### Windows PowerShell
@@ -67,11 +66,10 @@ bash scripts/install_ppigfinder.sh
 ```powershell
 git clone https://github.com/leepusp/ppigFinder-v1.git
 cd ppigFinder-v1
-powershell -ExecutionPolicy Bypass -File .\scripts\install_ppigfinder.ps1
-.\.venv\Scripts\python.exe main.py
+py -3.11 scripts/install_ppigfinder.py
 ```
 
-These are **documented source-install commands, not yet a formally validated installer**. BLAST+ and HMMER must be installed separately if you need their external executables. For platform-specific issues, see [installation](docs/user_manual/installation.md) and [troubleshooting](docs/user_manual/troubleshooting.md).
+On Windows, you can also double-click `scripts/Install ppigFinder.vbs` in File Explorer. Add `--terminal` to either Python command for installation from a shell. BLAST+ and HMMER are installed separately. See [installation](docs/user_manual/installation.md) and [troubleshooting](docs/user_manual/troubleshooting.md).
 
 ## Scientific workflow
 
