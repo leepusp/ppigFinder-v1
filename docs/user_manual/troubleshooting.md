@@ -7,6 +7,10 @@ session. On Windows, run the Python installer script from PowerShell to see
 its startup error. Add `--terminal` to install without Tcl/Tk. See the
 [installation guide](installation.md) for the commands and installed launcher.
 
+If the Qt check reports a missing `libEGL.so.1` on Debian or Ubuntu, install
+the system package `libegl1` and retry. This library is required even for the
+installer's offscreen smoke test.
+
 ## Backend not detected
 
 Check whether BLAST+, HMMER3, Pyrodigal and Python dependencies are installed and available in the active environment. Restart ppigFinder after changing PATH, modules or conda environments.
