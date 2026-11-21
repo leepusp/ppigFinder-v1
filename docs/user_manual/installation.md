@@ -19,9 +19,38 @@ The current `pyproject.toml` requires Python `>=3.11`, aligned with the implemen
 
 ## Recommended installers
 
+### Download from this site
+
+[Download ppigFinder 2.9.14 (.whl)](https://leepusp.github.io/ppigFinder-v1/downloads/ppigfinder-2.9.14-py3-none-any.whl){ .md-button .md-button--primary }
+
+The wheel works with Python 3.11 or newer on Windows, Linux and macOS, subject
+to the availability of dependencies for your Python version and hardware.
+Open a terminal in the folder where you saved the wheel:
+
+=== "Windows PowerShell"
+
+    ```powershell
+    py -3.11 -m venv ppigfinder-env
+    .\ppigfinder-env\Scripts\python.exe -m pip install '.\ppigfinder-2.9.14-py3-none-any.whl[gui,recommended]'
+    .\ppigfinder-env\Scripts\ppigfinder.exe
+    ```
+
+=== "Linux / macOS"
+
+    ```bash
+    python3 -m venv ppigfinder-env
+    ./ppigfinder-env/bin/python -m pip install './ppigfinder-2.9.14-py3-none-any.whl[gui,recommended]'
+    ./ppigfinder-env/bin/ppigfinder
+    ```
+
+### Install with the graphical assistant
+
+[Download the source ZIP](https://github.com/leepusp/ppigFinder-v1/archive/refs/heads/main.zip){ .md-button }
+
 From a source checkout, open the graphical setup assistant. On Windows,
 double-click **scripts → Install ppigFinder.vbs** in File Explorer. This uses
-a windowless Python launcher. You can also start the assistant from a terminal:
+a windowless Python launcher. If you downloaded the ZIP, extract it before
+opening the script. You can also start the assistant from a terminal:
 
 ```powershell
 # Windows
