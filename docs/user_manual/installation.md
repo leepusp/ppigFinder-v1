@@ -10,6 +10,7 @@ ppigFinder is a Python desktop application, not a hosted web service. The **core
 | PyQt6 >= 6.4 | Graphical interface | Desktop mode |
 | NumPy >= 1.21, Matplotlib >= 3.5 | Numerical work and plotting | Core package |
 | Pyrodigal >= 2.0 | Gene calling | Recommended prokaryotic ORF mode |
+| SciPy >= 1.7 | Accelerated motif analysis | Optional AF3 result analysis |
 | NCBI BLAST+ | Similarity search | BLAST-based annotation only |
 | HMMER3 | Domain/profile search | External HMM searches only |
 | Paramiko >= 2.9 | SSH/SFTP client library | Optional remote-compute use |
@@ -63,7 +64,7 @@ python3 scripts/install_ppigfinder.py
 ```
 
 Choose an empty installation folder or an existing virtual environment, select
-the optional Pyrodigal and SSH/SFTP dependencies, then select **Install**.
+the optional Pyrodigal, SciPy and SSH/SFTP dependencies, then select **Install**.
 Select **Open ppigFinder** when the installation is complete. The default
 destination is `.venv` in the checkout.
 

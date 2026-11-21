@@ -1092,84 +1092,9 @@ except ImportError:
 # EXTERNAL BACKEND DETECTION
 # ═══════════════════════════════════════════════════════════════
 
-def detect_backends():
-    """Detect installed external tools (PATH, WSL, and bundled tools/ folder).
+from ppigfinder.infrastructure.backends import refresh_backends as detect_backends
 
-    When running as a PyInstaller bundle, external tools (BLAST+, HMMER3) may
-    be shipped inside a  tools/  subfolder next to the executable.  This
-    function checks that location before falling back to PATH / WSL.
-    """
-    backends = {}
-
-    # ── Locate bundled tools/ directory (PyInstaller exe next to tools/) ──
-    _bundled_tools: Path | None = None
-    try:
-        # sys._MEIPASS is set by PyInstaller at runtime
-        _base = Path(getattr(sys, '_MEIPASS', ''))
-        if not _base.is_dir():
-            # Running as normal script — check next to the .py file
-            _base = Path(sys.argv[0]).resolve().parent
-        _candidate = _base / 'tools'
-        if _candidate.is_dir():
-            _bundled_tools = _candidate
-    except Exception:
-        pass
-
-    for tool, cmd in [('blast+', 'blastp'), ('hmmer3', 'hmmsearch')]:
-        path = None
-        version = None
-
-        # 1. Bundled tools/ folder (PyInstaller distribution)
-        if _bundled_tools:
-            _exe = (_bundled_tools / (cmd + ('.exe' if os.name == 'nt' else '')))
-            if _exe.is_file():
-                path = str(_exe)
-
-        # 2. System PATH
-        if path is None:
-            path = shutil.which(cmd)
-
-        if path:
-            try:
-                r = subprocess.run(
-                    [path, '-version'] if tool == 'blast+' else [path, '-h'],
-                    capture_output=True, text=True, timeout=5)
-                version = r.stdout.split('\n')[0] if r.stdout else 'detected'
-                backends[tool] = {'path': path, 'version': version,
-                                  'available': True, 'wsl': False}
-            except Exception:
-                backends[tool] = {'path': path, 'version': '?',
-                                  'available': True, 'wsl': False}
-        else:
-            # 3. Try WSL on Windows
-            wsl_found = False
-            if os.name == 'nt':
-                try:
-                    r = subprocess.run(
-                        ['wsl', 'bash', '-c', f'{cmd} -h'],
-                        capture_output=True, text=True, timeout=10)
-                    if r.returncode == 0 or 'Usage' in (r.stdout + r.stderr):
-                        backends[tool] = {
-                            'path': f'wsl bash -c {cmd}',
-                            'version': 'via WSL',
-                            'available': True, 'wsl': True}
-                        wsl_found = True
-                except Exception:
-                    pass
-            if not wsl_found:
-                backends[tool] = {'path': None, 'version': None,
-                                  'available': False, 'wsl': False}
-    return backends
-
-BACKENDS = detect_backends()
-
-# Pyrodigal detection (Python module, not external tool)
-BACKENDS['pyrodigal'] = {
-    'path': 'pyrodigal (Python module)',
-    'version': pyrodigal.__version__ if PYRODIGAL_AVAILABLE else None,
-    'available': PYRODIGAL_AVAILABLE,
-    'wsl': False,
-}
+BACKENDS = detect_backends(detailed=True)
 
 
 PYTHON_PACKAGE_CHECKS = [

@@ -52,6 +52,7 @@ def collect_capabilities(
     *,
     which: Callable[[str], str | None] | None = None,
     module_probe: Callable[[str], bool] | None = None,
+    backend_inventory: dict | None = None,
 ) -> tuple[Capability, ...]:
     """Inspect local prerequisites without importing or executing optional tools.
 
@@ -61,13 +62,15 @@ def collect_capabilities(
     which = which if which is not None else shutil.which
     module_probe = module_probe if module_probe is not None else _has_module
 
-    def executable(label: str, identifier: str, command: str, operation: str) -> Capability:
-        detected = bool(which(command))
+    def executable(label: str, identifier: str, command: str, operation: str, backend_key: str = "") -> Capability:
+        backend = (backend_inventory or {}).get(backend_key, {})
+        detected = bool(backend.get("available") or which(command))
+        location = "via WSL" if backend.get("wsl") else "locally"
         return Capability(
             identifier, label,
             CapabilityStatus.DETECTED if detected else CapabilityStatus.NOT_CONFIGURED,
             (operation,),
-            f"{command} found in PATH; execution not validated" if detected
+            f"{command} detected {location}; execution not validated" if detected
             else f"Install/configure {command} to enable this optional feature",
         )
 
@@ -96,8 +99,8 @@ def collect_capabilities(
         Capability("foldcp_input", "FoldCP input export", CapabilityStatus.AVAILABLE,
                    ("export_input",), "Input generation only; runner not implemented"),
         python_module("Pyrodigal", "pyrodigal", "pyrodigal", "predict_orfs"),
-        executable("BLAST+", "blast", "blastp", "sequence_search"),
-        executable("HMMER3", "hmmer", "hmmsearch", "profile_search"),
+        executable("BLAST+", "blast", "blastp", "sequence_search", "blast+"),
+        executable("HMMER3", "hmmer", "hmmsearch", "profile_search", "hmmer3"),
         executable("AlphaFold 3 local wrapper", "af3_local", "af3", "execute_local"),
         Capability("scheduler_script", "Scheduler script export", CapabilityStatus.NOT_CONFIGURED,
                    ("export_slurm_script",),
@@ -109,7 +112,11 @@ def collect_capabilities(
                    if module_probe("paramiko") else "Install optional Paramiko to use remote SSH/SFTP"),
         Capability("remote_scheduler", "Remote job management", CapabilityStatus.NOT_IMPLEMENTED,
                    ("submit", "monitor", "cancel", "collect"),
-                   "No verified pluggable Slurm/PBS/LSF lifecycle adapter"),
+                   "Scheduler submission and monitoring over SSH are not integrated. Use ppigfinder-slurm on the cluster."),
+        Capability("slurm_cli", "Slurm command-line integration", CapabilityStatus.DETECTED
+                   if which("sinfo") else CapabilityStatus.NOT_CONFIGURED,
+                   ("resources", "validate", "submit", "status", "logs", "cancel"),
+                   "Run ppigfinder-slurm on a host with Slurm configured"),
         Capability("boltz2_runner", "Boltz-2 execution", CapabilityStatus.NOT_IMPLEMENTED,
                    ("execute",), "Only input generation is available"),
         Capability("foldcp_runner", "FoldCP execution", CapabilityStatus.NOT_IMPLEMENTED,

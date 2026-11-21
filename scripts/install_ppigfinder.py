@@ -50,7 +50,7 @@ def install(destination, recommended, report):
         "from PyQt6.QtWidgets import QApplication; from ppigfinder.app import main; app = QApplication([])",
         env={**os.environ, "QT_QPA_PLATFORM": "offscreen"})
     if recommended:
-        run(str(python), "-I", "-c", "import paramiko, pyrodigal")
+        run(str(python), "-I", "-c", "import paramiko, pyrodigal, scipy")
     report(f"Installation complete: {destination}")
     return python
 
@@ -86,7 +86,7 @@ def wizard(destination, recommended):
     picker = ttk.Button(options, text="Browse…", command=browse)
     picker.pack(side="left", padx=(8, 0))
     extras = tk.BooleanVar(value=recommended)
-    checkbox = ttk.Checkbutton(panel, text="Include Pyrodigal and SSH/SFTP support", variable=extras)
+    checkbox = ttk.Checkbutton(panel, text="Include Pyrodigal, SciPy and SSH/SFTP support", variable=extras)
     checkbox.pack(anchor="w", pady=8)
     log = tk.Text(panel, wrap="word", state="disabled", height=12)
     log.pack(fill="both", expand=True)
@@ -169,7 +169,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--terminal", action="store_true", help="Install without the graphical wizard")
     parser.add_argument("--destination", type=Path, default=ROOT / ".venv")
-    parser.add_argument("--desktop-only", action="store_true", help="Omit Pyrodigal and Paramiko")
+    parser.add_argument("--desktop-only", action="store_true", help="Omit Pyrodigal, SciPy and Paramiko")
     args = parser.parse_args()
     try:
         if sys.version_info < (3, 11):

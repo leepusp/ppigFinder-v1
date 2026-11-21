@@ -42,6 +42,20 @@ class CapabilityRegistryTests(unittest.TestCase):
         import json
         json.dumps([item.as_dict() for item in items])
 
+    def test_wsl_hmmer_and_cluster_cli_are_reported_separately(self):
+        items = {
+            item.identifier: item
+            for item in collect_capabilities(
+                which=lambda command: "sinfo" if command == "sinfo" else None,
+                module_probe=lambda _: False,
+                backend_inventory={"hmmer3": {"available": True, "wsl": True}},
+            )
+        }
+        self.assertEqual(items["hmmer"].status, CapabilityStatus.DETECTED)
+        self.assertIn("via WSL", items["hmmer"].detail)
+        self.assertEqual(items["slurm_cli"].status, CapabilityStatus.DETECTED)
+        self.assertEqual(items["remote_scheduler"].status, CapabilityStatus.NOT_IMPLEMENTED)
+
 
 if __name__ == "__main__":
     unittest.main()
