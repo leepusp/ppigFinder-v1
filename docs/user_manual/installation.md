@@ -19,7 +19,29 @@ The current `pyproject.toml` requires Python `>=3.11`, aligned with the implemen
 
 ## Recommended installers
 
-Use `bash scripts/install_ppigfinder.sh` on Linux/macOS or
+From a source checkout, open the graphical setup assistant:
+
+```powershell
+# Windows
+py -3.11 scripts/install_ppigfinder.py
+```
+
+```bash
+# Linux and macOS
+python3 scripts/install_ppigfinder.py
+```
+
+Choose an empty installation folder or an existing virtual environment, select
+the optional Pyrodigal and SSH/SFTP dependencies, then select **Install**.
+Select **Open ppigFinder** when the installation is complete. The default
+destination is `.venv` in the checkout.
+
+The graphical installer needs Tk and a graphical session. Add `--terminal`
+to the command for a terminal-only installation or `--desktop-only` to omit
+optional Python dependencies. An initial installation normally downloads
+Python packages. BLAST+, HMMER and AlphaFold engines are installed separately.
+
+For an editable development installation, use `bash scripts/install_ppigfinder.sh` on Linux/macOS or
 `powershell -ExecutionPolicy Bypass -File .\scripts\install_ppigfinder.ps1`
 on Windows. Both install the desktop in `.venv` without installing AF3 inference,
 models, databases or any scheduler. Python 3.11+ is mandatory. See the

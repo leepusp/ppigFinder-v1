@@ -21,7 +21,7 @@ jobs:
   smoke:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     env:
       QT_QPA_PLATFORM: offscreen
@@ -30,8 +30,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install packaging dependencies
-        run: python -m pip install -e . PyQt6
+      - name: Install with the local setup assistant
+        run: python scripts/install_ppigfinder.py --terminal --desktop-only
+      - name: Use the installed environment
+        run: python -c "import os; from pathlib import Path; f = open(os.environ['GITHUB_PATH'], 'a', encoding='utf-8'); print(Path('.venv', 'Scripts' if os.name == 'nt' else 'bin').resolve(), file=f); f.close()"
       - name: Syntax check
         run: python -m compileall -q ppigfinder main.py
       - name: Run regression suite
