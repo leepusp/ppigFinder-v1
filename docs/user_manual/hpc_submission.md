@@ -46,3 +46,20 @@ ppigfinder-slurm cancel 12345 --confirm
 Replace `12345` with the returned job ID. Validation asks Slurm to check the script without enqueuing it. The logs command reports the stdout and stderr paths while Slurm retains the job details. The CLI uses the Slurm configuration of the host where it runs. The graphical SSH/SFTP dialog handles file transfers separately.
 
 Use `resources` to inspect partition availability, time limits, node states, CPU, memory and configured GRES. Multiple rows for the same partition represent distinct node groups. These values describe the cluster configuration and do not guarantee job placement. Set partition, GPU/GRES, account and other resources according to the target site's policy. The generic script generator can receive a user-defined `SlurmClusterProfile` with partition and GPU mappings.
+
+## Validate the Slurm lifecycle
+
+From a source checkout on a Slurm host, in a directory shared with compute
+nodes, use the ppigFinder environment's Python:
+
+```bash
+python scripts/developer/check_slurm_lifecycle.py
+python scripts/developer/check_slurm_lifecycle.py --submit
+```
+
+The first command checks visible resources and validates the batch script
+without submitting. The second submits a one-CPU job and checks the queue,
+`sacct` exit status and log files. It uses 128 MiB and a two-minute time
+limit. Supply `--partition`, `--account` or `--qos` if required by the site.
+The script reports its output directory and requests cancellation of its own
+job if it cannot confirm completion.

@@ -36,6 +36,7 @@ Thumbs.db
 outputs/
 results/
 tmp/
+ppigfinder-slurm-*/
 
 # Local AF3 test artifacts
 af3_server_example.json
