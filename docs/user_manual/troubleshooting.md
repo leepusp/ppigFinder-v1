@@ -27,6 +27,12 @@ Run an ORF prediction mode after loading the genome. If the map does not update,
 
 Confirm that the query sequence or HMM file is valid and that the external tool is available. Review E-value thresholds when no hits are detected.
 
+From a source checkout, run `python scripts/developer/check_hmmer_annotation.py`
+with the ppigFinder environment's Python. The test requires `hmmbuild` and
+`hmmsearch`, builds a temporary protein profile, and prints
+`HMMER_ANNOTATION=PASS` if ppigFinder reports the expected hit and coordinates.
+On Windows the check uses WSL when ppigFinder detects HMMER there.
+
 ## AlphaFold 3 JSON is rejected
 
 Check whether the exported JSON matches the intended submission target. Public AlphaFold servers and private/HPC wrappers may enforce different limits, naming rules or batch sizes.
