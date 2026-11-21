@@ -37,6 +37,27 @@ class SlurmAdapterTests(unittest.TestCase):
         self.assertEqual(self.scheduler.status("714"), JobStatus("714", "PENDING", "Resources"))
         self.run_command.assert_called_once()
 
+    def test_resources_preserve_distinct_node_groups(self):
+        self.run_command.return_value = response(
+            "accelerated*|up|01:00:00|idle|2|32|128000|gpu:a100:2(S:0-1)\n"
+            "accelerated*|up|01:00:00|allocated|1|64|256000|gpu:h100:4\n"
+            "general|up|infinite|idle|3|16|64000|(null)\n"
+        )
+        first, second, third = self.scheduler.resources()
+        self.assertEqual((first.partition, second.partition), ("accelerated", "accelerated"))
+        self.assertTrue(first.is_default)
+        self.assertEqual((first.node_count, first.cpus_per_node, first.memory_mib_per_node), (2, 32, 128000))
+        self.assertEqual(first.gres, "gpu:a100:2(S:0-1)")
+        self.assertEqual(second.node_state, "allocated")
+        self.assertFalse(third.is_default)
+        self.assertIsNone(third.gres)
+        self.assertEqual(self.run_command.call_args.args[0][0], "sinfo")
+
+    def test_resources_rejects_unusable_output(self):
+        self.run_command.return_value = response("unexpected output")
+        with self.assertRaisesRegex(SchedulerError, "line 1"):
+            self.scheduler.resources()
+
     def test_accounting_fallback_reports_terminal_state_and_exit_code(self):
         self.run_command.side_effect = [
             response(stderr="slurm_load_jobs error: Invalid job id specified", code=1),

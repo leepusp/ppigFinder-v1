@@ -12,6 +12,7 @@ from .slurm import SlurmAdapter
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Manage ppigFinder batch scripts on a Slurm host")
     commands = parser.add_subparsers(dest="action", required=True)
+    commands.add_parser("resources", help="List partition and node configurations")
     commands.add_parser("validate", help="Check a script with Slurm without scheduling it").add_argument("script")
     submit = commands.add_parser("submit", help="Submit a prepared batch script")
     submit.add_argument("script")
@@ -24,7 +25,9 @@ def main(argv=None):
     args = parser.parse_args(argv)
     scheduler = SlurmAdapter()
     try:
-        if args.action == "validate":
+        if args.action == "resources":
+            result = {"resources": [asdict(resource) for resource in scheduler.resources()]}
+        elif args.action == "validate":
             result = {"validation": scheduler.validate(args.script)}
         elif args.action == "submit":
             result = {"job_id": scheduler.submit(args.script)}

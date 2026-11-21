@@ -4,7 +4,7 @@ import re
 import subprocess
 from collections.abc import Callable
 
-from .scheduler_base import JobStatus, SchedulerError
+from .scheduler_base import JobStatus, PartitionResources, SchedulerError
 
 
 class SlurmAdapter:
@@ -44,6 +44,33 @@ class SlurmAdapter:
 
     def validate(self, script: str) -> str:
         return self._command("sbatch", "--test-only", "--", self._script(script), include_stderr=True)
+
+    def resources(self) -> list[PartitionResources]:
+        output = self._command("sinfo", "--noheader", "--exact", "--format=%P|%a|%l|%T|%D|%c|%m|%G")
+        resources = []
+        for number, line in enumerate(output.splitlines(), start=1):
+            if not line.strip():
+                continue
+            try:
+                partition, availability, time_limit, state, nodes, cpus, memory, gres = (
+                    field.strip() for field in line.split("|")
+                )
+                if not partition.removesuffix("*"):
+                    raise ValueError("Missing partition name")
+                resources.append(PartitionResources(
+                    partition=partition.removesuffix("*"),
+                    is_default=partition.endswith("*"),
+                    availability=availability,
+                    time_limit=time_limit,
+                    node_state=state,
+                    node_count=int(nodes),
+                    cpus_per_node=None if cpus in {"", "N/A"} else int(cpus),
+                    memory_mib_per_node=None if memory in {"", "N/A"} else int(memory),
+                    gres=None if gres in {"", "(null)", "N/A", "none"} else gres,
+                ))
+            except ValueError as exc:
+                raise SchedulerError(f"Unexpected sinfo resource data on line {number}") from exc
+        return resources
 
     def submit(self, script: str) -> str:
         output = self._command("sbatch", "--parsable", "--", self._script(script))
