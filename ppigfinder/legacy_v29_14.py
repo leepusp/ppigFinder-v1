@@ -3043,12 +3043,12 @@ class AdvancedORFAnalyzer:
                 wsl_domtbl  = to_wsl_path(domtbl_file)
                 wsl_aln     = to_wsl_path(aln_file)
 
-                hmm_cmd  = f'hmmsearch --domtblout "{wsl_domtbl}" -A "{wsl_aln}"'
-                hmm_cmd += f' -E {hmm_evalue} --domE {dom_evalue}'
+                cmd = ['wsl', 'bash', '-lc', 'exec "$@"', 'ppigfinder-hmmsearch',
+                       'hmmsearch', '--domtblout', wsl_domtbl, '-A', wsl_aln,
+                       '-E', str(hmm_evalue), '--domE', str(dom_evalue)]
                 if hmm_score is not None:
-                    hmm_cmd += f' -T {hmm_score}'
-                hmm_cmd += f' "{wsl_hmm}" "{wsl_sfile}"'
-                cmd = ['wsl', 'bash', '-c', hmm_cmd]
+                    cmd.extend(['-T', str(hmm_score)])
+                cmd.extend([wsl_hmm, wsl_sfile])
             else:
                 cmd = ['hmmsearch',
                        '--domtblout', domtbl_file,
@@ -3062,6 +3062,7 @@ class AdvancedORFAnalyzer:
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
             if result.returncode != 0:
                 self._last_hmm_error = (result.stderr or result.stdout or 'hmmsearch failed').strip()
+                return [{'error': self._last_hmm_error}]
 
             # ── Parse --domtblout (coordenadas precisas) ──────────────
             hits = []
@@ -3070,7 +3071,7 @@ class AdvancedORFAnalyzer:
                     for line in f:
                         if line.startswith('#'): continue
                         parts = line.split()
-                        if len(parts) < 23: continue
+                        if len(parts) < 22: continue
                         orf_name = parts[0]
                         try:
                             orf_idx = int(orf_name.replace('ORF', '')) - 1
