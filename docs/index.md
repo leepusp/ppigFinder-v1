@@ -1,18 +1,14 @@
 <div class="pf-hero" markdown>
 
-<div class="pf-kicker">OPEN-SOURCE · BACTERIAL GENOMICS · STRUCTURAL BIOINFORMATICS</div>
-
 # ppigFinder
 
 ## From genome sequences to interaction hypotheses
 
 A project-oriented desktop application for ORF prediction, functional annotation, genomic-context exploration and preparation of protein–protein interaction screens.
 
-[**Start the tutorial**](tutorials/xanthomonas.md){ .md-button .md-button--primary }
-[**Install ppigFinder**](user_manual/installation.md){ .md-button }
+[**Install ppigFinder**](user_manual/installation.md){ .md-button .md-button--primary }
+[**Start the tutorial**](tutorials/xanthomonas.md){ .md-button }
 [**Browse source**](https://github.com/leepusp/ppigFinder-v1){ .md-button }
-
-<div class="pf-badges">Python / PyQt · BLAST+ · HMMER · AlphaFold Server export · Optional HPC</div>
 
 </div>
 

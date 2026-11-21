@@ -19,7 +19,9 @@ The current `pyproject.toml` requires Python `>=3.11`, aligned with the implemen
 
 ## Recommended installers
 
-From a source checkout, open the graphical setup assistant:
+From a source checkout, open the graphical setup assistant. On Windows,
+double-click **scripts → Install ppigFinder.vbs** in File Explorer. This uses
+a windowless Python launcher. You can also start the assistant from a terminal:
 
 ```powershell
 # Windows
@@ -40,6 +42,15 @@ The graphical installer needs Tk and a graphical session. Add `--terminal`
 to the command for a terminal-only installation or `--desktop-only` to omit
 optional Python dependencies. An initial installation normally downloads
 Python packages. BLAST+, HMMER and AlphaFold engines are installed separately.
+
+The terminal installer prints the package name, the manual link and the path
+to the installed launcher. Run `py -3.11 scripts/install_ppigfinder.py --terminal`
+on Windows or `python3 scripts/install_ppigfinder.py --terminal` on Linux/macOS.
+
+To reinstall only ppigFinder, run the installed environment's Python with
+`-m pip uninstall ppigfinder`, then open the setup assistant again and select
+the same environment. Projects and other Python packages remain in place.
+For a fresh dependency check, choose a new empty environment instead.
 
 For an editable development installation, use `bash scripts/install_ppigfinder.sh` on Linux/macOS or
 `powershell -ExecutionPolicy Bypass -File .\scripts\install_ppigfinder.ps1`
@@ -90,9 +101,15 @@ python -m pip show ppigfinder
 
 Within the UI, inspect the backend status indicators. They represent **availability in your environment**, not universal requirements. If a tool is missing, first check the corresponding user-manual section.
 
-## Source-package status
+## Installed launcher and execution modes
 
-The repository currently contains a `pyproject.toml` entry point named `ppigfinder`, and `main.py` is the documented stable desktop launcher. A full install/launch matrix across Linux, Windows and macOS is **not yet recorded as passing**. Consequently, the commands here are instructions to test a source installation; they are not a promise of a published wheel, standalone installer or guaranteed 5-minute setup.
+Open `.venv\Scripts\ppigfinder.exe` on Windows or run `.venv/bin/ppigfinder` on Linux/macOS. Use the corresponding path under your selected folder if you changed the destination.
+
+- **Local desktop:** genome analysis, ORFs, annotations and AF3 JSON preparation.
+- **Local structural prediction:** configure the official AF3, Docker or wrapper runner. See [local AF3 setup](af3_local_installation.md).
+- **Optional HPC:** configure a host and use SSH/SFTP for transfers. On a Slurm host, `ppigfinder-slurm resources` lists configured resources and `validate` checks a batch script before submission. See [execution environments](hpc_submission.md) and [remote connections](remote_connections.md).
+
+The source installer has been exercised on Windows. The terminal install is configured for Windows, Linux and macOS in CI.
 
 ## No HPC? You can still use the software
 

@@ -7,9 +7,11 @@ import queue
 import subprocess
 import sys
 import threading
+import webbrowser
 
 
 ROOT = Path(__file__).resolve().parents[1]
+MANUAL_URL = "https://leepusp.github.io/ppigFinder-v1/user_manual/installation/"
 
 
 def venv_python(destination):
@@ -19,9 +21,11 @@ def venv_python(destination):
 def install(destination, recommended, report):
     destination = destination.expanduser().resolve()
     python = venv_python(destination)
+    report("Installing ppigFinder")
+    report(f"Installation manual: {MANUAL_URL}")
 
     def run(*args, env=None):
-        report(f"› {subprocess.list2cmdline([str(arg) for arg in args])}")
+        report(f"> {subprocess.list2cmdline([str(arg) for arg in args])}")
         with subprocess.Popen(
             args, cwd=ROOT, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
             text=True, errors="replace",
@@ -154,6 +158,7 @@ def wizard(destination, recommended):
     start.pack(side="left")
     launch = ttk.Button(controls, text="Open ppigFinder", command=open_app, state="disabled")
     launch.pack(side="left", padx=8)
+    ttk.Button(controls, text="Installation manual", command=lambda: webbrowser.open(MANUAL_URL)).pack(side="left")
     ttk.Button(controls, text="Close", command=close).pack(side="right")
     window.protocol("WM_DELETE_WINDOW", close)
     window.after(75, poll)
@@ -166,15 +171,19 @@ def main():
     parser.add_argument("--destination", type=Path, default=ROOT / ".venv")
     parser.add_argument("--desktop-only", action="store_true", help="Omit Pyrodigal and Paramiko")
     args = parser.parse_args()
-    if sys.version_info < (3, 11):
-        parser.exit(1, "Python 3.11+ is required.\n")
     try:
+        if sys.version_info < (3, 11):
+            raise RuntimeError("Python 3.11+ is required.")
         if args.terminal:
             python = install(args.destination, not args.desktop_only, lambda line: print(line, flush=True))
             print(f"Launch: {python.parent / ('ppigfinder.exe' if os.name == 'nt' else 'ppigfinder')}")
         else:
             wizard(args.destination, not args.desktop_only)
     except (OSError, RuntimeError, ValueError) as exc:
+        if os.name == "nt" and sys.stderr is None:
+            import ctypes
+            ctypes.windll.user32.MessageBoxW(None, str(exc), "ppigFinder Setup", 0x10)
+            raise SystemExit(1) from exc
         parser.exit(1, f"{exc}\n")
 
 

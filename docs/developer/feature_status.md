@@ -16,7 +16,8 @@
 | Result parsing | `alphafold/result_parser.py`, `services/alphafold_results_service.py` | Sequential/parallel parsing code; supported metrics depend on output format |
 | Boltz-2 / FoldCP | `structure_prediction/*_input_writer.py` | Input scaffolding; job-runner code contains TODOs |
 | SSH/SFTP | `integrations/remote/` | Optional, checksum-verified transfers with strict host-key checks. GUI round-trip has been tested on one host. |
-| Slurm operations | `hpc/slurm.py`, `hpc/cli.py` | Script validation, submission, status, log paths and cancellation on a Slurm host. Command handling is covered by offline tests. |
+| Slurm operations | `hpc/slurm.py`, `hpc/cli.py` | Resource discovery, script validation, submission, status, log paths and cancellation on a Slurm host. Command handling is covered by offline tests. |
+| Local installation | `scripts/install_ppigfinder.py` | Graphical setup assistant and terminal installer. Installation and desktop launch verified on Windows. |
 | Cross-platform packaging | `pyproject.toml`, `main.py`, PyQt launcher | Source install is documented; fresh OS install matrix needs verification |
 
 ## Architectural boundary (recommended)

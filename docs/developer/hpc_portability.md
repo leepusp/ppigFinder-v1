@@ -50,7 +50,7 @@ Do not store secrets, private keys, passwords, database credentials or personal 
 ## Technical defects / caveats found during review
 
 - Generated task tables contain **absolute paths**. Copying them from a laptop to an HPC server without rewriting/re-rendering paths will cause failures. Plan artifacts directly under the remote root or provide an explicit path-rebasing step.
-- `AF3_SCRIPT` is a configurable command in Slurm scripts, but module/environment initialization is currently hard-coded unless the caller passes an explicit `module_commands` override.
+- `AF3_SCRIPT` is a configurable command in Slurm scripts. Callers can supply module or environment initialization through `module_commands`.
 - The package's `hpc_service.py`, `ssh_client.py` and `job_monitor.py` do not implement the promised remote lifecycle. Legacy GUI may use other routines; those should be audited before migration.
 - Current AF3 writer supports proteins, not complete AF3 DNA/RNA/ligand functionality.
 
