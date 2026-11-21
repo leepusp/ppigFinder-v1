@@ -29,6 +29,7 @@ gui = [
 recommended = [
     "pyrodigal>=2.0",
     "paramiko>=2.9",
+    "scipy>=1.7",
 ]
 dev = [
     "pytest>=7",
@@ -42,4 +43,4 @@ ppigfinder-slurm = "ppigfinder.hpc.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["ppigfinder*"]
+include = ["ppigfinder", "ppigfinder.*"]

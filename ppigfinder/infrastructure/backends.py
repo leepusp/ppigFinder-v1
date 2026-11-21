@@ -176,8 +176,8 @@ def refresh_backends(detailed: bool = True) -> dict[str, dict[str, Any]]:
     """
     Refresh backend information on demand.
     """
-    global BACKENDS
-    BACKENDS = detect_backends(detailed=detailed)
+    detected = detect_backends(detailed=detailed)
+    BACKENDS.update(detected)
     return BACKENDS
 
 

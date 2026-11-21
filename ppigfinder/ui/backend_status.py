@@ -8,11 +8,13 @@ except ImportError:
     from PyQt5.QtWidgets import QDialog, QVBoxLayout, QPushButton, QHBoxLayout
 
 from ppigfinder.infrastructure.capabilities import collect_capabilities
+from ppigfinder.infrastructure.backends import BACKENDS, refresh_backends
 from ppigfinder.ui.widgets.backend_status_widget import BackendStatusWidget
 
 
 def _backend_rows(detailed: bool = False) -> list[dict]:
-    """Keep the previous UI helper contract; detection is always offline/fast."""
+    """Use the same detected tools as the main window."""
+    inventory = refresh_backends() if detailed else BACKENDS
     return [
         {
             "backend": capability.label,
@@ -20,7 +22,7 @@ def _backend_rows(detailed: bool = False) -> list[dict]:
             "operations": ", ".join(capability.operations),
             "details": capability.detail,
         }
-        for capability in collect_capabilities()
+        for capability in collect_capabilities(backend_inventory=inventory)
     ]
 
 
