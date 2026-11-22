@@ -7,6 +7,7 @@ import queue
 import subprocess
 import sys
 import threading
+import time
 import webbrowser
 
 
@@ -23,6 +24,7 @@ def install(destination, recommended, report):
     python = venv_python(destination)
     report("Installing ppigfinder")
     report(f"Installation manual: {MANUAL_URL}")
+    started = time.monotonic()
 
     def run(*args, env=None):
         report(f"> {subprocess.list2cmdline([str(arg) for arg in args])}")
@@ -35,6 +37,7 @@ def install(destination, recommended, report):
             if process.wait():
                 raise RuntimeError(f"Command failed with exit code {process.returncode}. See the log above.")
 
+    report("[1/3] Preparing the Python environment")
     if not (destination / "pyvenv.cfg").is_file():
         if destination.exists() and (not destination.is_dir() or any(destination.iterdir())):
             raise ValueError("Choose an empty folder or an existing Python virtual environment.")
@@ -44,14 +47,30 @@ def install(destination, recommended, report):
 
     run(str(python), "-c", "import sys; assert sys.version_info >= (3, 11), 'Python 3.11+ required'")
     extras = "gui,recommended" if recommended else "gui"
-    run(str(python), "-u", "-m", "pip", "install", "--progress-bar", "off", f".[{extras}]")
+    report("[2/3] Installing ppigfinder and its Python dependencies")
+    finished = threading.Event()
+    pip_started = time.monotonic()
+
+    def show_progress():
+        while not finished.wait(15):
+            elapsed = int(time.monotonic() - pip_started)
+            report(f"  pip is still running ({elapsed}s elapsed).")
+
+    progress = threading.Thread(target=show_progress, daemon=True)
+    progress.start()
+    try:
+        run(str(python), "-u", "-m", "pip", "install", "--progress-bar", "off", f".[{extras}]")
+    finally:
+        finished.set()
+        progress.join()
+    report("[3/3] Checking dependencies and the graphical interface")
     run(str(python), "-m", "pip", "check")
     run(str(python), "-I", "-c",
         "from PyQt6.QtWidgets import QApplication; from ppigfinder.app import main; app = QApplication([])",
         env={**os.environ, "QT_QPA_PLATFORM": "offscreen"})
     if recommended:
         run(str(python), "-I", "-c", "import paramiko, pyrodigal, scipy")
-    report(f"Installation complete: {destination}")
+    report(f"Installation complete in {int(time.monotonic() - started)}s: {destination}")
     return python
 
 
@@ -165,20 +184,54 @@ def wizard(destination, recommended):
     window.mainloop()
 
 
+def guided_setup(destination, recommended):
+    print((ROOT / "ppigfinder" / "terminal_banner.txt").read_text(encoding="ascii"), end="")
+    print("  Terminal setup\n")
+    print("  Press Enter to use the suggested folder, or type an absolute path.")
+    while True:
+        folder = input(f"[1/3] Installation folder [{destination}]: ").strip()
+        if not folder or Path(folder).expanduser().is_absolute():
+            break
+        print("Enter an absolute path or press Enter to use the suggested folder.")
+    destination = (Path(folder) if folder else destination).expanduser().resolve()
+    while True:
+        default = "Y/n" if recommended else "y/N"
+        answer = input(f"[2/3] Include Pyrodigal, SciPy and SSH/SFTP support? [{default}]: ").strip().lower()
+        if answer in ("", "y", "yes", "n", "no"):
+            break
+        print("Enter y or n.")
+    if answer:
+        recommended = answer in ("y", "yes")
+    profile = "desktop + recommended dependencies" if recommended else "desktop only"
+    print(f"\n  Folder: {destination}\n  Profile: {profile}\n")
+    if input("[3/3] Start installation? [y/N]: ").strip().lower() not in ("y", "yes"):
+        print("Installation cancelled.")
+        return None
+    return install(destination, recommended, lambda line: print(line, flush=True))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--terminal", action="store_true", help="Install without the graphical wizard")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--terminal", action="store_true", help="Install without prompting")
+    mode.add_argument("--guided", action="store_true", help="Run the interactive terminal setup")
     parser.add_argument("--destination", type=Path, default=ROOT / ".venv")
     parser.add_argument("--desktop-only", action="store_true", help="Omit Pyrodigal, SciPy and Paramiko")
     args = parser.parse_args()
     try:
         if sys.version_info < (3, 11):
             raise RuntimeError("Python 3.11+ is required.")
-        if args.terminal:
-            python = install(args.destination, not args.desktop_only, lambda line: print(line, flush=True))
-            print(f"Launch: {python.parent / ('ppigfinder.exe' if os.name == 'nt' else 'ppigfinder')}")
-        else:
+        if not (args.terminal or args.guided):
             wizard(args.destination, not args.desktop_only)
+            return
+        if args.guided:
+            python = guided_setup(args.destination, not args.desktop_only)
+        else:
+            python = install(args.destination, not args.desktop_only, lambda line: print(line, flush=True))
+        if python is not None:
+            print(f"Launch: {python.parent / ('ppigfinder.exe' if os.name == 'nt' else 'ppigfinder')}")
+    except (EOFError, KeyboardInterrupt) as exc:
+        parser.exit(130 if isinstance(exc, KeyboardInterrupt) else 1, "\nSetup interrupted.\n")
     except (OSError, RuntimeError, ValueError) as exc:
         if os.name == "nt" and sys.stderr is None:
             import ctypes

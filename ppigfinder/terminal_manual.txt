@@ -1,0 +1,31 @@
+ppigfinder terminal manual
+==========================
+
+Commands
+  ppigfinder             Open the desktop application
+  ppigfinder --help      List launcher options
+  ppigfinder --version   Show the installed version
+  ppigfinder --manual    Read this manual offline
+  ppigfinder manual      Shortcut for --manual
+
+Local workflow
+  1. Open the desktop app and select Load a genome file.
+  2. Use Translate genome to predict open reading frames (ORFs).
+  3. Inspect ORFs and genomic neighborhoods. Set up BLAST+ or HMMER
+     separately if you want to run sequence searches or domain annotation.
+  4. Select candidate proteins and prepare inputs from the AlphaFold tools.
+     For local AlphaFold 3 inference, configure the local engine and its data.
+  5. Open Load AF3 results directory to review existing prediction results.
+
+Remote execution on HPC
+  Configure an SSH host and test SSH/SFTP in Remote Connections.
+  For Slurm jobs, use the partition and resources supplied by your HPC site.
+  The desktop application can also analyze locally imported results.
+
+  ppigfinder-remote --help   SSH/SFTP commands
+  ppigfinder-slurm --help    Slurm commands
+  ppigfinder-af3 --help      AlphaFold 3 commands
+
+Full guide and installation
+  https://leepusp.github.io/ppigfinder/user_manual/complete_guide/
+  https://leepusp.github.io/ppigfinder/user_manual/installation/

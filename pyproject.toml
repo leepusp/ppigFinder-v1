@@ -36,7 +36,7 @@ dev = [
 ]
 
 [project.scripts]
-ppigfinder = "ppigfinder.app:main"
+ppigfinder = "ppigfinder.cli:main"
 ppigfinder-af3 = "ppigfinder.integrations.af3.cli:main"
 ppigfinder-remote = "ppigfinder.integrations.remote.cli:main"
 ppigfinder-slurm = "ppigfinder.hpc.cli:main"
@@ -44,3 +44,6 @@ ppigfinder-slurm = "ppigfinder.hpc.cli:main"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["ppigfinder", "ppigfinder.*"]
+
+[tool.setuptools.package-data]
+ppigfinder = ["terminal_banner.txt", "terminal_manual.txt"]

@@ -99,9 +99,21 @@ to the command for a terminal-only installation or `--desktop-only` to omit
 optional Python dependencies. An initial installation normally downloads
 Python packages. BLAST+, HMMER and AlphaFold engines are installed separately.
 
-The terminal installer prints the package name, the manual link and the path
-to the installed launcher. Run `py -3.11 scripts/install_ppigfinder.py --terminal`
-on Windows or `python3 scripts/install_ppigfinder.py --terminal` on Linux/macOS.
+For a guided terminal installation, run
+`py -3.11 scripts/install_ppigfinder.py --guided` on Windows or
+`python3 scripts/install_ppigfinder.py --guided` on Linux, WSL or macOS.
+The assistant asks for the virtual environment folder and optional dependencies,
+then shows the configuration before asking for confirmation. Press Enter at the
+folder prompt to accept the suggested path, or enter an absolute path.
+The installer labels each stage and reports elapsed time while pip is working.
+After verification,
+it prints the launcher path and links to this manual.
+
+Use `--terminal` for automated installations without prompts.
+
+After activating the environment where ppigfinder is installed, run
+`ppigfinder --help` for command options or `ppigfinder --manual` (also
+`ppigfinder manual`) to read the bundled quick guide offline.
 
 To reinstall only ppigfinder, run the installed environment's Python with
 `-m pip uninstall ppigfinder`, then open the setup assistant again and select
