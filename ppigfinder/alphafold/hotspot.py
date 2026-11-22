@@ -1,6 +1,6 @@
 """AlphaFold PAE hotspot metrics.
 
-This module contains the ppigFinder v29.14 hotspot algorithm extracted from
+This module contains the ppigfinder v29.14 hotspot algorithm extracted from
 the archived legacy GUI source so it can be tested and reused independently.
 """
 

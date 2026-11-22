@@ -68,7 +68,7 @@ def install_action_once(
 
 def install_modular_gui_actions(window) -> None:
     """
-    Install ppigFinder refactor actions into the legacy GUI.
+    Install ppigfinder refactor actions into the legacy GUI.
     """
     # Imports are intentionally local to keep startup light and avoid breaking
     # the GUI if one optional extension has a problem.
@@ -80,7 +80,7 @@ def install_modular_gui_actions(window) -> None:
 
         install_backend_status_action(window)
     except Exception:
-        LOGGER.exception("Optional ppigFinder menu action could not be installed")
+        LOGGER.exception("Optional ppigfinder menu action could not be installed")
 
     try:
         from ppigfinder.ui.af3_runner_dialog import show_af3_runner_dialog
@@ -131,7 +131,7 @@ def install_modular_gui_actions(window) -> None:
             callback=prepare_selected_orfs_for_native_af3,
         )
     except Exception:
-        LOGGER.exception("Optional ppigFinder menu action could not be installed")
+        LOGGER.exception("Optional ppigfinder menu action could not be installed")
 
     try:
         from ppigfinder.ui.af3_results_import import import_af3_results_folder
@@ -145,7 +145,7 @@ def install_modular_gui_actions(window) -> None:
             separator_before=False,
         )
     except Exception:
-        LOGGER.exception("Optional ppigFinder menu action could not be installed")
+        LOGGER.exception("Optional ppigfinder menu action could not be installed")
 
     try:
         from ppigfinder.ui.af3_table_export import export_af3_results_table
@@ -159,7 +159,7 @@ def install_modular_gui_actions(window) -> None:
             separator_before=False,
         )
     except Exception:
-        LOGGER.exception("Optional ppigFinder menu action could not be installed")
+        LOGGER.exception("Optional ppigfinder menu action could not be installed")
 
     try:
         from ppigfinder.ui.project_bridge import (
@@ -185,4 +185,4 @@ def install_modular_gui_actions(window) -> None:
             separator_before=False,
         )
     except Exception:
-        LOGGER.exception("Optional ppigFinder menu action could not be installed")
+        LOGGER.exception("Optional ppigfinder menu action could not be installed")

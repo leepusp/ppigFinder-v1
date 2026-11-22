@@ -1,5 +1,5 @@
 """
-Core domain models for ppigFinder.
+Core domain models for ppigfinder.
 """
 
 from .genome import GenomeRecord

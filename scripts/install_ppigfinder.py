@@ -1,4 +1,4 @@
-"""Local installation wizard. Run from a ppigFinder source checkout."""
+"""Local installation wizard. Run from a ppigfinder source checkout."""
 
 import argparse
 import os
@@ -11,7 +11,7 @@ import webbrowser
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MANUAL_URL = "https://leepusp.github.io/ppigFinder-v1/user_manual/installation/"
+MANUAL_URL = "https://leepusp.github.io/ppigfinder/user_manual/installation/"
 
 
 def venv_python(destination):
@@ -21,7 +21,7 @@ def venv_python(destination):
 def install(destination, recommended, report):
     destination = destination.expanduser().resolve()
     python = venv_python(destination)
-    report("Installing ppigFinder")
+    report("Installing ppigfinder")
     report(f"Installation manual: {MANUAL_URL}")
 
     def run(*args, env=None):
@@ -66,11 +66,11 @@ def wizard(destination, recommended):
     except tk.TclError as exc:
         raise RuntimeError(f"Could not initialize Tcl/Tk. Use --terminal to install.\n{exc}") from exc
 
-    window.title("ppigFinder Setup")
+    window.title("ppigfinder Setup")
     window.geometry("680x440")
     panel = ttk.Frame(window, padding=16)
     panel.pack(fill="both", expand=True)
-    ttk.Label(panel, text="Install ppigFinder locally", font=("TkDefaultFont", 16, "bold")).pack(anchor="w")
+    ttk.Label(panel, text="Install ppigfinder locally", font=("TkDefaultFont", 16, "bold")).pack(anchor="w")
     ttk.Label(panel, text="Choose the folder for an isolated Python environment.").pack(anchor="w", pady=(8, 4))
     folder = tk.StringVar(value=str(destination))
     options = ttk.Frame(panel)
@@ -146,7 +146,7 @@ def wizard(destination, recommended):
                 cwd=Path.home(),
             )
         except OSError as exc:
-            append(f"Could not start ppigFinder: {exc}")
+            append(f"Could not start ppigfinder: {exc}")
 
     def close():
         if busy:
@@ -156,7 +156,7 @@ def wizard(destination, recommended):
 
     start = ttk.Button(controls, text="Install", command=begin)
     start.pack(side="left")
-    launch = ttk.Button(controls, text="Open ppigFinder", command=open_app, state="disabled")
+    launch = ttk.Button(controls, text="Open ppigfinder", command=open_app, state="disabled")
     launch.pack(side="left", padx=8)
     ttk.Button(controls, text="Installation manual", command=lambda: webbrowser.open(MANUAL_URL)).pack(side="left")
     ttk.Button(controls, text="Close", command=close).pack(side="right")
@@ -182,7 +182,7 @@ def main():
     except (OSError, RuntimeError, ValueError) as exc:
         if os.name == "nt" and sys.stderr is None:
             import ctypes
-            ctypes.windll.user32.MessageBoxW(None, str(exc), "ppigFinder Setup", 0x10)
+            ctypes.windll.user32.MessageBoxW(None, str(exc), "ppigfinder Setup", 0x10)
             raise SystemExit(1) from exc
         parser.exit(1, f"{exc}\n")
 

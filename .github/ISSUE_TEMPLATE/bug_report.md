@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a reproducible ppigFinder problem
+about: Report a reproducible ppigfinder problem
 labels: bug
 ---
 

@@ -1,6 +1,6 @@
 # Tutorial: *Xanthomonas citri* strain 306
 
-This is a **study-inspired guide** based on the original ppigFinder manual and the [2026 bioRxiv preprint](https://doi.org/10.64898/2026.08.23.746524). It describes the experimental design and provides reproducibility checkpoints; it does **not** contain bundled AF3 predictions or guarantee reproduction of the published screening ranks without the exact data and computational parameters.
+This is a **study-inspired guide** based on the original ppigfinder manual and the [2026 bioRxiv preprint](https://doi.org/10.64898/2026.08.23.746524). It describes the experimental design and provides reproducibility checkpoints; it does **not** contain bundled AF3 predictions or guarantee reproduction of the published screening ranks without the exact data and computational parameters.
 
 ## Biological question
 
@@ -45,4 +45,4 @@ Review confidence fields such as `PAE_min`, ipTM, model ranking, interface conta
 
 Preserve the original FASTA and checksum; ORF table; HMM/BLAST source versions; candidate manifest; native/server JSON; model settings and seeds; results; confidence tables; and scripts used for aggregation. This makes it possible to distinguish published evidence, new results and exploratory interpretations.
 
-**Publication:** Oka GU, Adan C, Calomeno CVAQ, de Souza RF. *ppigFinder: an integrated desktop application for bacterial genome annotation and AlphaFold 3-based protein–protein interaction screening.* bioRxiv (2026). DOI: [10.64898/2026.08.23.746524](https://doi.org/10.64898/2026.08.23.746524).
+**Publication:** Oka GU, Adan C, Calomeno CVAQ, de Souza RF. *ppigfinder: an integrated desktop application for bacterial genome annotation and AlphaFold 3-based protein–protein interaction screening.* bioRxiv (2026). DOI: [10.64898/2026.08.23.746524](https://doi.org/10.64898/2026.08.23.746524).

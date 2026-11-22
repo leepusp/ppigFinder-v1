@@ -10,7 +10,7 @@ from .slurm import SlurmAdapter
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="Manage ppigFinder batch scripts on a Slurm host")
+    parser = argparse.ArgumentParser(description="Manage ppigfinder batch scripts on a Slurm host")
     commands = parser.add_subparsers(dest="action", required=True)
     commands.add_parser("resources", help="List partition and node configurations")
     commands.add_parser("validate", help="Check a script with Slurm without scheduling it").add_argument("script")

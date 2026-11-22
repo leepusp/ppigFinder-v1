@@ -13,7 +13,7 @@ installer's offscreen smoke test.
 
 ## Backend not detected
 
-Check whether BLAST+, HMMER3, Pyrodigal and Python dependencies are installed and available in the active environment. Restart ppigFinder after changing PATH, modules or conda environments.
+Check whether BLAST+, HMMER3, Pyrodigal and Python dependencies are installed and available in the active environment. Restart ppigfinder after changing PATH, modules or conda environments.
 
 ## Genome does not load
 
@@ -28,10 +28,10 @@ Run an ORF prediction mode after loading the genome. If the map does not update,
 Confirm that the query sequence or HMM file is valid and that the external tool is available. Review E-value thresholds when no hits are detected.
 
 From a source checkout, run `python scripts/developer/check_hmmer_annotation.py`
-with the ppigFinder environment's Python. The test requires `hmmbuild` and
+with the ppigfinder environment's Python. The test requires `hmmbuild` and
 `hmmsearch`, builds a temporary protein profile, and prints
-`HMMER_ANNOTATION=PASS` if ppigFinder reports the expected hit and coordinates.
-On Windows the check uses WSL when ppigFinder detects HMMER there.
+`HMMER_ANNOTATION=PASS` if ppigfinder reports the expected hit and coordinates.
+On Windows the check uses WSL when ppigfinder detects HMMER there.
 
 ## AlphaFold 3 JSON is rejected
 
@@ -39,7 +39,7 @@ Check whether the exported JSON matches the intended submission target. Public A
 
 ## AF3 result has missing metrics
 
-Some AF3 folders may be incomplete or may lack files such as `model.cif`, `summary.json`, `confidences.json` or `ranking_scores.csv`. ppigFinder can still parse partial results, but plotting and hotspot analysis require the heavier confidence files.
+Some AF3 folders may be incomplete or may lack files such as `model.cif`, `summary.json`, `confidences.json` or `ranking_scores.csv`. ppigfinder can still parse partial results, but plotting and hotspot analysis require the heavier confidence files.
 
 ## PPI result interpretation
 

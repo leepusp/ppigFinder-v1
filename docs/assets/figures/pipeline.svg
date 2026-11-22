@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" font-family="Inter, Roboto, Arial, sans-serif">
-  <title>ppigFinder pipeline</title>
+  <title>ppigfinder pipeline</title>
   <defs>
     <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5c6bc0"/></marker>
   </defs>

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HMM/domain search service for ppigFinder.
+HMM/domain search service for ppigfinder.
 
 This service separates HMM search orchestration from the GUI. The current
 implementation delegates algorithm execution to the legacy analyzer while
@@ -67,7 +67,7 @@ class HMMSearchService:
         """
         Run HMM/domain search.
 
-        This method is intentionally permissive because older ppigFinder
+        This method is intentionally permissive because older ppigfinder
         versions used different analyzer method names. It tries known method
         names and falls back gracefully.
         """

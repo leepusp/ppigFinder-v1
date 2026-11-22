@@ -13,7 +13,7 @@ The Annotation module links predicted ORFs to functional evidence using similari
 
 ## BLAST / similarity search
 
-ppigFinder can use local BLAST+ when available. It can also use built-in fallback approaches such as k-mer filtering and Smith-Waterman alignment.
+ppigfinder can use local BLAST+ when available. It can also use built-in fallback approaches such as k-mer filtering and Smith-Waterman alignment.
 
 Typical output includes:
 
@@ -31,7 +31,7 @@ Output includes domain assignments that can be propagated to ORF tables and geno
 
 ## Neighbourhood analysis
 
-The neighbourhood step inspects ORFs around a selected candidate within a configurable genomic window. This is central to the ppigFinder strategy because co-localized bacterial genes often encode functionally or physically associated proteins.
+The neighbourhood step inspects ORFs around a selected candidate within a configurable genomic window. This is central to the ppigfinder strategy because co-localized bacterial genes often encode functionally or physically associated proteins.
 
 ## Recommended next step
 

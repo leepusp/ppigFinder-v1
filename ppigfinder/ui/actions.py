@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Standard QAction factory for ppigFinder.
+Standard QAction factory for ppigfinder.
 
 Centralizing QAction creation makes icons, shortcuts and text fallback
 consistent across menus and toolbars.

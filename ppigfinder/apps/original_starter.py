@@ -27,7 +27,7 @@ def _align_center():
 
 class PpigFinderStarter(QWidget):
     """
-    Lightweight splash launcher for the original ppigFinder interface.
+    Lightweight splash launcher for the original ppigfinder interface.
 
     The splash stays visible until the real interface signals that its main
     window has been shown. This avoids a visual gap between "loading finished"
@@ -48,7 +48,7 @@ class PpigFinderStarter(QWidget):
         except Exception:
             pass
 
-        self.setWindowTitle("ppigFinder — Loading")
+        self.setWindowTitle("ppigfinder — Loading")
         self.resize(560, 360)
 
         try:
@@ -79,7 +79,7 @@ class PpigFinderStarter(QWidget):
             """
         )
 
-        title = QLabel("ppigFinder")
+        title = QLabel("ppigfinder")
         title.setAlignment(_align_center())
         title.setStyleSheet("font-size: 30px; font-weight: 800; color: #17384d;")
 
@@ -87,7 +87,7 @@ class PpigFinderStarter(QWidget):
         subtitle.setAlignment(_align_center())
         subtitle.setStyleSheet("font-size: 12px; color: #60717f;")
 
-        self.status_label = QLabel("Loading original ppigFinder interface...")
+        self.status_label = QLabel("Loading original ppigfinder interface...")
         self.status_label.setAlignment(_align_center())
         self.status_label.setWordWrap(True)
         self.status_label.setStyleSheet("font-size: 12px; color: #263238;")
@@ -149,7 +149,7 @@ class PpigFinderStarter(QWidget):
 def main() -> int:
     app = QApplication(sys.argv)
     app.setApplicationName("ppigFinder")
-    app.setApplicationDisplayName("ppigFinder — Loading")
+    app.setApplicationDisplayName("ppigfinder — Loading")
 
     window = PpigFinderStarter()
     window.show()

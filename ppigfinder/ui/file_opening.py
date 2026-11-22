@@ -20,7 +20,7 @@ from ppigfinder.ui.recent_files import add_recent_file
 
 def open_genome_file_into_window(window, path: str | Path) -> bool:
     """
-    Load a genome/sequence file and apply it to the current ppigFinder window.
+    Load a genome/sequence file and apply it to the current ppigfinder window.
 
     Returns True on success.
     """

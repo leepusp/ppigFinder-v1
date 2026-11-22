@@ -31,4 +31,4 @@ Current features:
 - view protein and DNA sequence previews;
 - move directly to annotation, candidate review, FASTA export or AlphaFold/PPI.
 
-This is the first step toward a lovis4u-like neighbourhood visualization layer inside ppigFinder.
+This is the first step toward a lovis4u-like neighbourhood visualization layer inside ppigfinder.

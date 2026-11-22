@@ -1,6 +1,6 @@
 # Structural prediction backends
 
-This layer prepares ppigFinder to support multiple structural prediction backends:
+This layer prepares ppigfinder to support multiple structural prediction backends:
 
 - AlphaFold 3 / AF3
 - Boltz-2

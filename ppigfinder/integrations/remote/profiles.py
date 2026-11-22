@@ -76,7 +76,7 @@ class ProfileStore:
             return ()
         data = json.loads(self.path.read_text(encoding="utf-8"))
         if not isinstance(data, dict) or data.get("version") != 1 or not isinstance(data.get("profiles"), list):
-            raise ValueError("Unsupported ppigFinder connections format")
+            raise ValueError("Unsupported ppigfinder connections format")
         profiles = tuple(RemoteProfile.from_dict(item) for item in data["profiles"])
         if len(set(p.name for p in profiles)) != len(profiles):
             raise ValueError("Duplicate remote profile names")

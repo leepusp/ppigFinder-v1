@@ -1,5 +1,5 @@
 """
-Infrastructure modules for ppigFinder.
+Infrastructure modules for ppigfinder.
 """
 
 from .cache import JsonCache, directory_signature, file_signature

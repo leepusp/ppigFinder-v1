@@ -1,12 +1,12 @@
-# ppigFinder Analysis Workflow
+# ppigfinder Analysis Workflow
 
-ppigFinder is designed as a neighbourhood-guided workflow for investigating candidate protein-protein interactions directly from bacterial genome sequence data.
+ppigfinder is designed as a neighbourhood-guided workflow for investigating candidate protein-protein interactions directly from bacterial genome sequence data.
 
-The central idea is to reduce the AlphaFold 3 search space before structural prediction. Instead of testing all possible protein pairs in a bacterial proteome, ppigFinder combines ORF prediction, functional annotation and genomic neighbourhood context to prioritize biologically plausible candidate interactions.
+The central idea is to reduce the AlphaFold 3 search space before structural prediction. Instead of testing all possible protein pairs in a bacterial proteome, ppigfinder combines ORF prediction, functional annotation and genomic neighbourhood context to prioritize biologically plausible candidate interactions.
 
 ## Workflow summary
 
-A typical ppigFinder session follows seven major steps:
+A typical ppigfinder session follows seven major steps:
 
 1. Load a genome sequence.
 2. Predict ORFs using Pyrodigal, six-frame translation or hybrid mode.
@@ -56,7 +56,7 @@ Identify protein-coding open reading frames from the loaded genome sequence.
 
 ### Supported strategies
 
-ppigFinder supports complementary ORF prediction strategies:
+ppigfinder supports complementary ORF prediction strategies:
 
 - **Pyrodigal / Prodigal-like gene calling**: gene prediction based on GC-content modelling, coding potential and ribosome binding site scoring.
 - **Exhaustive six-frame translation**: searches all six reading frames for ORFs defined by configurable start and stop codons.
@@ -126,7 +126,7 @@ When HMMER3 is unavailable, internal fallback scanners can be used for selected 
 
 Use prokaryotic genome organization to prioritize candidate protein-protein interactions.
 
-In bacterial genomes, functionally related and physically interacting proteins are often encoded close to one another, frequently in operons or conserved genomic neighbourhoods. ppigFinder uses this principle to reduce the candidate interaction search space.
+In bacterial genomes, functionally related and physically interacting proteins are often encoded close to one another, frequently in operons or conserved genomic neighbourhoods. ppigfinder uses this principle to reduce the candidate interaction search space.
 
 ### Typical analysis
 
@@ -152,7 +152,7 @@ Prepare protein-protein interaction prediction jobs from biologically prioritize
 
 ### Supported job concepts
 
-ppigFinder is designed to support multiple AlphaFold 3 job construction modes, including:
+ppigfinder is designed to support multiple AlphaFold 3 job construction modes, including:
 
 - query ORF versus neighbouring ORFs
 - query ORF plus homodimer jobs
@@ -188,7 +188,7 @@ Run AlphaFold 3 predictions externally or through configured infrastructure.
 
 ### Supported directions
 
-ppigFinder can support workflows involving:
+ppigfinder can support workflows involving:
 
 - AlphaFold Server upload
 - local AlphaFold 3 installations
@@ -211,7 +211,7 @@ Interpret AlphaFold 3 predictions using interaction confidence metrics.
 
 ### Metrics
 
-ppigFinder extracts and reports metrics such as:
+ppigfinder extracts and reports metrics such as:
 
 - **ipTM**: interface predicted TM-score
 - **pTM**: global predicted TM-score
@@ -237,7 +237,7 @@ Low inter-chain PAE values and high interface confidence support the presence of
 
 ## Reports and reproducibility
 
-ppigFinder can export:
+ppigfinder can export:
 
 - ORF tables
 - FASTA files

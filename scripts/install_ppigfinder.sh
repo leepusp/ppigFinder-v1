@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install the ppigFinder desktop without installing AF3 inference/weights.
+# Install the ppigfinder desktop without installing AF3 inference/weights.
 set -Eeuo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"

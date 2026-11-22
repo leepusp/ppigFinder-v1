@@ -11,4 +11,4 @@ These changes primarily affect documentation, distribution presentation and ligh
 
 ## Software metadata v2.9.14 — 2026-08-16
 
-Imported application source and historical metadata from [`leepusp/ppigfinder`](https://github.com/leepusp/ppigfinder). See its Git history and release tag for the precise software code changes.
+Imported the application source and historical release metadata.

@@ -1,4 +1,4 @@
-"""Read-only, offline capability registry for optional ppigFinder integrations.
+"""Read-only, offline capability registry for optional ppigfinder integrations.
 
 No network connection, scheduler submission, executable invocation or Qt import
 occurs while discovering capabilities. Presence of an executable is NOT proof
@@ -17,7 +17,7 @@ from typing import Callable
 
 
 class CapabilityStatus(str, Enum):
-    AVAILABLE = "available"           # Code path built into ppigFinder
+    AVAILABLE = "available"           # Code path built into ppigfinder
     DETECTED = "detected"             # Dependency exists, operation not verified
     NOT_CONFIGURED = "not_configured" # Optional dependency/configuration absent
     NOT_IMPLEMENTED = "not_implemented" # No functional adapter exists yet
@@ -132,7 +132,7 @@ def capabilities_as_dicts() -> list[dict]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Offline ppigFinder capability report")
+    parser = argparse.ArgumentParser(description="Offline ppigfinder capability report")
     parser.add_argument("--json", action="store_true", help="Machine-readable report")
     args = parser.parse_args(argv)
     capabilities = collect_capabilities()

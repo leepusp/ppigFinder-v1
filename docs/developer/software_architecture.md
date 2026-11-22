@@ -1,6 +1,6 @@
-# ppigFinder Software Architecture
+# ppigfinder Software Architecture
 
-ppigFinder is currently being refactored from a monolithic desktop application into a modular architecture while preserving the functional Qt interface.
+ppigfinder is currently being refactored from a monolithic desktop application into a modular architecture while preserving the functional Qt interface.
 
 ## Current stable entry point
 
@@ -48,7 +48,7 @@ This interface does not replace the current stable interface yet.
 
 ## Backend detection
 
-At startup, ppigFinder can detect optional tools such as:
+At startup, ppigfinder can detect optional tools such as:
 
 - BLAST+
 - HMMER3

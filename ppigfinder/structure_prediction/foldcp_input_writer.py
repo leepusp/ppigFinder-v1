@@ -57,7 +57,7 @@ def render_foldcp_job_yaml(job: PredictionJobSpec) -> str:
             "expected_outputs:",
             "  - structural_comparison_or_prediction_support_results",
             "notes:",
-            "  - This is a ppigFinder intermediate FoldCP input description.",
+            "  - This is a ppigfinder intermediate FoldCP input description.",
             "  - FoldCP execution should be adapted to the local workflow.",
             "  - If FoldCP requires structures instead of sequences, this file remains the traceability layer.",
         ]

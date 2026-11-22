@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Small JSON cache utilities for ppigFinder.
+Small JSON cache utilities for ppigfinder.
 
 Used to avoid repeated parsing of expensive result folders.
 """

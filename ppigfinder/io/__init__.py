@@ -1,5 +1,5 @@
 """
-Input/output modules for ppigFinder.
+Input/output modules for ppigfinder.
 """
 
 from .fasta import (

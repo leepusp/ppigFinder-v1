@@ -1,6 +1,6 @@
-# ppigFinder Architecture
+# ppigfinder Architecture
 
-ppigFinder is organized by scientific and operational responsibility.
+ppigfinder is organized by scientific and operational responsibility.
 
 ## Main layers
 

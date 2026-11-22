@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Project snapshot service for ppigFinder.
+Project snapshot service for ppigfinder.
 
 This service does not replace the legacy save/load yet. It provides a new
 versioned project snapshot format that can be used by the GUI, CLI, batch

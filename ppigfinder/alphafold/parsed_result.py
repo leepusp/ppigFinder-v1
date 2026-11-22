@@ -1,7 +1,7 @@
 """AlphaFold parsed-result builders.
 
 This module contains GUI-independent result-dictionary construction extracted
-from ppigFinder v29.14.
+from ppigfinder v29.14.
 """
 
 from __future__ import annotations

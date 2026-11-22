@@ -30,7 +30,7 @@ This is the most accessible option when the user **does not have a cluster or lo
 3. Inspect sequence lengths, chain identifiers, stoichiometry and predicted job count.
 4. Open [AlphaFold Server](https://alphafoldserver.com/) in a browser; authenticate and verify the service's current permitted inputs and limits.
 5. Submit compatible jobs manually as accepted by the website.
-6. Download resulting structures and confidence files, and import the completed result folders into ppigFinder.
+6. Download resulting structures and confidence files, and import the completed result folders into ppigfinder.
 
 **Do not interchange server-dialect JSON and native AF3 JSON without checking the corresponding schema.** Current service terms, size and daily limits may change; no static quota is guaranteed here. This workflow makes **no claim of an official automatic server-submission API**.
 

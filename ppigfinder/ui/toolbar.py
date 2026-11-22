@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Toolbar polish helpers for ppigFinder.
+Toolbar polish helpers for ppigfinder.
 """
 
 from __future__ import annotations

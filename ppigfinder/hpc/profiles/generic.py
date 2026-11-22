@@ -3,7 +3,7 @@
 Generic HPC / AF3 profile.
 
 This profile intentionally avoids site-specific Slurm assumptions. It is the
-safe default for ppigFinder because users may export AlphaFold 3 JSON files,
+safe default for ppigfinder because users may export AlphaFold 3 JSON files,
 run local wrappers, or adapt generated scripts to any SSH/Slurm/HPC server.
 """
 

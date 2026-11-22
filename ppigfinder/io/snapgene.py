@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-SnapGene .dna reader/writer for ppigFinder.
+SnapGene .dna reader/writer for ppigfinder.
 
 This module is intentionally independent from the PyQt GUI.
 """

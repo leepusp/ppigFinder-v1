@@ -39,7 +39,7 @@ def _add_config(parser: argparse.ArgumentParser) -> None:
 
 
 def parser_for_cli() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(description="ppigFinder native AlphaFold 3 integration")
+    p = argparse.ArgumentParser(description="ppigfinder native AlphaFold 3 integration")
     sub = p.add_subparsers(dest="command", required=True)
 
     prepare = sub.add_parser("prepare", help="Write native AF3 object from protein FASTA")

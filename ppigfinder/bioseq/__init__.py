@@ -1,5 +1,5 @@
 """
-Biological sequence utilities and ORF prediction modules for ppigFinder.
+Biological sequence utilities and ORF prediction modules for ppigfinder.
 """
 
 from .sequence import (

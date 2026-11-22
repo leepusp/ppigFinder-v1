@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Basic biological sequence utilities used by ppigFinder.
+Basic biological sequence utilities used by ppigfinder.
 """
 
 from __future__ import annotations

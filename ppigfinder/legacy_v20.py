@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ppigFinder — Protein-Protein Interaction Genomic Finder
+ppigfinder — Protein-Protein Interaction Genomic Finder
 ========================================================
 Version  : 2.00 — v2.0
 Released : 2026
@@ -8,7 +8,7 @@ License  : MIT (see LICENSE section below)
 
 DESCRIPTION
 -----------
-ppigFinder is a standalone desktop application for the discovery of novel
+ppigfinder is a standalone desktop application for the discovery of novel
 protein-protein interactions (PPIs) in bacterial genomes.  Starting from a
 raw nucleotide sequence (FASTA, GenBank or SnapGene), the tool identifies
 all open reading frames (ORFs), annotates them through homology search
@@ -175,7 +175,7 @@ REFERENCES
   METHODOLOGY NOTE — Focal Interaction Metrics (v1.18):
   The global PAE_inter metric (mean of the entire off-diagonal PAE quadrant)
   is diluted by disordered protein regions and does not reliably identify
-  proteins that interact through a single domain. ppigFinder v1.18+
+  proteins that interact through a single domain. ppigfinder v1.18+
   introduces two focal metrics extracted directly from AF3 summary JSONs:
     • PAE_min (chain_pair_pae_min): minimum PAE in the off-diagonal quadrant.
       A value < 4 Å indicates that AF3 predicts at least one contact point
@@ -198,13 +198,13 @@ SUPPORTED FILE FORMATS
 ----------------------
   Input  : FASTA (.fasta .fa .fna), GenBank (.gb .gbk), SnapGene (.dna)
   Output : FASTA, GenBank, SnapGene .dna, PDF/EPS, TSV, JSON (AF3),
-           FASTA (ColabFold), ppigFinder project (.json)
+           FASTA (ColabFold), ppigfinder project (.json)
 
 LICENSE
 -------
   MIT License
 
-  Copyright (c) 2026 ppigFinder Contributors
+  Copyright (c) 2026 ppigfinder Contributors
 
   Permission is hereby granted, free of charge, to any person obtaining a
   copy of this software and associated documentation files (the "Software"),
@@ -225,15 +225,15 @@ LICENSE
   DEALINGS IN THE SOFTWARE.
 
   ATTRIBUTION REQUIREMENT (MIT with Credit Clause):
-  Any publication, software, or derivative work that uses ppigFinder or
+  Any publication, software, or derivative work that uses ppigfinder or
   substantial portions of its source code must give appropriate credit to
   the original authors by retaining this notice and/or citing the original
   repository.
 
 CITATION
 --------
-  If you use ppigFinder in your research, please cite:
-    ppigFinder: Protein-Protein Interaction Genomic Finder (2026).
+  If you use ppigfinder in your research, please cite:
+    ppigfinder: Protein-Protein Interaction Genomic Finder (2026).
     https://github.com/goka-lab/ppigfinder
 
 CHANGELOG
@@ -1594,7 +1594,7 @@ class AdvancedORFAnalyzer:
 TRANSLATIONS = {
     # ── English ─────────────────────────────────────────────────
     'en': {
-        'app_title':        '🧬 ppigFinder v2.00 — PPI Genomic Finder',
+        'app_title':        '🧬 ppigfinder v2.00 — PPI Genomic Finder',
         'menu_file':        '📁 File',
         'menu_params':      '⚙️ Parameters',
         'menu_language':    '🌐 Language',
@@ -1821,13 +1821,13 @@ def t(key: str) -> str:
 HELP_CONTENT = {
     'manual': {
         'en': """\
-ppigFinder v2.00
+ppigfinder v2.00
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 User Manual
 
 OVERVIEW
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ppigFinder is a standalone desktop application for the discovery of novel
+ppigfinder is a standalone desktop application for the discovery of novel
 protein-protein interactions (PPIs) in bacterial and archaeal genomes.
 
 The pipeline starts from a raw FASTA nucleotide sequence and proceeds
@@ -2038,7 +2038,7 @@ SECTION 5 — BLAST HOMOLOGY SEARCH
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 BLAST Query tab:
   Paste or load a protein sequence (FASTA or raw) and click "Run BLAST".
-  ppigFinder runs BLASTp against the local ORF database (all predicted
+  ppigfinder runs BLASTp against the local ORF database (all predicted
   proteins from the current genome). Hits appear in the BLAST Results tab
   with alignment details. Clicking any ORF link centers the genome map.
 
@@ -2122,7 +2122,7 @@ SECTION 9 — ALPHAFOLD 3 RESULT ANALYSIS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 AlphaFold Analysis tab → "Load AF3 results folder".
 
-ppigFinder recursively scans for AF3 output JSON files and parses:
+ppigfinder recursively scans for AF3 output JSON files and parses:
   ipTM         — interface predicted TM-score (key interaction metric)
   pTM          — predicted TM-score for the full complex
   mean_pLDDT   — mean per-residue local distance difference test score
@@ -2246,10 +2246,10 @@ and in the toolbar badge (✅ / ❌ per backend).
 
     'tutorial': {
         'en': """\
-ppigFinder v2.00 — Step-by-Step Tutorial
+ppigfinder v2.00 — Step-by-Step Tutorial
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 A practical guide for novel bacterial PPI discovery using the full
-ppigFinder pipeline: gene prediction → HMM / BLAST annotation →
+ppigfinder pipeline: gene prediction → HMM / BLAST annotation →
 genomic neighbourhood → AlphaFold 3 submission → result analysis.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2440,7 +2440,7 @@ STEP 6 — BLAST homology search
 BLAST Query tab:
   1. Paste or load a protein sequence (FASTA or raw amino-acid string)
      into the query box.
-  2. Click "Run BLAST". ppigFinder runs BLASTp against all predicted
+  2. Click "Run BLAST". ppigfinder runs BLASTp against all predicted
      ORF protein sequences from the current genome.
   3. Results appear in the BLAST Results tab with e-value, bit-score,
      identity%, and aligned positions. Clicking an ORF link selects
@@ -2531,7 +2531,7 @@ Monitor
 
 Results
   Browse remote directories, select completed job folders, and
-  click "Download". ppigFinder downloads via SFTP and optionally
+  click "Download". ppigfinder downloads via SFTP and optionally
   auto-imports ipTM and pLDDT values into the Ranking tab.
 
 HPC setup: use the target site's partition, resources and AF3 command.
@@ -2541,7 +2541,7 @@ STEP 9 — Analyse AlphaFold 3 predictions
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 AlphaFold Analysis tab → "Load AF3 results folder".
 
-ppigFinder recursively scans the selected folder for AF3 output JSON
+ppigfinder recursively scans the selected folder for AF3 output JSON
 files and automatically parses:
   ipTM          interface predicted TM-score — the primary metric
                 for assessing whether two proteins physically interact.
@@ -2581,7 +2581,7 @@ figures for the selected predictions.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 STEP 10 — Navigate the genome map
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-The genome map is central to the ppigFinder workflow — it provides
+The genome map is central to the ppigfinder workflow — it provides
 spatial context for every ORF and supports rapid visual inspection.
 
 Zoom range: 0.5× (full chromosome) → 1,000,000× (nucleotide level).
@@ -2661,9 +2661,9 @@ Reports:
 
     'install': {
         'en': """\
-ppigFinder v2.00 — Installation Guide
+ppigfinder v2.00 — Installation Guide
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-How to install ppigFinder and all its dependencies on a regular
+How to install ppigfinder and all its dependencies on a regular
 personal computer — Windows, macOS, and Linux.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2712,7 +2712,7 @@ installs packages through pip in a virtual environment.
    Expected output: Python 3.12.x  (or similar 3.8+)
 
 ── 1.2  Create a virtual environment (recommended) ────────────────
-A virtual environment keeps ppigFinder's packages isolated from
+A virtual environment keeps ppigfinder's packages isolated from
 other Python projects on your machine.
 
 In the Command Prompt / PowerShell:
@@ -2735,7 +2735,7 @@ With the environment active:
   python -c "import PyQt6; import matplotlib; import numpy; print('OK')"
   python -c "import pyrodigal; print('pyrodigal', pyrodigal.__version__)"
 
-── 1.4  Run ppigFinder ────────────────────────────────────────────
+── 1.4  Run ppigfinder ────────────────────────────────────────────
 Place the file ppigfinderv1_12.py anywhere convenient (e.g. Desktop).
 With the virtual environment active:
   python C:\\Users\\YourName\\Desktop\\ppigfinderv1_12.py
@@ -2768,7 +2768,7 @@ HMMER3 does not have a native Windows build. Install WSL first
   sudo apt-get install -y hmmer
   hmmscan -h | head -2     # verify
 
-ppigFinder automatically detects HMMER3 running through WSL.
+ppigfinder automatically detects HMMER3 running through WSL.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 SECTION 2 — WINDOWS (with Spyder / Anaconda)
@@ -2811,7 +2811,7 @@ You must run "conda activate ppigfinder" each time before using the app.
   conda configurations. If the install fails, use WSL (Section 3)
   or the native BLAST+ installer (Section 1.5).
 
-── 2.5  Run ppigFinder from Spyder ────────────────────────────────
+── 2.5  Run ppigfinder from Spyder ────────────────────────────────
 1. Open Spyder from the Anaconda Navigator (make sure the ppigfinder
    environment is selected in the top-right environment dropdown).
    — or — from Anaconda Prompt with (ppigfinder) active:
@@ -2819,20 +2819,20 @@ You must run "conda activate ppigfinder" each time before using the app.
 
 2. In Spyder, open ppigfinderv1_12.py (File → Open).
 3. Press F5 (Run file) or click the green ▶ button.
-4. The ppigFinder window will open alongside Spyder.
+4. The ppigfinder window will open alongside Spyder.
 
    Tip: In Spyder Preferences → Run → "Run in external terminal"
-   will open ppigFinder as a separate window rather than inside
+   will open ppigfinder as a separate window rather than inside
    Spyder's IPython console, which avoids event-loop conflicts.
 
-── 2.6  Run ppigFinder from Anaconda Prompt ───────────────────────
+── 2.6  Run ppigfinder from Anaconda Prompt ───────────────────────
   conda activate ppigfinder
   python C:\\path\\to\\ppigfinderv1_12.py
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 SECTION 3 — WINDOWS SUBSYSTEM FOR LINUX (WSL)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-WSL runs a real Linux environment inside Windows. ppigFinder detects
+WSL runs a real Linux environment inside Windows. ppigfinder detects
 BLAST+ and HMMER3 installed in WSL automatically via the backend
 detection code ("via WSL" label in the Backends panel).
 
@@ -2859,8 +2859,8 @@ Open the Ubuntu app from the Start menu (or type "wsl" in Powershell):
   sudo apt-get install -y hmmer
   hmmscan -h | head -2    # should print HMMER 3.x
 
-── 3.4  Verify ppigFinder detects WSL tools ───────────────────────
-Launch ppigFinder on Windows (Sections 1 or 2). In the right panel,
+── 3.4  Verify ppigfinder detects WSL tools ───────────────────────
+Launch ppigfinder on Windows (Sections 1 or 2). In the right panel,
 look at the Backends section:
   BLAST+     ✅  via WSL
   HMMER3     ✅  via WSL
@@ -2868,7 +2868,7 @@ look at the Backends section:
 If you see ❌, open a Command Prompt and test:
   wsl bash -c "blastp -version"
   wsl bash -c "hmmscan -h"
-These commands must return output for ppigFinder to detect them.
+These commands must return output for ppigfinder to detect them.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 SECTION 4 — macOS
@@ -2918,7 +2918,7 @@ Your prompt will show (ppigfinder_env). Activate it every session:
   brew install hmmer
   hmmscan -h | head -2    # verify
 
-── 4.7  Run ppigFinder ────────────────────────────────────────────
+── 4.7  Run ppigfinder ────────────────────────────────────────────
   source ~/Desktop/ppigfinder_env/bin/activate
   python ~/Desktop/ppigfinderv1_12.py
 
@@ -2965,7 +2965,7 @@ SECTION 5 — LINUX (Ubuntu / Debian)
   pip install --upgrade pip
   pip install PyQt6 matplotlib numpy pyrodigal paramiko
 
-── 5.3  Run ppigFinder ────────────────────────────────────────────
+── 5.3  Run ppigfinder ────────────────────────────────────────────
   source ~/ppigfinder_env/bin/activate
   python ~/ppigfinderv1_12.py
 
@@ -2980,7 +2980,7 @@ SECTION 5 — LINUX (Ubuntu / Debian)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 SECTION 6 — VERIFY ALL BACKENDS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-After launching ppigFinder, look at the Backends panel in the
+After launching ppigfinder, look at the Backends panel in the
 right-side Genome tab. Every installed component shows ✅:
 
   BLAST+     ✅  blastp: 2.x.x+   (or "via WSL" on Windows)
@@ -3021,7 +3021,7 @@ SECTION 8 — TROUBLESHOOTING
 Problem: "No module named PyQt6" when running the app
   Fix: pip install PyQt6
        If that fails, try: pip install PyQt5
-       (ppigFinder auto-detects either version)
+       (ppigfinder auto-detects either version)
 
 Problem: The app window opens but plots are blank / grey
   Fix: pip install matplotlib numpy --upgrade
@@ -3034,7 +3034,7 @@ Problem: Pyrodigal install fails on Windows with a compiler error
 
 Problem: BLAST+ not detected even though it is installed
   Check 1: open a terminal and type "blastp -version". If it works
-            there but not in ppigFinder, BLAST+ is not on your PATH.
+            there but not in ppigfinder, BLAST+ is not on your PATH.
   Windows fix: add the BLAST bin folder to System Environment Variables
                → PATH (e.g. C:\\Program Files\\NCBI\\blast-2.16.0+\\bin)
   macOS/Linux fix: add to ~/.zshrc or ~/.bashrc:
@@ -4102,7 +4102,7 @@ class _DetachedTabWindow(QDialog):
             self.setWindowFlags(Qt.WindowType.Window)
         else:
             self.setWindowFlags(Qt.Window)
-        self.setWindowTitle(f"ppigFinder — {tab_label}")
+        self.setWindowTitle(f"ppigfinder — {tab_label}")
         if tab_icon is not None:
             try:
                 self.setWindowIcon(tab_icon)
@@ -5086,7 +5086,7 @@ class ppigFinderApp(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('🧬 ppigFinder v2.00 — Protein-Protein Interaction Genomic Finder')
+        self.setWindowTitle('🧬 ppigfinder v2.00 — Protein-Protein Interaction Genomic Finder')
         # ── Responsive window sizing (replaces fixed 1550×980) ──────
         self.win_mgr = WindowManager(self, app_name="ppigFinder",
                                       organisation="ppigFinder")
@@ -6969,7 +6969,7 @@ class ppigFinderApp(QMainWindow):
             _io_write_project_report(
                 f,
                 project,
-                title="ppigFinder Report",
+                title="ppigfinder Report",
             )
         except Exception as exc:
             QMessageBox.critical(
@@ -10139,7 +10139,7 @@ DOMAINS IN NEIGHBORHOOD:
 #SBATCH --error={remote_base}/logs/array_%A_%a.err
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ppigFinder SLURM Array — {genome_safe}
+# ppigfinder SLURM Array — {genome_safe}
 # {n_jobs} AF3 jobs / {batch_size} per batch = {n_batches} array tasks
 # Submit with:  sbatch run_array.sh
 # Each task runs independently → RAM fully released between batches (anti-OOM)
@@ -11067,7 +11067,7 @@ echo "Submitted {n_batches} jobs."
         txt.setFont(QFont('Courier', 9))
         txt.setReadOnly(True)
         txt.setPlainText("""\
-INTERACTION RESULTS TAB — ppigFinder v2.0
+INTERACTION RESULTS TAB — ppigfinder v2.0
 ══════════════════════════════════════════════════════════════════
 
 PURPOSE
@@ -11200,7 +11200,7 @@ REFERENCES
         txt.setFont(QFont('Courier', 9))
         txt.setReadOnly(True)
         txt.setPlainText("""\
-GENOMIC PPI MAP TAB — ppigFinder v2.0
+GENOMIC PPI MAP TAB — ppigfinder v2.0
 ══════════════════════════════════════════════════════════════════
 
 PURPOSE
@@ -11279,7 +11279,7 @@ in the Interaction Results tab.
         txt.setFont(QFont('Courier', 9))
         txt.setReadOnly(True)
         txt.setPlainText("""\
-REFERENCES & METHODOLOGY — ppigFinder v2.0
+REFERENCES & METHODOLOGY — ppigfinder v2.0
 ══════════════════════════════════════════════════════════════════
 
 CORE DEPENDENCIES
@@ -11336,7 +11336,7 @@ INTERACTION SCORING METHODOLOGY
      eukaryotic protein complexes. Science, 374, eabm4805.
      https://doi.org/10.1126/science.abm4805
      ► Demonstrates proteome-scale ipTM-based PPI screening.
-       Methodology basis for ppigFinder's batch AF3 workflow.
+       Methodology basis for ppigfinder's batch AF3 workflow.
 
 [11] Bryant, P., Pozzati, G., & Elofsson, A. (2022). Improved prediction
      of protein-protein interactions using AlphaFold2.
@@ -11349,7 +11349,7 @@ INTERACTION SCORING METHODOLOGY
 [12] Mirdita, M. et al. (2022). ColabFold: making protein folding
      accessible to all. Nature Methods, 19, 679-682.
      https://doi.org/10.1038/s41592-022-01488-1
-     ► ColabFold FASTA format used by ppigFinder for batch MSA
+     ► ColabFold FASTA format used by ppigfinder for batch MSA
        generation and local AF2-Multimer runs.
 
 MOTIF DETECTION
@@ -11361,7 +11361,7 @@ MOTIF DETECTION
        morphological operations in the motif detector (v1.16+).
        A pure-NumPy BFS fallback is used when SciPy is absent.
 
-NOVEL METHODOLOGY — ppigFinder v1.18: Focal Interaction Metrics
+NOVEL METHODOLOGY — ppigfinder v1.18: Focal Interaction Metrics
 ────────────────────────────────────────────────────────────────
 The standard PAE_inter metric (mean of the entire off-diagonal PAE
 quadrant) is mathematically correct but biologically misleading for
@@ -11375,7 +11375,7 @@ disordered sequence. For example:
 Only 6.6% of residue pairs are in contact; the global mean is dominated
 by 93.4% of pairs involving ORF2588 residues outside the domain.
 
-ppigFinder v1.18 introduces three focal metrics extracted directly
+ppigfinder v1.18 introduces three focal metrics extracted directly
 from AF3 summary_confidences.json (no PAE matrix parsing required):
 
   PAE_min ★  = min(chain_pair_pae_min[A][B], chain_pair_pae_min[B][A])
@@ -11395,7 +11395,7 @@ but applicable to domain-limited contacts):
   PAE_min 4–8 Å                         →  MED (check motifs)
   PAE_min ≥ 8 Å                         →  LOW
 
-This methodology is implemented in ppigFinder v1.18 and validated
+This methodology is implemented in ppigfinder v1.18 and validated
 on T4SS toxin-antitoxin pairs (XVIPCD × xac2610, VirB11 × VirB10
 homologs) from Xanthomonas axonopodis pv. citri MAFF311018 genome.
 """)
@@ -11415,7 +11415,7 @@ homologs) from Xanthomonas axonopodis pv. citri MAFF311018 genome.
         n_jobs   = len(getattr(self, 'af3_jobs', []))
         n_orfs   = len(getattr(self, 'orfs', []))
         QMessageBox.about(self, t('about'),
-            f"🧬 ppigFinder — Protein-Protein Interaction Genomic Finder\n"
+            f"🧬 ppigfinder — Protein-Protein Interaction Genomic Finder\n"
             f"Version 2.0 — v2.0  |  MIT License\n\n"
             f"Discovery of novel bacterial PPIs via ORF prediction\n"
             f"(Pyrodigal / 6-frame scan), HMM/BLAST annotation,\n"
@@ -11438,7 +11438,7 @@ homologs) from Xanthomonas axonopodis pv. citri MAFF311018 genome.
             f"  Pyrodigal  {pyrod_ok}\n"
             f"  Matplotlib {mat_ok}\n\n"
             f"PyQt{QT_VERSION} | Python {sys.version.split()[0]}\n\n"
-            f"Cite: ppigFinder (2026) github.com/goka-lab/ppigfinder\n"
+            f"Cite: ppigfinder (2026) github.com/goka-lab/ppigfinder\n"
             f"Refs: Evans 2022; Abramson 2024; Jumper 2021; Bryant 2022")
 
 
@@ -11966,7 +11966,7 @@ homologs) from Xanthomonas axonopodis pv. citri MAFF311018 genome.
         result = {
             'summary': None, 'confidences': None,
             'model': None, 'ranking_csv': None,
-            'input': None,         # ← NEW: ppigFinder / AF3 server input JSON
+            'input': None,         # ← NEW: ppigfinder / AF3 server input JSON
             'sample_dirs': [],
         }
         try:
@@ -11987,7 +11987,7 @@ homologs) from Xanthomonas axonopodis pv. citri MAFF311018 genome.
                 elif kind == 'confidences' and result['confidences'] is None:
                     result['confidences'] = p
                 elif kind == 'data' and result['input'] is None:
-                    result['input'] = p   # ppigFinder-generated input JSON
+                    result['input'] = p   # ppigfinder-generated input JSON
                 # 'unknown' → ignored
             elif name_lc.endswith('.cif'):
                 # Skip known non-model CIFs (there usually aren't any)
@@ -17150,7 +17150,7 @@ def _check_dependencies_at_startup():
 
     # Qt is already loaded at this point — use it for the dialog
     if missing_req or outdated:
-        lines = ["ppigFinder dependency warning:\n"]
+        lines = ["ppigfinder dependency warning:\n"]
         if missing_req:
             lines.append("REQUIRED (app may crash without these):")
             for p in missing_req:
@@ -17169,13 +17169,13 @@ def _check_dependencies_at_startup():
         mb.setIcon(QMessageBox.Icon.Warning
                    if hasattr(QMessageBox, 'Icon')
                    else QMessageBox.Warning)
-        mb.setWindowTitle("ppigFinder — Missing dependencies")
+        mb.setWindowTitle("ppigfinder — Missing dependencies")
         mb.setText("\n".join(lines))
         mb.exec() if hasattr(mb, 'exec') and callable(mb.exec) else mb.exec_()
 
     if missing_opt:
         print(
-            f"[ppigFinder] Optional packages not installed "
+            f"[ppigfinder] Optional packages not installed "
             f"(some features disabled): {', '.join(missing_opt)}\n"
             f"  Install with: pip install {' '.join(missing_opt)}")
 
@@ -17183,7 +17183,7 @@ def _check_dependencies_at_startup():
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setApplicationName('ppigFinder')
-    app.setApplicationDisplayName('ppigFinder — Protein-Protein Interaction Genomic Finder')
+    app.setApplicationDisplayName('ppigfinder — Protein-Protein Interaction Genomic Finder')
     app.setApplicationVersion('2.0')
     app.setStyle('Fusion')
     _setup_emoji_font(app)
@@ -17193,7 +17193,7 @@ if __name__ == "__main__":
     sys.exit(app.exec() if QT_VERSION == 6 else app.exec_())
 
 
-# === ppigFinder optional runtime startup profiler ===
+# === ppigfinder optional runtime startup profiler ===
 def _ppig_enable_runtime_startup_profiler():
     """
     Optional constructor profiler for the legacy single-file interface.

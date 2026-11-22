@@ -30,7 +30,7 @@ with the [Slurm adapter](../user_manual/hpc_submission.md).
 - Checksums use streamed SHA-256 over local and remote SFTP content. SHA does
   not imply provenance/biological validity of the model.
 - Atomic local download refuses overwriting existing results.
-- Paramiko is imported lazily, so core ppigFinder and offline tests do not
+- Paramiko is imported lazily, so core ppigfinder and offline tests do not
   require a cluster, network or Paramiko.
 - Tests use an isolated fake SFTP filesystem. A real upload and download through
   the GUI also matched the original SHA-256 on one host.

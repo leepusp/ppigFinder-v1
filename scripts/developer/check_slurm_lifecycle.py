@@ -1,4 +1,4 @@
-"""Validate the ppigFinder Slurm adapter with an optional CPU-only test job."""
+"""Validate the ppigfinder Slurm adapter with an optional CPU-only test job."""
 
 import argparse
 from functools import partial

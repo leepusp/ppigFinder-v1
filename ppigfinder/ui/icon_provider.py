@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Portable icon provider for ppigFinder.
+Portable icon provider for ppigfinder.
 
 The icons are generated with QPainter, avoiding dependency on emoji fonts,
 external icon themes, or system-specific resources.
@@ -86,7 +86,7 @@ def make_icon(name: str, size: int = 32) -> QIcon:
 
 def set_window_icon(window) -> None:
     """
-    Apply the ppigFinder application icon to a window.
+    Apply the ppigfinder application icon to a window.
     """
     try:
         window.setWindowIcon(make_icon("app", 48))

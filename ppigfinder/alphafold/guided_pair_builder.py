@@ -120,7 +120,7 @@ def pair_to_af3_job(pair: GuidedPair, seeds: list[int] | None = None) -> dict:
             },
         ],
         "metadata": {
-            "source": "ppigFinder guided shell",
+            "source": "ppigfinder guided shell",
             "orf_a": pair.orf_a_id,
             "orf_b": pair.orf_b_id,
             "distance_nt": pair.distance_nt,

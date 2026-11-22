@@ -1,10 +1,10 @@
 # Interface tour
 
-The imported ppigFinder application is a Python/PyQt desktop program. This page distinguishes an **illustrative window diagram** from **real screenshots in the original v2.2 user guide**. Before following a menu sequence, check the version displayed in your application.
+The imported ppigfinder application is a Python/PyQt desktop program. This page distinguishes an **illustrative window diagram** from **real screenshots in the original v2.2 user guide**. Before following a menu sequence, check the version displayed in your application.
 
 ## Main regions
 
-![Annotated ppigFinder window schematic](../assets/figures/app-window.svg)
+![Annotated ppigfinder window schematic](../assets/figures/app-window.svg)
 
 | Region | Function |
 |---|---|

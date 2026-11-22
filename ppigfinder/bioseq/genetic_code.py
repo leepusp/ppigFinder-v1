@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Genetic code definitions used by ppigFinder.
+Genetic code definitions used by ppigfinder.
 """
 
 STANDARD_CODON_TABLE = {

@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-message: "If you use ppigFinder, please cite this software."
-title: "ppigFinder"
+message: "If you use ppigfinder, please cite this software."
+title: "ppigfinder"
 type: software
 version: "2.9.14"
 license: MIT

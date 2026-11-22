@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ORF prediction routines used by ppigFinder.
+ORF prediction routines used by ppigfinder.
 
 This module contains sequence-level ORF prediction logic and is independent
 from the PyQt interface.

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Responsive window management for ppigFinder.
+Responsive window management for ppigfinder.
 
 This module avoids fixed-size windows and makes the desktop UI behave better
 across local desktops, X11 forwarding, VNC and different monitor sizes.
