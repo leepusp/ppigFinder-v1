@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BLAST search service for ppigFinder.
+BLAST search service for ppigfinder.
 
 This service separates BLAST algorithm selection from the GUI. During the
 transition, it can still call methods from the legacy AdvancedORFAnalyzer,

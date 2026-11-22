@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Parallel execution helpers for ppigFinder.
+Parallel execution helpers for ppigfinder.
 
 This module provides conservative defaults suitable for desktops and HPC
 login/interactive sessions. Heavy jobs submitted to schedulers should still

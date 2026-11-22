@@ -1,6 +1,6 @@
 # Execution environments: from desktop to HPC
 
-**HPC is optional.** ppigFinder's candidate discovery and JSON export are distinct from executing structure prediction. The application should not assume one cluster, SSH host, scheduler, GPU model or institutional account.
+**HPC is optional.** ppigfinder's candidate discovery and JSON export are distinct from executing structure prediction. The application should not assume one cluster, SSH host, scheduler, GPU model or institutional account.
 
 ## Choose your route
 
@@ -26,13 +26,13 @@ adapters require no scheduler, remote connection or SSH.
 ## Generic Slurm process (advanced users)
 
 1. Confirm the intended native AF3 schema and run-command syntax on the target cluster.
-2. Generate AF3 JSONs, a job manifest, and scheduler scripts from ppigFinder.
+2. Generate AF3 JSONs, a job manifest, and scheduler scripts from ppigfinder.
 3. Review `#SBATCH` directives for CPU, RAM, wall time, partition, GPU/GRES and array concurrency.
 4. Activate the actual AF3 environment **inside** the allocation. Ensure that any wrapper's local executor does not submit nested Slurm jobs.
 5. Submit with `sbatch` according to local cluster policy.
 6. Inspect `squeue`, `sacct` and job logs with the correct account permissions; only after completion, transfer outputs for parsing.
 
-Run these commands **on a host with Slurm configured**, after installing ppigFinder there:
+Run these commands **on a host with Slurm configured**, after installing ppigfinder there:
 
 ```bash
 ppigfinder-slurm resources
@@ -50,7 +50,7 @@ Use `resources` to inspect partition availability, time limits, node states, CPU
 ## Validate the Slurm lifecycle
 
 From a source checkout on a Slurm host, in a directory shared with compute
-nodes, use the ppigFinder environment's Python:
+nodes, use the ppigfinder environment's Python:
 
 ```bash
 python scripts/developer/check_slurm_lifecycle.py

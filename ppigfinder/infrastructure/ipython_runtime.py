@@ -2,7 +2,7 @@
 """
 Optional IPython/Jupyter runtime helpers.
 
-IPython is not required by ppigFinder. This module only improves behavior
+IPython is not required by ppigfinder. This module only improves behavior
 when the application is launched from an IPython shell or notebook-like
 environment.
 """
@@ -27,7 +27,7 @@ def get_ipython_shell():
 
 def is_running_in_ipython() -> bool:
     """
-    True when ppigFinder is being launched from IPython/Jupyter.
+    True when ppigfinder is being launched from IPython/Jupyter.
     """
     return get_ipython_shell() is not None
 

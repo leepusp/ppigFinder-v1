@@ -1,4 +1,4 @@
-"""Build a tiny protein profile and verify ppigFinder's real HMMER path."""
+"""Build a tiny protein profile and verify ppigfinder's real HMMER path."""
 
 from pathlib import Path
 import subprocess

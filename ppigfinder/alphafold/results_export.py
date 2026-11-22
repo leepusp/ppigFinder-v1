@@ -1,6 +1,6 @@
 """AlphaFold results TSV export helpers.
 
-GUI-independent helpers extracted from ppigFinder v29.14.
+GUI-independent helpers extracted from ppigfinder v29.14.
 """
 
 from __future__ import annotations

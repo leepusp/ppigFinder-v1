@@ -15,7 +15,7 @@ The Reports module generates final outputs for interpretation, sharing and repro
 
 ## Main outputs
 
-ppigFinder can generate:
+ppigfinder can generate:
 
 - HTML reports
 - Project Snapshot v3 JSON files

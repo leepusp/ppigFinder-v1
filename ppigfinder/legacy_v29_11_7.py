@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ppigFinder — Protein-Protein Interaction Genomic Finder
+ppigfinder — Protein-Protein Interaction Genomic Finder
 ========================================================
 Version  : 2.9.10 — v29.10
 Released : 2026
@@ -8,7 +8,7 @@ License  : MIT (see LICENSE section below)
 
 DESCRIPTION
 -----------
-ppigFinder is a standalone desktop application for the discovery of novel
+ppigfinder is a standalone desktop application for the discovery of novel
 protein-protein interactions (PPIs) in bacterial genomes.  Starting from a
 raw nucleotide sequence (FASTA, GenBank or SnapGene), the tool identifies
 all open reading frames (ORFs), annotates them through homology search
@@ -226,7 +226,7 @@ REFERENCES
   METHODOLOGY NOTE — Focal Interaction Metrics (v1.18):
   The global PAE_inter metric (mean of the entire off-diagonal PAE quadrant)
   is diluted by disordered protein regions and does not reliably identify
-  proteins that interact through a single domain. ppigFinder v1.18+
+  proteins that interact through a single domain. ppigfinder v1.18+
   introduces two focal metrics extracted directly from AF3 summary JSONs:
     • PAE_min (chain_pair_pae_min): minimum PAE in the off-diagonal quadrant.
       A value < 4 Å indicates that AF3 predicts at least one contact point
@@ -249,13 +249,13 @@ SUPPORTED FILE FORMATS
 ----------------------
   Input  : FASTA (.fasta .fa .fna), GenBank (.gb .gbk), SnapGene (.dna)
   Output : FASTA, GenBank, SnapGene .dna, PDF/EPS, TSV, JSON (AF3),
-           FASTA (ColabFold), ppigFinder project (.json)
+           FASTA (ColabFold), ppigfinder project (.json)
 
 LICENSE
 -------
   MIT License
 
-  Copyright (c) 2026 ppigFinder Contributors
+  Copyright (c) 2026 ppigfinder Contributors
 
   Permission is hereby granted, free of charge, to any person obtaining a
   copy of this software and associated documentation files (the "Software"),
@@ -276,15 +276,15 @@ LICENSE
   DEALINGS IN THE SOFTWARE.
 
   ATTRIBUTION REQUIREMENT (MIT with Credit Clause):
-  Any publication, software, or derivative work that uses ppigFinder or
+  Any publication, software, or derivative work that uses ppigfinder or
   substantial portions of its source code must give appropriate credit to
   the original authors by retaining this notice and/or citing the original
   repository.
 
 CITATION
 --------
-  If you use ppigFinder in your research, please cite:
-    ppigFinder: Protein-Protein Interaction Genomic Finder (2026).
+  If you use ppigfinder in your research, please cite:
+    ppigfinder: Protein-Protein Interaction Genomic Finder (2026).
     https://github.com/leepbioinfo/ppigfinder
 
 CHANGELOG
@@ -587,7 +587,7 @@ CHANGELOG
       for true inter-chain minimum as documented.
     • BUG FIX (duplicate summary): when a job folder contains both a
       cluster-format summary (*_summary_confidences.json) and an AF3
-      Server-format summary (summary_confidences.json), ppigFinder now
+      Server-format summary (summary_confidences.json), ppigfinder now
       selects the one containing chain_pair_pae_min — the richer format.
     • NEW TIER 6 chain layout: when all previous layout tiers fail
       (confidences.json lacks token_chain_ids — common in HPC outputs),
@@ -828,10 +828,10 @@ APP_RELEASE_LABEL = f"{APP_VERSION} — {APP_BUILD}"
 
 if __name__ == "__main__" and any(a in ("-h", "--help", "--version") for a in sys.argv[1:]):
     if "--version" in sys.argv[1:]:
-        print(f"ppigFinder {APP_VERSION} ({APP_BUILD})")
+        print(f"ppigfinder {APP_VERSION} ({APP_BUILD})")
         sys.exit(0)
     print(
-        "ppigFinder — Protein-Protein Interaction Genomic Finder\n\n"
+        "ppigfinder — Protein-Protein Interaction Genomic Finder\n\n"
         "Usage:\n"
         "  ppigfinder                 Launch the graphical interface\n"
         "  ppigfinder --system-check  Print environment diagnostics\n"
@@ -1167,7 +1167,7 @@ def format_system_check_report(report: dict, plain: bool = False) -> str:
     warn = "Warning" if plain else "<b style='color:#e65100'>Warning</b>"
 
     lines = [
-        "ppigFinder System Check",
+        "ppigfinder System Check",
         f"Generated: {report['generated_at']}",
         f"Application version: {report['app_version']}",
         f"Python: {report['python']}",
@@ -3317,7 +3317,7 @@ class AdvancedORFAnalyzer:
 TRANSLATIONS = {
     # ── English ─────────────────────────────────────────────────
     'en': {
-        'app_title':        f'🧬 ppigFinder {APP_BUILD} — PPI Genomic Finder',
+        'app_title':        f'🧬 ppigfinder {APP_BUILD} — PPI Genomic Finder',
         'menu_file':        '📁 File',
         'menu_params':      '⚙️ Parameters',
         'menu_language':    '🌐 Language',
@@ -3546,14 +3546,14 @@ def t(key: str) -> str:
 HELP_CONTENT = {
     'manual': {
         'en': """\
-ppigFinder v2.9.11.3 — v29.11.3
+ppigfinder v2.9.11.3 — v29.11.3
 ==================================================================
 USER MANUAL
 ==================================================================
 
 OVERVIEW
 ------------------------------------------------------------------
-ppigFinder is a standalone desktop application for discovering novel
+ppigfinder is a standalone desktop application for discovering novel
 protein-protein interactions (PPIs) — and protein-nucleic-acid
 interactions — in bacterial and archaeal genomes, using genomic
 context and AlphaFold-based structural prediction.
@@ -3611,7 +3611,7 @@ MENU BAR  (top of window, all items styled with a thin border and
 
 KEYBOARD — WINDOW SCREENSHOT  (Ctrl+Shift+P)
   Press Ctrl+Shift+P from anywhere in the app to capture the entire
-  ppigFinder window as a vector PDF. The file is saved silently into a
+  ppigfinder window as a vector PDF. The file is saved silently into a
   "ppigFinder_figures/" folder created next to the script (or in your
   home folder if the script folder is read-only), with a timestamped
   filename like "<genome>_YYYYMMDD_HHMMSS.pdf". The status bar shows
@@ -3786,7 +3786,7 @@ PROJECTS & PERSISTENCE
 ==================================================================
 BACKENDS
 ==================================================================
-ppigFinder degrades gracefully when an external tool is missing:
+ppigfinder degrades gracefully when an external tool is missing:
   BLAST+   ❌ → built-in k-mer aligner (less sensitive)
   HMMER3   ❌ → built-in PSSM scanner (per-profile only; bulk Pfam-A
                 and per-selection Pfam-A search require HMMER3)
@@ -3798,7 +3798,7 @@ the toolbar badges (✅ / ❌ per backend). See Help → System Check.
 
     'tutorial': {
         'en': """\
-ppigFinder v2.9.7 — STEP-BY-STEP TUTORIAL
+ppigfinder v2.9.7 — STEP-BY-STEP TUTORIAL
 ==================================================================
 
 This walkthrough takes a bacterial genome from FASTA to ranked,
@@ -3892,10 +3892,10 @@ F) GENOME-WIDE MAP & SAVING
 
     'install': {
         'en': """\
-ppigFinder v2.9.7 — INSTALLATION GUIDE
+ppigfinder v2.9.7 — INSTALLATION GUIDE
 ==================================================================
 
-ppigFinder runs on Windows, Linux and macOS with Python 3.9+.
+ppigfinder runs on Windows, Linux and macOS with Python 3.9+.
 It needs PyQt (6 or 5), matplotlib and numpy as a minimum. Pyrodigal,
 HMMER3, BLAST+ and paramiko unlock the full pipeline.
 
@@ -3932,7 +3932,7 @@ HMMER3 (needed for Pfam-A annotation) and BLAST+ install cleanly there.
   • In the Ubuntu (WSL) terminal:
        sudo apt-get update
        sudo apt-get install -y hmmer ncbi-blast+
-  • ppigFinder auto-detects HMMER/BLAST inside the default WSL distro
+  • ppigfinder auto-detects HMMER/BLAST inside the default WSL distro
     and calls them transparently (you will see "HMMER3 ✅ via WSL").
   • Keep your Pfam-A.hmm and genome files on a path WSL can read
     (e.g. under C:\\Users\\...); the app converts paths automatically.
@@ -3945,7 +3945,7 @@ HMMER3 (needed for Pfam-A annotation) and BLAST+ install cleanly there.
 
 1.4  Pfam-A library (Windows)
   • Download Pfam-A.hmm.gz from the InterPro/EBI FTP and save it under
-    your user folder. ppigFinder will gunzip + hmmpress it on first use
+    your user folder. ppigfinder will gunzip + hmmpress it on first use
     (this needs a writable folder — do not put it under Program Files).
 
 ==================================================================
@@ -5980,7 +5980,7 @@ class _DetachedTabWindow(QDialog):
             self.setWindowFlags(Qt.WindowType.Window)
         else:
             self.setWindowFlags(Qt.Window)
-        self.setWindowTitle(f"ppigFinder — {tab_label}")
+        self.setWindowTitle(f"ppigfinder — {tab_label}")
         if tab_icon is not None:
             try:
                 self.setWindowIcon(tab_icon)
@@ -7130,7 +7130,7 @@ class ppigFinderApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle(
-            f'🧬 ppigFinder {APP_BUILD} ({APP_VERSION}) — '
+            f'🧬 ppigfinder {APP_BUILD} ({APP_VERSION}) — '
             'Protein-Protein Interaction Genomic Finder')
         # ── Responsive window sizing (replaces fixed 1550×980) ──────
         self.win_mgr = WindowManager(self, app_name="ppigFinder",
@@ -7342,7 +7342,7 @@ class ppigFinderApp(QMainWindow):
                     pass
             self._apply_top_menu_tooltips()
         except Exception as _e:
-            print(f'[ppigFinder] menu tooltip apply: {_e}')
+            print(f'[ppigfinder] menu tooltip apply: {_e}')
         self._create_toolbar()
         self._create_central()
         self._create_statusbar()
@@ -7887,7 +7887,7 @@ class ppigFinderApp(QMainWindow):
                     elif "save project" in txt:
                         child.setToolTip("Save the current project (annotations, HMM library, AF3 results).")
                     elif "open project" in txt:
-                        child.setToolTip("Reopen a previously saved ppigFinder project.")
+                        child.setToolTip("Reopen a previously saved ppigfinder project.")
                     elif "orfs" in txt and "save" in txt:
                         child.setToolTip("Export translated ORFs as a multi-FASTA file.")
                     elif "report" in txt and "tsv" in txt:
@@ -7895,7 +7895,7 @@ class ppigFinderApp(QMainWindow):
                     elif "export figure" in txt:
                         child.setToolTip("Export the current main view as a vector PDF or raster image.")
                     elif "quit" in txt or "exit" in txt:
-                        child.setToolTip("Close ppigFinder.")
+                        child.setToolTip("Close ppigfinder.")
                     else:
                         child.setToolTip(child.text() or "")
             elif label.startswith("parameters") or label.startswith("param"):
@@ -7929,7 +7929,7 @@ class ppigFinderApp(QMainWindow):
                     elif "reference" in txt or "method" in txt:
                         child.setToolTip("References and methodology.")
                     elif "about" in txt:
-                        child.setToolTip("About ppigFinder.")
+                        child.setToolTip("About ppigfinder.")
                     else:
                         child.setToolTip(child.text() or "")
             elif label.startswith("window"):
@@ -8398,7 +8398,7 @@ class ppigFinderApp(QMainWindow):
             except Exception:
                 pass
         except Exception as _e:
-            print(f'[ppigFinder] PPI Analysis tab failed: {_e}')
+            print(f'[ppigfinder] PPI Analysis tab failed: {_e}')
 
         self._sync_right_view_selector()
         # Double-click anywhere on the current view's body (a neutral area not
@@ -8864,7 +8864,7 @@ class ppigFinderApp(QMainWindow):
                 except Exception:
                     pass
         except Exception as e:
-            print(f"[ppigFinder] _on_hmm_profile_row_click: {e}")
+            print(f"[ppigfinder] _on_hmm_profile_row_click: {e}")
 
     def _on_hmm_profile_right_click(self, pos):
         """v29.11.7 — focused context menu on the HMM profile table.
@@ -8971,7 +8971,7 @@ class ppigFinderApp(QMainWindow):
                 if QT_VERSION == 6 else \
                 menu.exec_(self._hmm_profile_table.viewport().mapToGlobal(pos))
         except Exception as e:
-            print(f"[ppigFinder] _on_hmm_profile_right_click: {e}")
+            print(f"[ppigfinder] _on_hmm_profile_right_click: {e}")
 
     def _af3_quick_homodimer_many(self, orf_indices):
         """v29.11.7 — sequentially queue a homodimer prediction for every
@@ -9591,7 +9591,7 @@ class ppigFinderApp(QMainWindow):
         worker.error.connect(on_error or (
             lambda e: self._show_operation_error(
                 "Analysis could not finish",
-                "ppigFinder could not complete this operation. "
+                "ppigfinder could not complete this operation. "
                 "No input files were modified.",
                 e)))
         self._workers.append(worker)
@@ -9822,7 +9822,7 @@ class ppigFinderApp(QMainWindow):
                 self, "HMMER3 required",
                 "Full Pfam-A annotation needs HMMER3 (hmmpress + hmmscan), "
                 "which was not detected.\n\n"
-                "Install it, then restart ppigFinder:\n"
+                "Install it, then restart ppigfinder:\n"
                 "  conda install -c bioconda hmmer\n"
                 "  (or, on Windows, install HMMER inside WSL)\n\n"
                 "The per-profile HMM tab still works with the built-in "
@@ -9948,7 +9948,7 @@ class ppigFinderApp(QMainWindow):
             self._status.showMessage("Pfam-A annotation failed.")
             QMessageBox.critical(
                 self, "Pfam-A annotation failed",
-                "ppigFinder could not complete the Pfam-A scan. "
+                "ppigfinder could not complete the Pfam-A scan. "
                 "No ORF data was modified.\n\n"
                 f"Details:\n{msg}")
 
@@ -10084,7 +10084,7 @@ class ppigFinderApp(QMainWindow):
             self._status.showMessage("Pfam-A search failed.")
             QMessageBox.critical(
                 self, "Pfam-A search failed",
-                f"ppigFinder could not complete the Pfam-A search.\n\n{msg}")
+                f"ppigfinder could not complete the Pfam-A search.\n\n{msg}")
 
         self._run_worker(work, done, on_error)
 
@@ -10531,7 +10531,7 @@ class ppigFinderApp(QMainWindow):
         if not ok:
             self._show_operation_error(
                 "Invalid genome FASTA",
-                "ppigFinder rejected this file because it does not look like "
+                "ppigfinder rejected this file because it does not look like "
                 "a nucleotide genome FASTA.\n\n"
                 "This protects downstream ORF prediction, annotation, and "
                 "AF3 job generation from scientifically invalid input.",
@@ -11750,7 +11750,7 @@ class ppigFinderApp(QMainWindow):
     def _script_run_directory(self):
         """Directory used for automatic print/PDF exports.
 
-        In script mode, save in the directory from which ppigFinder was
+        In script mode, save in the directory from which ppigfinder was
         launched (the current working directory). In frozen/executable mode,
         save beside the executable. This keeps P+S / Ctrl+Shift+P outputs in
         the same folder where the user is running the application.
@@ -11824,7 +11824,7 @@ class ppigFinderApp(QMainWindow):
                                                QPageLayout.Unit.Millimeter if QT_VERSION == 6
                                                else QPageLayout.Millimeter)
                     except Exception as _pe:
-                        print(f"[ppigFinder] PDF page setup: {_pe}")
+                        print(f"[ppigfinder] PDF page setup: {_pe}")
                     painter = QPainter(printer)
                     try:
                         # Compute the printer\'s page rect in device units and
@@ -11884,7 +11884,7 @@ class ppigFinderApp(QMainWindow):
     # HIGH-RESOLUTION / VECTOR FIGURE EXPORT  (P+S shortcut)
     # ─────────────────────────────────────────────────────────────────────
     def export_vector_figure(self, fmt=None, silent=True):
-        """Export the entire ppigFinder main window as a publication-quality
+        """Export the entire ppigfinder main window as a publication-quality
         figure.  Called by the P+S keyboard shortcut (silent, no dialog) or
         from File → Export Figure.
 
@@ -12044,7 +12044,7 @@ class ppigFinderApp(QMainWindow):
                                    ).QtCore.QSize(w, h))
             gen.setViewBox(__import__('PyQt6' if QT_VERSION == 6 else 'PyQt5'
                                       ).QtCore.QRect(0, 0, w, h))
-            gen.setTitle("ppigFinder figure")
+            gen.setTitle("ppigfinder figure")
             painter = QPainter(gen)
             painter.setRenderHint(
                 QPainter.RenderHint.Antialiasing
@@ -14730,7 +14730,7 @@ DOMAINS IN NEIGHBORHOOD:
 #SBATCH --error={remote_base}/logs/array_%A_%a.err
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ppigFinder SLURM Array — {genome_safe}
+# ppigfinder SLURM Array — {genome_safe}
 # {n_jobs} AF3 jobs / {batch_size} per batch = {n_batches} array tasks
 # Submit with:  sbatch run_array.sh
 # Each task runs independently → RAM fully released between batches (anti-OOM)
@@ -16083,12 +16083,12 @@ echo "Submitted {n_batches} jobs."
         html = format_system_check_report(report, plain=False)
 
         dlg = QDialog(self)
-        dlg.setWindowTitle("ppigFinder — System Check")
+        dlg.setWindowTitle("ppigfinder — System Check")
         dlg.resize(860, 680)
         layout = QVBoxLayout(dlg)
 
         intro = QLabel(
-            "This report checks whether ppigFinder can run its main local "
+            "This report checks whether ppigfinder can run its main local "
             "features. Missing optional tools do not block startup; they only "
             "disable or slow specific workflows.")
         intro.setWordWrap(True)
@@ -16120,7 +16120,7 @@ echo "Submitted {n_batches} jobs."
             except OSError as e:
                 QMessageBox.critical(
                     self, "Could not export report",
-                    "ppigFinder could not write the system check report.\n\n"
+                    "ppigfinder could not write the system check report.\n\n"
                     f"Selected path:\n{path}\n\nDetails:\n{e}")
 
         btn_export.clicked.connect(_export)
@@ -16156,7 +16156,7 @@ echo "Submitted {n_batches} jobs."
         txt.setFont(QFont('Courier', 9))
         txt.setReadOnly(True)
         txt.setPlainText("""\
-AF3 TABLE RESULTS (INTERACTION RESULTS) — ppigFinder v29.10
+AF3 TABLE RESULTS (INTERACTION RESULTS) — ppigfinder v29.10
 ══════════════════════════════════════════════════════════════════
 
 PURPOSE
@@ -16298,7 +16298,7 @@ HOTSPOT / ANCHOR WINDOW  (top toolbar, "Hotspot ± / anchor window")
 
 INTERFACE REGIONS & PROTEIN ARCHITECTURE  (panel under the plots)
 ──────────────────────────────────────────────────────────────────
-  For the selected pair, ppigFinder anchors on the residue pair with
+  For the selected pair, ppigfinder anchors on the residue pair with
   the lowest inter-chain PAE and expands ±N residues on each chain. It
   then shows, per chain:
     • the interface residue range and its sequence (full-length protein
@@ -16347,7 +16347,7 @@ REFERENCES
         txt.setFont(QFont('Courier', 9))
         txt.setReadOnly(True)
         txt.setPlainText("""\
-GENOMIC PPI MAP TAB — ppigFinder v29.10
+GENOMIC PPI MAP TAB — ppigfinder v29.10
 ══════════════════════════════════════════════════════════════════
 
 PURPOSE
@@ -16457,7 +16457,7 @@ analytical views, fully generic.
         txt.setFont(QFont('Courier', 9))
         txt.setReadOnly(True)
         txt.setPlainText("""\
-PPI ANALYSIS TAB — ppigFinder v29.10
+PPI ANALYSIS TAB — ppigfinder v29.10
 ══════════════════════════════════════════════════════════════════
 
 PURPOSE
@@ -16574,7 +16574,7 @@ analysis sub-views.
         txt.setFont(QFont('Courier', 9))
         txt.setReadOnly(True)
         txt.setPlainText("""\
-REFERENCES & METHODOLOGY — ppigFinder v29.11.5
+REFERENCES & METHODOLOGY — ppigfinder v29.11.5
 ══════════════════════════════════════════════════════════════════
 
 CORE DEPENDENCIES
@@ -16662,7 +16662,7 @@ STRUCTURE PREDICTION & SCORING
      eukaryotic protein complexes. Science, 374(6573), eabm4805.
      https://doi.org/10.1126/science.abm4805
      ► Proteome-scale ipTM-based PPI screening (basis for the
-       all-vs-all batch workflow exposed by ppigFinder's
+       all-vs-all batch workflow exposed by ppigfinder's
        AlphaFold tab).
 
 [12] Bryant, P., Pozzati, G., & Elofsson, A. (2022). Improved
@@ -16678,7 +16678,7 @@ STRUCTURE PREDICTION & SCORING
 [13] Mirdita, M. et al. (2022). ColabFold: making protein folding
      accessible to all. Nature Methods, 19, 679-682.
      https://doi.org/10.1038/s41592-022-01488-1
-     ► ColabFold FASTA export format used by ppigFinder for batch
+     ► ColabFold FASTA export format used by ppigfinder for batch
        MSA generation and local AF2-Multimer fall-back runs.
 
 INTERFACE & MOTIF DETECTION
@@ -16829,7 +16829,7 @@ complexes that share the same architectural pattern.
         n_jobs   = len(getattr(self, 'af3_jobs', []))
         n_orfs   = len(getattr(self, 'orfs', []))
         QMessageBox.about(self, t('about'),
-            f"🧬 ppigFinder — Protein-Protein Interaction Genomic Finder\n"
+            f"🧬 ppigfinder — Protein-Protein Interaction Genomic Finder\n"
             f"Version {APP_VERSION} — {APP_BUILD}  |  MIT License\n\n"
             f"Discovery of novel bacterial PPIs via ORF prediction\n"
             f"(Pyrodigal / 6-frame / Hybrid), HMM/BLAST annotation,\n"
@@ -16864,7 +16864,7 @@ complexes that share the same architectural pattern.
             f"  Pyrodigal  {pyrod_ok}\n"
             f"  Matplotlib {mat_ok}\n\n"
             f"PyQt{QT_VERSION} | Python {sys.version.split()[0]}\n\n"
-            f"Cite: ppigFinder (2026) github.com/leepbioinfo/ppigfinder")
+            f"Cite: ppigfinder (2026) github.com/leepbioinfo/ppigfinder")
 
 
 
@@ -17288,7 +17288,7 @@ complexes that share the same architectural pattern.
                  "Even 5–10% confirms a real focal interface."),
             11: ("Hotspot score ★ (0–1) — Composite confidence of the predicted interaction hotspot. "
                  "Computed from mean PAE, contact density, and B↔A reciprocity. "
-                 f"> 0.60 = high  |  0.30–0.60 = moderate  |  < 0.30 = weak.  (ppigFinder {APP_BUILD})"),
+                 f"> 0.60 = high  |  0.30–0.60 = moderate  |  < 0.30 = weak.  (ppigfinder {APP_BUILD})"),
             12: ("Hotspot mean PAE — Mean PAE inside the expanded hotspot window (Å). "
                  "Window grown from PAE minimum until natural boundary. < 5 Å = strong focal contact."),
             13: ("Hotspot size — Bounding box of the interaction interface as A×B residues."),
@@ -17831,7 +17831,7 @@ complexes that share the same architectural pattern.
         Two jobs with the same fingerprint were submitted with the same
         bag of protein sequences regardless of chain ordering or folder
         naming.  Uses SHA-256 truncated to 16 chars — collision-safe at
-        the scale of any realistic ppigFinder dataset.
+        the scale of any realistic ppigfinder dataset.
 
         Returns None if input_seqs is empty (no fingerprint possible).
         """
@@ -18262,7 +18262,7 @@ complexes that share the same architectural pattern.
 
         # ── Pre-load sequences from input JSON (used as fallback for ──
         # ── chain layout below if confidences.json is missing chain IDs)
-        # The ppigFinder-generated *_data.json (v3 of the AF3 spec) holds
+        # The ppigfinder-generated *_data.json (v3 of the AF3 spec) holds
         # the proteinChain entries in the order they were submitted to AF3,
         # which directly corresponds to chain letters A, B, C…
         input_seqs = []          # sequences extracted from input JSON
@@ -18330,7 +18330,7 @@ complexes that share the same architectural pattern.
         #       lacks the per-token chain map)
         #   4. input_seqs lengths from data.json
         #      (NEW: works even if neither confidences.json nor summary
-        #       carry chain info, as long as the ppigFinder-generated
+        #       carry chain info, as long as the ppigfinder-generated
         #       data.json is present)
         #   5. model.cif chain parse                  (last resort)
         chain_order = []
@@ -20039,7 +20039,7 @@ complexes that share the same architectural pattern.
             for cid, seq in explicit.items():
                 if seq:
                     seq_map[cid] = str(seq).replace('*', '').strip()
-        # Standard ppigFinder path: input JSON sequences in submitted chain order.
+        # Standard ppigfinder path: input JSON sequences in submitted chain order.
         seq_chains = res.get('seq_chains') or []
         if isinstance(seq_chains, dict):
             for cid, seq in seq_chains.items():
@@ -22186,7 +22186,7 @@ complexes that share the same architectural pattern.
         if QProgressDialog and len(results) > 1:
             progress = QProgressDialog(
                 f"Running hotspots on {label}...", "Cancel", 0, len(results), self)
-            progress.setWindowTitle("ppigFinder hotspot analysis")
+            progress.setWindowTitle("ppigfinder hotspot analysis")
             progress.setMinimumDuration(0)
             progress.setValue(0)
 
@@ -22505,7 +22505,7 @@ complexes that share the same architectural pattern.
                 elif "low" in low:
                     child.setText(f"PAE_min > {md:g} Å (LOW)")
         except Exception as e:
-            print(f"[ppigFinder] _ppi_arc_update_legend: {e}")
+            print(f"[ppigfinder] _ppi_arc_update_legend: {e}")
 
     def _ppi_thresholds_changed(self, *_):
         """Propagate user-set thresholds to every dependent computation.
@@ -22550,7 +22550,7 @@ complexes that share the same architectural pattern.
             except Exception:
                 pass
         except Exception as e:
-            print(f"[ppigFinder] _ppi_thresholds_changed: {e}")
+            print(f"[ppigfinder] _ppi_thresholds_changed: {e}")
 
 
     def _ppi_an_on_dot_click(self, orf_idx):
@@ -22559,7 +22559,7 @@ complexes that share the same architectural pattern.
             if 0 <= int(orf_idx) < len(self.orfs):
                 self._select_and_center_orf(int(orf_idx))
         except Exception as e:
-            print(f"[ppigFinder] _ppi_an_on_dot_click: {e}")
+            print(f"[ppigfinder] _ppi_an_on_dot_click: {e}")
 
     def _ppi_predictions_for_orf(self, orf_idx):
         """v29.11.2 — return every AF3 prediction (analysis-results dict)
@@ -22782,7 +22782,7 @@ complexes that share the same architectural pattern.
                     self, f"ORF{orf_idx+1} details", d))
             menu.exec(global_pos) if QT_VERSION == 6 else menu.exec_(global_pos)
         except Exception as e:
-            print(f"[ppigFinder] _ppi_an_on_dot_context: {e}")
+            print(f"[ppigfinder] _ppi_an_on_dot_context: {e}")
 
     def _ppi_arc_set_labels(self, checked):
         try:
@@ -23382,7 +23382,7 @@ complexes that share the same architectural pattern.
                 f"cp_ipTM≥{_PpiArcMapWidget._CP_IPTM_FOCAL:.2f}")
         except Exception as e:
             self._ppi_an_status.setText(f"Refresh error: {e}")
-            print(f"[ppigFinder] _ppi_analysis_refresh: {e}")
+            print(f"[ppigfinder] _ppi_analysis_refresh: {e}")
             import traceback
             traceback.print_exc()
 
@@ -26335,7 +26335,7 @@ def _check_dependencies_at_startup():
 
     # Qt is already loaded at this point — use it for the dialog
     if missing_req or outdated:
-        lines = ["ppigFinder dependency warning:\n"]
+        lines = ["ppigfinder dependency warning:\n"]
         if missing_req:
             lines.append("REQUIRED (app may crash without these):")
             for p in missing_req:
@@ -26354,13 +26354,13 @@ def _check_dependencies_at_startup():
         mb.setIcon(QMessageBox.Icon.Warning
                    if hasattr(QMessageBox, 'Icon')
                    else QMessageBox.Warning)
-        mb.setWindowTitle("ppigFinder — Missing dependencies")
+        mb.setWindowTitle("ppigfinder — Missing dependencies")
         mb.setText("\n".join(lines))
         mb.exec() if hasattr(mb, 'exec') and callable(mb.exec) else mb.exec_()
 
     if missing_opt:
         print(
-            f"[ppigFinder] Optional packages not installed "
+            f"[ppigfinder] Optional packages not installed "
             f"(some features disabled): {', '.join(missing_opt)}\n"
             f"  Install with: pip install {' '.join(missing_opt)}")
 
@@ -26370,7 +26370,7 @@ def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     if any(a in ('-h', '--help') for a in argv):
         print(
-            "ppigFinder — Protein-Protein Interaction Genomic Finder\n\n"
+            "ppigfinder — Protein-Protein Interaction Genomic Finder\n\n"
             "Usage:\n"
             "  ppigfinder                 Launch the graphical interface\n"
             "  ppigfinder --system-check  Print environment diagnostics\n"
@@ -26379,7 +26379,7 @@ def main(argv=None):
             "The graphical interface requires a working desktop display.")
         return 0
     if '--version' in argv:
-        print(f"ppigFinder {APP_VERSION} ({APP_BUILD})")
+        print(f"ppigfinder {APP_VERSION} ({APP_BUILD})")
         return 0
     if '--system-check' in argv:
         print(format_system_check_report(build_system_check_report(), plain=True))
@@ -26387,7 +26387,7 @@ def main(argv=None):
 
     app = QApplication(sys.argv)
     app.setApplicationName('ppigFinder')
-    app.setApplicationDisplayName('ppigFinder — Protein-Protein Interaction Genomic Finder')
+    app.setApplicationDisplayName('ppigfinder — Protein-Protein Interaction Genomic Finder')
     app.setApplicationVersion(APP_VERSION)
     app.setStyle('Fusion')
     _setup_emoji_font(app)

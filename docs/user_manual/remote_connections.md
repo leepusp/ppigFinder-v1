@@ -1,6 +1,6 @@
 # Optional remote connections (SSH/SFTP)
 
-ppigFinder's genome/ORF/PPI features, native AF3 JSON export, AlphaFold Server
+ppigfinder's genome/ORF/PPI features, native AF3 JSON export, AlphaFold Server
 manual export and local result analysis **do not require a remote connection**.
 
 The Remote Connections adapter lets users store **non-secret** host profiles,
@@ -10,7 +10,7 @@ submit Slurm/PBS/LSF jobs, search remote directories or monitor a scheduler.
 
 ## Prerequisites
 
-- Install ppigFinder with `bash scripts/install_ppigfinder.sh` (or install the
+- Install ppigfinder with `bash scripts/install_ppigfinder.sh` (or install the
   `paramiko` optional dependency with `pip install -e '.[recommended]'`).
 - Have SSH access to a host. SSH agent/key authentication or one-time password
   entry are supported. Interactive two-factor login mechanisms requiring a
@@ -43,7 +43,7 @@ use an approved compute allocation or, when implemented, a scheduler adapter.
 **Download one result file** accepts a relative path inside the dedicated
 project directory (e.g. `results/run1/summary_confidences.json`). It refuses
 to overwrite an existing local file. Directory synchronization is not yet
-implemented; import downloaded results through ppigFinder's current AF3
+implemented; import downloaded results through ppigfinder's current AF3
 results importer when a complete result directory is available.
 
 ## Command line example: WSL → HPC
@@ -52,7 +52,7 @@ The following uses an **optional** HPC example. Substitute your own remote
 host for other users. Run on your **local machine**, not inside an SSH session:
 
 ```bash
-cd ~/git/ppigFinder-v1
+cd ~/git/ppigfinder
 .venv/bin/ppigfinder-remote add \
   --name research-hpc \
   --host research-hpc \

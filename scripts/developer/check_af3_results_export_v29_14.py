@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-check for ppigFinder v29.14 AF3 TSV export."""
+"""Self-check for ppigfinder v29.14 AF3 TSV export."""
 
 from __future__ import annotations
 

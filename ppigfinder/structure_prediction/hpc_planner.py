@@ -24,7 +24,7 @@ class HPCResourcePlan:
 
     def as_sbatch_comment_block(self) -> str:
         lines = [
-            "# ppigFinder structural prediction resource plan",
+            "# ppigfinder structural prediction resource plan",
             f"# job_id: {self.job_id}",
             f"# backend: {self.backend_id}",
             f"# estimated_tokens: {self.token_count}",

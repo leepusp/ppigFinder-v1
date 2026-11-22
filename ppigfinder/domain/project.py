@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Versioned project state models for ppigFinder.
+Versioned project state models for ppigfinder.
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ PROJECT_SCHEMA_VERSION = 3
 
 @dataclass
 class ProjectMetadata:
-    app: str = "ppigFinder"
+    app: str = "ppigfinder"
     schema_version: int = PROJECT_SCHEMA_VERSION
     created_at: str = field(default_factory=lambda: datetime.now().isoformat(timespec="seconds"))
     updated_at: str = field(default_factory=lambda: datetime.now().isoformat(timespec="seconds"))
@@ -45,7 +45,7 @@ class ProjectState:
         metadata_data = data.get("metadata", {}) or {}
 
         metadata = ProjectMetadata(
-            app=metadata_data.get("app", "ppigFinder"),
+            app=metadata_data.get("app", "ppigfinder"),
             schema_version=int(metadata_data.get("schema_version", 1)),
             created_at=metadata_data.get("created_at", datetime.now().isoformat(timespec="seconds")),
             updated_at=metadata_data.get("updated_at", datetime.now().isoformat(timespec="seconds")),

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-GenBank reader/writer for ppigFinder.
+GenBank reader/writer for ppigfinder.
 
 This module is intentionally independent from the PyQt GUI.
 """

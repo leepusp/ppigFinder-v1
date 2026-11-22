@@ -1,4 +1,4 @@
-# Contributing to ppigFinder
+# Contributing to ppigfinder
 
 Contributions are welcome. Use English in code, documentation, issues and pull requests where possible. For major workflow changes, describe the scientific use case and supported inputs/outputs before implementing them.
 
@@ -16,7 +16,7 @@ Do not hard-code a specific cluster, module location, user directory, GPU model 
 
 ## Documentation and screenshots
 
-Use anonymized or public example data. **Label screenshots with the exact ppigFinder version**. Schematic SVGs and historical screenshots should not be passed off as current application screenshots.
+Use anonymized or public example data. **Label screenshots with the exact ppigfinder version**. Schematic SVGs and historical screenshots should not be passed off as current application screenshots.
 
 ## Review
 

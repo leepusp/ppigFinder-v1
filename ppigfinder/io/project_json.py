@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Project JSON reader/writer for ppigFinder.
+Project JSON reader/writer for ppigfinder.
 """
 
 from __future__ import annotations
@@ -49,7 +49,7 @@ def read_project_json(path: str | Path) -> ProjectState:
         data = json.load(handle)
 
     if not isinstance(data, dict):
-        raise ValueError("Invalid ppigFinder project: top-level JSON must be an object.")
+        raise ValueError("Invalid ppigfinder project: top-level JSON must be an object.")
 
     return ProjectState.from_dict(data)
 

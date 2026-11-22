@@ -1,5 +1,5 @@
 """
-Application services for ppigFinder.
+Application services for ppigfinder.
 """
 
 from .genome_service import GenomeService

@@ -1,8 +1,8 @@
-# Getting Started with ppigFinder
+# Getting Started with ppigfinder
 
 ## Open the installed app
 
-Open the ppigFinder shortcut or use the launcher from your installation folder.
+Open the ppigfinder shortcut or use the launcher from your installation folder.
 See the [installation guide](installation.md) for operating-system-specific commands.
 
 1. Open a genome or restore a saved [project](data_project.md).

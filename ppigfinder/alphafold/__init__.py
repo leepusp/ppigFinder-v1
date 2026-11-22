@@ -1,5 +1,5 @@
 """
-AlphaFold/AF3 backend modules for ppigFinder.
+AlphaFold/AF3 backend modules for ppigfinder.
 """
 
 from .classifier import classify_metrics, classification_color

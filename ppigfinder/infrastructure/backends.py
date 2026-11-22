@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-External backend detection for ppigFinder.
+External backend detection for ppigfinder.
 
 Startup must be fast. Therefore, default backend detection only checks
 whether executables/modules are available. Slow version probing should be
@@ -130,7 +130,7 @@ def _detect_executable(
 
 def detect_backends(detailed: bool = False) -> dict[str, dict[str, Any]]:
     """
-    Detect external and optional backends used by ppigFinder.
+    Detect external and optional backends used by ppigfinder.
 
     detailed=False is intended for application startup.
     detailed=True may execute external commands to obtain versions.

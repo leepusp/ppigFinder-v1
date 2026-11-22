@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-GUI bridge for ppigFinder project snapshots.
+GUI bridge for ppigfinder project snapshots.
 """
 
 from __future__ import annotations
@@ -19,9 +19,9 @@ def export_project_snapshot_from_window(window) -> bool:
     """
     f, _ = QFileDialog.getSaveFileName(
         window,
-        "Export ppigFinder Project Snapshot",
+        "Export ppigfinder Project Snapshot",
         "",
-        "ppigFinder snapshot (*.ppigfinder.json);;JSON (*.json)",
+        "ppigfinder snapshot (*.ppigfinder.json);;JSON (*.json)",
     )
 
     if not f:
@@ -52,9 +52,9 @@ def import_project_snapshot_into_window(window) -> bool:
     """
     f, _ = QFileDialog.getOpenFileName(
         window,
-        "Import ppigFinder Project Snapshot",
+        "Import ppigfinder Project Snapshot",
         "",
-        "ppigFinder snapshot (*.ppigfinder.json *.json);;All (*)",
+        "ppigfinder snapshot (*.ppigfinder.json *.json);;All (*)",
     )
 
     if not f:

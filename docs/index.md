@@ -1,18 +1,18 @@
 <div class="pf-hero" markdown>
 
-# ppigFinder
+# ppigfinder
 
 ## From genome sequences to interaction hypotheses
 
 A project-oriented desktop application for ORF prediction, functional annotation, genomic-context exploration and preparation of protein–protein interaction screens.
 
-[**Install ppigFinder**](user_manual/installation.md){ .md-button .md-button--primary }
+[**Install ppigfinder**](user_manual/installation.md){ .md-button .md-button--primary }
 [**Start the tutorial**](tutorials/xanthomonas.md){ .md-button }
-[**Browse source**](https://github.com/leepusp/ppigFinder-v1){ .md-button }
+[**Browse source**](https://github.com/leepusp/ppigfinder){ .md-button }
 
 </div>
 
-![ppigFinder workflow](assets/figures/pipeline.svg)
+![ppigfinder workflow](assets/figures/pipeline.svg)
 
 *Workflow diagram, not a statement that every external tool or execution target is preinstalled.*
 
@@ -61,15 +61,15 @@ A project-oriented desktop application for ORF prediction, functional annotation
 ## Explore the graphical interface
 
 <figure class="pf-figure" markdown>
-![ppigFinder window schematic](assets/figures/app-window.svg)
+![ppigfinder window schematic](assets/figures/app-window.svg)
 <figcaption>Illustrated interface layout. For genuine screenshots, browse the historical gallery below.</figcaption>
 </figure>
 
 <div class="pf-gallery" markdown>
 
-![Previous ppigFinder interface showing ORF prediction](assets/screenshots/legacy-orf-prediction.webp)
+![Previous ppigfinder interface showing ORF prediction](assets/screenshots/legacy-orf-prediction.webp)
 
-![Previous ppigFinder interface showing BLAST results](assets/screenshots/legacy-blast.webp)
+![Previous ppigfinder interface showing BLAST results](assets/screenshots/legacy-blast.webp)
 
 </div>
 
@@ -77,7 +77,7 @@ A project-oriented desktop application for ORF prediction, functional annotation
 
 ## A peer-reviewed article is not required to use the tool
 
-The ppigFinder proof of concept is described in a 2026 bioRxiv preprint by Oka, Adan, Calomeno and de Souza. Its *Xanthomonas citri* VirD4 example illustrates candidate prioritization; the structural predictions are evidence to interpret, **not automatic experimental confirmation of PPIs**.
+The ppigfinder proof of concept is described in a 2026 bioRxiv preprint by Oka, Adan, Calomeno and de Souza. Its *Xanthomonas citri* VirD4 example illustrates candidate prioritization; the structural predictions are evidence to interpret, **not automatic experimental confirmation of PPIs**.
 
 [Read the preprint](https://doi.org/10.64898/2026.08.23.746524){ .md-button }
 [Reproduce the tutorial](tutorials/xanthomonas.md){ .md-button }

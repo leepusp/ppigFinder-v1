@@ -1,6 +1,6 @@
 # Optional integrations and capability detection
 
-ppigFinder is designed to operate without HPC, SSH, a scheduler, a GPU or a
+ppigfinder is designed to operate without HPC, SSH, a scheduler, a GPU or a
 running AlphaFold installation. **Prediction input preparation is separate from
 execution.** The optional capability registry documents the current surface; it
 does not silently install a tool or attempt network connections.
@@ -19,7 +19,7 @@ registry. It does not call external executables or access network services.
 
 | State | Meaning |
 |---|---|
-| `available` | A ppigFinder code path exists for the listed operation, not a scientific validation guarantee |
+| `available` | A ppigfinder code path exists for the listed operation, not a scientific validation guarantee |
 | `detected` | An optional executable/module is locally discoverable; inference or tool execution was not tested |
 | `not_configured` | An optional prerequisite or explicit site profile is absent |
 | `not_implemented` | The advertised adapter does not yet exist in the modular implementation |

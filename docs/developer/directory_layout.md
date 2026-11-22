@@ -1,4 +1,4 @@
-# ppigFinder Directory Layout
+# ppigfinder Directory Layout
 
 ## Root files
 
@@ -45,7 +45,7 @@ main.py
 
 Historical standalone scripts and upstream source snapshots are preserved under
 kept to support reproducibility, provenance tracking and comparison against
-earlier ppigFinder versions.
+earlier ppigfinder versions.
 
 Historical standalone scripts were removed from the active tree to reduce
 repository duplication; they remain accessible in Git history.

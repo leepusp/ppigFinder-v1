@@ -1,10 +1,10 @@
-# ppigFinder v2.9.14 Quick Start Guide
+# ppigfinder v2.9.14 Quick Start Guide
 
-This page is a cleaned, Git-ready quick-start guide derived from the initial incomplete slide guide and updated for the current ppigFinder v2.9.14 / v29.14 release.
+This page is a cleaned, Git-ready quick-start guide derived from the initial incomplete slide guide and updated for the current ppigfinder v2.9.14 / v29.14 release.
 
 ## Purpose
 
-ppigFinder is open-source software for scientific and educational use in molecular biology, microbiology, and bioinformatics. It helps users start from a bacterial genome sequence and organize a workflow for protein-protein interaction discovery without requiring advanced command-line or high-performance-computing experience.
+ppigfinder is open-source software for scientific and educational use in molecular biology, microbiology, and bioinformatics. It helps users start from a bacterial genome sequence and organize a workflow for protein-protein interaction discovery without requiring advanced command-line or high-performance-computing experience.
 
 The workflow integrates:
 
@@ -36,7 +36,7 @@ Recommended analysis tools:
 
 ## Basic workflow
 
-### 1. Launch ppigFinder
+### 1. Launch ppigfinder
 
 Start the graphical interface using the installed entry point or the repository launcher:
 
@@ -75,7 +75,7 @@ Before running longer analyses, save the project:
 File > Save Project
 ```
 
-ppigFinder creates a structured project directory containing subdirectories for genome files, BLAST results, HMM searches, AlphaFold predictions, and final results.
+ppigfinder creates a structured project directory containing subdirectories for genome files, BLAST results, HMM searches, AlphaFold predictions, and final results.
 
 ### 4. Predict ORFs
 
@@ -146,4 +146,4 @@ For the HPC workflow, refer to:
 
 ## Notes for documentation maintenance
 
-The initial slide guide contains useful workflow content but includes screenshots from older ppigFinder versions. This Markdown guide should be kept synchronized with the current v2.9.14 / v29.14 interface and updated whenever menus, job-generation modes, or output columns change.
+The initial slide guide contains useful workflow content but includes screenshots from older ppigfinder versions. This Markdown guide should be kept synchronized with the current v2.9.14 / v29.14 interface and updated whenever menus, job-generation modes, or output columns change.

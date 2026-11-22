@@ -19,7 +19,7 @@ shell.Run launch & " " & Quote(installer), 0, False
 problem = Err.Number
 On Error GoTo 0
 If problem <> 0 Then
-    MsgBox "Install Python 3.11 or newer with Tcl/Tk and the Windows Python launcher, then open this installer again.", vbExclamation, "ppigFinder Setup"
+    MsgBox "Install Python 3.11 or newer with Tcl/Tk and the Windows Python launcher, then open this installer again.", vbExclamation, "ppigfinder Setup"
 End If
 
 Function Quote(value)

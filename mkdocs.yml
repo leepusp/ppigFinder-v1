@@ -1,12 +1,12 @@
-site_name: ppigFinder
+site_name: ppigfinder
 site_description: Genomic analysis and protein–protein interaction candidate discovery
-site_url: https://leepusp.github.io/ppigFinder-v1/
-repo_url: https://github.com/leepusp/ppigFinder-v1
-repo_name: leepusp/ppigFinder-v1
+site_url: https://leepusp.github.io/ppigfinder/
+repo_url: https://github.com/leepusp/ppigfinder
+repo_name: leepusp/ppigfinder
 edit_uri: edit/main/docs/
 docs_dir: docs
 
-copyright: ppigFinder — open-source research software, MIT license
+copyright: ppigfinder — open-source research software, MIT license
 
 theme:
   name: material

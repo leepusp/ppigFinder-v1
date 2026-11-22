@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-AlphaFold 3 CLI integration for ppigFinder.
+AlphaFold 3 CLI integration for ppigfinder.
 
 This module targets an `af3` command-line wrapper. It does not assume a
 specific cluster; provide a command path or load the required environment first.

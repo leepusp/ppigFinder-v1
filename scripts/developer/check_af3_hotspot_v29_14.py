@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-check for the ppigFinder v29.14 AF3 PAE hotspot algorithm."""
+"""Self-check for the ppigfinder v29.14 AF3 PAE hotspot algorithm."""
 
 from __future__ import annotations
 

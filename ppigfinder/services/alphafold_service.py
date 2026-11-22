@@ -156,7 +156,7 @@ class AlphaFoldService:
         max_template_date: str | None = None,
     ) -> None:
         """
-        Export AlphaFold Server JSON from ppigFinder ORFs and ORF index pairs.
+        Export AlphaFold Server JSON from ppigfinder ORFs and ORF index pairs.
         """
         jobs = build_pair_jobs_from_legacy_orfs(
             orfs,

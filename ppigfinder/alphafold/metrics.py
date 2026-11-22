@@ -219,7 +219,7 @@ def metrics_from_af3_summary(summary: dict) -> InteractionMetrics:
     Build InteractionMetrics from an AF3 summary-like dictionary.
 
     This accepts flexible key variants used by local AF3, AF3 Server and
-    older ppigFinder parsers.
+    older ppigfinder parsers.
     """
     iptm = _safe_float(summary.get("iptm", summary.get("ipTM")))
     ptm = _safe_float(summary.get("ptm", summary.get("pTM")))

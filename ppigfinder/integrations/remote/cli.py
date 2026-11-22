@@ -12,7 +12,7 @@ from .openssh import OpenSSHTransport
 
 
 def parser_for_cli():
-    parser = argparse.ArgumentParser(description="Optional ppigFinder SSH/SFTP connector (no job submission)")
+    parser = argparse.ArgumentParser(description="Optional ppigfinder SSH/SFTP connector (no job submission)")
     sub = parser.add_subparsers(dest="operation", required=True)
     p = sub.add_parser("add", help="Save non-secret connection settings")
     for flag in ("name", "host"):

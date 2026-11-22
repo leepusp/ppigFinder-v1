@@ -125,7 +125,7 @@ IFS=$'\\t' read -r ARRAY_INDEX JOB_ID BACKEND_ID TOKEN_CLASS JOB_DIR INPUT_DIR R
 
 mkdir -p "$RESULT_DIR" "$LOG_DIR" "$RETRY_DIR"
 
-echo "=== ppigFinder structural prediction task ==="
+echo "=== ppigfinder structural prediction task ==="
 echo "array_index=$ARRAY_INDEX"
 echo "job_id=$JOB_ID"
 echo "backend_id=$BACKEND_ID"

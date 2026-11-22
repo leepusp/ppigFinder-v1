@@ -1,6 +1,6 @@
 # Installation and first launch
 
-ppigFinder is a Python desktop application, not a hosted web service. The **core genome-analysis workflow does not require HPC**, Slurm, AlphaFold weights or an internet connection after tools and data are installed. Some analysis features use optional external executables.
+ppigfinder is a Python desktop application, not a hosted web service. The **core genome-analysis workflow does not require HPC**, Slurm, AlphaFold weights or an internet connection after tools and data are installed. Some analysis features use optional external executables.
 
 ## Requirements
 
@@ -20,9 +20,35 @@ The current `pyproject.toml` requires Python `>=3.11`, aligned with the implemen
 
 ## Recommended installers
 
+### Conda or Mamba
+
+Use an existing Conda or Mamba installation. From the source checkout, create
+an environment and install the project with that environment's Python.
+
+=== "Conda"
+
+    ```bash
+    conda create -n ppigfinder -c conda-forge python=3.11 pip
+    conda run -n ppigfinder python -m pip install ".[gui,recommended]"
+    conda run -n ppigfinder ppigfinder
+    ```
+
+=== "Mamba"
+
+    ```bash
+    mamba create -n ppigfinder -c conda-forge python=3.11 pip
+    mamba run -n ppigfinder python -m pip install ".[gui,recommended]"
+    mamba run -n ppigfinder ppigfinder
+    ```
+
+The commands apply to Windows, Linux and macOS. Install external annotation
+tools and prediction engines separately when needed. For the environment
+managers, see the [Conda guide](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
+and [Mamba guide](https://mamba.readthedocs.io/en/latest/user_guide/mamba.html).
+
 ### Download from this site
 
-[Download ppigFinder 2.9.14 (.whl)](https://leepusp.github.io/ppigFinder-v1/downloads/ppigfinder-2.9.14-py3-none-any.whl){ .md-button .md-button--primary }
+[Download ppigfinder 2.9.14 (.whl)](https://leepusp.github.io/ppigfinder/downloads/ppigfinder-2.9.14-py3-none-any.whl){ .md-button .md-button--primary }
 
 The wheel works with Python 3.11 or newer on Windows, Linux and macOS, subject
 to the availability of dependencies for your Python version and hardware.
@@ -46,10 +72,10 @@ Open a terminal in the folder where you saved the wheel:
 
 ### Install with the graphical assistant
 
-[Download the source ZIP](https://github.com/leepusp/ppigFinder-v1/archive/refs/heads/main.zip){ .md-button }
+[Download the source ZIP](https://github.com/leepusp/ppigfinder/archive/refs/heads/main.zip){ .md-button }
 
 From a source checkout, open the graphical setup assistant. On Windows,
-double-click **scripts → Install ppigFinder.vbs** in File Explorer. This uses
+double-click **scripts → Install ppigfinder.vbs** in File Explorer. This uses
 a windowless Python launcher. If you downloaded the ZIP, extract it before
 opening the script. You can also start the assistant from a terminal:
 
@@ -65,7 +91,7 @@ python3 scripts/install_ppigfinder.py
 
 Choose an empty installation folder or an existing virtual environment, select
 the optional Pyrodigal, SciPy and SSH/SFTP dependencies, then select **Install**.
-Select **Open ppigFinder** when the installation is complete. The default
+Select **Open ppigfinder** when the installation is complete. The default
 destination is `.venv` in the checkout.
 
 The graphical installer needs Tk and a graphical session. Add `--terminal`
@@ -77,7 +103,7 @@ The terminal installer prints the package name, the manual link and the path
 to the installed launcher. Run `py -3.11 scripts/install_ppigfinder.py --terminal`
 on Windows or `python3 scripts/install_ppigfinder.py --terminal` on Linux/macOS.
 
-To reinstall only ppigFinder, run the installed environment's Python with
+To reinstall only ppigfinder, run the installed environment's Python with
 `-m pip uninstall ppigfinder`, then open the setup assistant again and select
 the same environment. Projects and other Python packages remain in place.
 For a fresh dependency check, choose a new empty environment instead.
@@ -91,8 +117,8 @@ models, databases or any scheduler. Python 3.11+ is mandatory. See the
 ## Linux
 
 ```bash
-git clone https://github.com/leepusp/ppigFinder-v1.git
-cd ppigFinder-v1
+git clone https://github.com/leepusp/ppigfinder.git
+cd ppigfinder
 python3.11 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
@@ -107,8 +133,8 @@ You need a graphical session (`DISPLAY` or equivalent). On headless SSH login no
 Install Python 3.11 and Git first, then open PowerShell:
 
 ```powershell
-git clone https://github.com/leepusp/ppigFinder-v1.git
-cd ppigFinder-v1
+git clone https://github.com/leepusp/ppigfinder.git
+cd ppigfinder
 py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip

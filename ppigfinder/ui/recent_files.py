@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Recent file support for ppigFinder.
+Recent file support for ppigfinder.
 
 This module adds a portable Recent Files menu using QSettings.
 """

@@ -10,7 +10,7 @@ The Protein / ORFs module predicts protein-coding regions from a loaded genome s
 
 ## ORF prediction modes
 
-ppigFinder supports multiple strategies:
+ppigfinder supports multiple strategies:
 
 - Pyrodigal / Prodigal-like gene calling
 - exhaustive six-frame translation

@@ -4,7 +4,7 @@
 
 ## Goal
 
-A ppigFinder installation must be useful without Slurm, SSH or local GPUs. Cluster functionality is an optional adapter. The core application owns selection, validated job specifications, manifests, outputs and result parsing; the HPC backend owns transport and scheduling. AlphaFold 3 code, model weights and databases are **not bundled**.
+A ppigfinder installation must be useful without Slurm, SSH or local GPUs. Cluster functionality is an optional adapter. The core application owns selection, validated job specifications, manifests, outputs and result parsing; the HPC backend owns transport and scheduling. AlphaFold 3 code, model weights and databases are **not bundled**.
 
 ## Current code map
 

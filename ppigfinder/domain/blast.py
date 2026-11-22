@@ -31,7 +31,7 @@ def blast_hit_from_legacy_dict(data: dict) -> BlastHit:
     """
     Convert a legacy BLAST hit dictionary into a BlastHit dataclass.
 
-    This adapter is intentionally permissive because older ppigFinder
+    This adapter is intentionally permissive because older ppigfinder
     versions used slightly different key names.
     """
     return BlastHit(

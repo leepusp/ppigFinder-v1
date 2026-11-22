@@ -1,12 +1,12 @@
 # Complete user guide
 
-**ppigFinder — Protein–Protein Interaction Genomic Finder**
+**ppigfinder — Protein–Protein Interaction Genomic Finder**
 
 This guide consolidates the user-supplied preliminary 27-page slide manual, the packaged source code and the public documentation. It focuses on a **reproducible, guided scientific workflow**: genome → ORFs → annotation → candidate selection → structural job preparation → confidence analysis. Screen names and positions may vary across versions; the historical screenshots below were extracted from the **v2.2 manual**. The current codebase identifies software version 2.9.14 in package metadata.
 
 ## 1. Scientific scope and limitations
 
-ppigFinder supports *hypothesis generation* for bacterial PPIs. It can analyze nucleotide sequences, predict open reading frames, identify putative homologs/domains, inspect genomic context, build structural prediction jobs and parse selected outputs. It does not replace experimental evidence of physical binding, functional genetics or biochemical characterization.
+ppigfinder supports *hypothesis generation* for bacterial PPIs. It can analyze nucleotide sequences, predict open reading frames, identify putative homologs/domains, inspect genomic context, build structural prediction jobs and parse selected outputs. It does not replace experimental evidence of physical binding, functional genetics or biochemical characterization.
 
 **Software dependencies are modular:** genomic analysis does not require Slurm, HPC, AF3 inference or a GPU. The AlphaFold Server route allows manually uploading compatible JSON jobs when compute resources are not available.
 
@@ -15,8 +15,8 @@ ppigFinder supports *hypothesis generation* for bacterial PPIs. It can analyze n
 Follow the [platform-specific installation guide](installation.md). Use a local Python 3.11 virtual environment as the conservative starting point:
 
 ```bash
-git clone https://github.com/leepusp/ppigFinder-v1.git
-cd ppigFinder-v1
+git clone https://github.com/leepusp/ppigfinder.git
+cd ppigfinder
 python3.11 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e ".[gui,recommended]"
@@ -29,7 +29,7 @@ If the GUI does not open, first verify that you have a graphical desktop and PyQ
 
 Optional backend indicators report which utilities are detected locally. For example, BLAST+ and HMMER3 must be available in the executable `PATH` (or through the configured backend) to run their external search modes.
 
-![Historical ppigFinder main window and backend panel](../assets/screenshots/legacy-main-window.webp)
+![Historical ppigfinder main window and backend panel](../assets/screenshots/legacy-main-window.webp)
 
 *Historical v2.2 window, shown to explain the layout, not to assert the current UI is identical.*
 
@@ -52,7 +52,7 @@ Recommended project metadata to record:
 | Project ID | `xanthomonas_306_ppi` |
 | Genome accession | `AE008923.1` |
 | FASTA checksum | SHA-256 of the downloaded file |
-| ppigFinder version | Version shown by the local application |
+| ppigfinder version | Version shown by the local application |
 | ORF method | Pyrodigal / Hybrid / six-frame, plus options |
 | Annotation sources | BLAST database and HMM profile versions |
 | Structural backend | AlphaFold Server JSON, AF3 local, or selected validated alternative |
@@ -154,7 +154,7 @@ Export ORF tables, candidate pair manifests, original JSON input, model output s
 
 ## 14. Example research application: VirD4
 
-The 2026 [ppigFinder preprint](https://doi.org/10.64898/2026.08.23.746524) describes screening *X. citri* VirD4 against a 4,303-ORF predicted proteome and prioritization of XVIPCD-containing candidate effectors. The reported ranking is a **case study result**, not a guarantee that the same ranking will arise from a different set of parameters or model versions. See the [study-inspired tutorial](../tutorials/xanthomonas.md) for a more explicit evidence trail.
+The 2026 [ppigfinder preprint](https://doi.org/10.64898/2026.08.23.746524) describes screening *X. citri* VirD4 against a 4,303-ORF predicted proteome and prioritization of XVIPCD-containing candidate effectors. The reported ranking is a **case study result**, not a guarantee that the same ranking will arise from a different set of parameters or model versions. See the [study-inspired tutorial](../tutorials/xanthomonas.md) for a more explicit evidence trail.
 
 ## 15. Known limitations and next steps
 
@@ -165,4 +165,4 @@ The 2026 [ppigFinder preprint](https://doi.org/10.64898/2026.08.23.746524) descr
 - Historical screenshots show v2.2; current-version screenshots should be added separately after capture and verification.
 - Structural predictions identify **candidates for validation** rather than proving biochemical interaction.
 
-Continue with [feature status](../developer/feature_status.md) and [contributing](https://github.com/leepusp/ppigFinder-v1/blob/main/CONTRIBUTING.md).
+Continue with [feature status](../developer/feature_status.md) and [contributing](https://github.com/leepusp/ppigfinder/blob/main/CONTRIBUTING.md).

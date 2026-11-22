@@ -2,7 +2,7 @@
 
 ## Overview
 
-ppigFinder **contains its own first-party AF3 integration**: protein FASTA to native JSON, schema preflight, a local/container execution adapter and a GUI launcher. It **does not bundle** the upstream AlphaFold 3 inference engine, model parameters or databases. Genome inspection, annotation, PPI design, exports and result interpretation work without a GPU or HPC.
+ppigfinder **contains its own first-party AF3 integration**: protein FASTA to native JSON, schema preflight, a local/container execution adapter and a GUI launcher. It **does not bundle** the upstream AlphaFold 3 inference engine, model parameters or databases. Genome inspection, annotation, PPI design, exports and result interpretation work without a GPU or HPC.
 
 There are **three independent paths**:
 
@@ -22,29 +22,29 @@ The official upstream guides are authoritative for requirements and licensing:
 - [Native input JSON format](https://github.com/google-deepmind/alphafold3/blob/main/docs/input.md)
 - [Model parameter terms](https://github.com/google-deepmind/alphafold3/blob/main/WEIGHTS_TERMS_OF_USE.md)
 
-## 1. Install ppigFinder first (AF3 not required)
+## 1. Install ppigfinder first (AF3 not required)
 
 ### Linux / macOS
 
 ```bash
-git clone https://github.com/leepusp/ppigFinder-v1.git
-cd ppigFinder-v1
+git clone https://github.com/leepusp/ppigfinder.git
+cd ppigfinder
 bash scripts/install_ppigfinder.sh
 .venv/bin/python main.py
 ```
 
-Requires Python 3.11 or newer. To select a specific interpreter, set `PPIG_PYTHON=/path/to/python3.11` before invoking the installer. On headless HPC nodes, use a supported graphical desktop session for the GUI. Installing ppigFinder does **not** install AF3 models or databases.
+Requires Python 3.11 or newer. To select a specific interpreter, set `PPIG_PYTHON=/path/to/python3.11` before invoking the installer. On headless HPC nodes, use a supported graphical desktop session for the GUI. Installing ppigfinder does **not** install AF3 models or databases.
 
 ### Windows PowerShell
 
 ```powershell
-git clone https://github.com/leepusp/ppigFinder-v1.git
-cd ppigFinder-v1
+git clone https://github.com/leepusp/ppigfinder.git
+cd ppigfinder
 powershell -ExecutionPolicy Bypass -File .\scripts\install_ppigfinder.ps1
 .\.venv\Scripts\python.exe main.py
 ```
 
-For Windows native inferencing, confirm upstream AF3 GPU/runtime support. Docker/WSL or a compatible remote environment may be required; the ppigFinder GUI itself is cross-platform but AF3 GPU inference is not guaranteed on every OS.
+For Windows native inferencing, confirm upstream AF3 GPU/runtime support. Docker/WSL or a compatible remote environment may be required; the ppigfinder GUI itself is cross-platform but AF3 GPU inference is not guaranteed on every OS.
 
 ## 2. Generate AF3 input from a protein FASTA
 
@@ -57,7 +57,7 @@ MKTAYIAKQRQISFVKSHFSRQLEERLGLIEVQ
 MKWVTFISLLFLFSSAYS
 ```
 
-Use the **same Python interpreter** that runs ppigFinder:
+Use the **same Python interpreter** that runs ppigfinder:
 
 ```bash
 .venv/bin/python -m ppigfinder.integrations.af3.cli prepare \
@@ -66,7 +66,7 @@ Use the **same Python interpreter** that runs ppigFinder:
 .venv/bin/python -m ppigfinder.integrations.af3.cli validate --json af3_native.json
 ```
 
-After installation, the equivalent command is `ppigfinder-af3 prepare ...`. Protein input validation deliberately rejects ambiguous characters and stop codons. RNA, DNA, ligands, PTMs, templates and external MSA are **not yet supported by this ppigFinder FASTA helper**. They can be authored using the [upstream official JSON specification](https://github.com/google-deepmind/alphafold3/blob/main/docs/input.md), but require a corresponding validated adapter before executing through this tool.
+After installation, the equivalent command is `ppigfinder-af3 prepare ...`. Protein input validation deliberately rejects ambiguous characters and stop codons. RNA, DNA, ligands, PTMs, templates and external MSA are **not yet supported by this ppigfinder FASTA helper**. They can be authored using the [upstream official JSON specification](https://github.com/google-deepmind/alphafold3/blob/main/docs/input.md), but require a corresponding validated adapter before executing through this tool.
 
 ## 3. Preview and run with a pre-existing wrapper (HPC example)
 
@@ -83,9 +83,9 @@ The `run` command only previews by default. After validating your allocation/GPU
 
 ## 4. Official upstream AF3 installation
 
-Follow [the official upstream installation guide](https://github.com/google-deepmind/alphafold3/blob/main/docs/installation.md) to obtain source code, dependencies, model parameters and genetic databases. Keep all of them **outside the ppigFinder Git directory**. Validate the installed `run_alphafold.py` with the official example before enabling the ppigFinder adapter.
+Follow [the official upstream installation guide](https://github.com/google-deepmind/alphafold3/blob/main/docs/installation.md) to obtain source code, dependencies, model parameters and genetic databases. Keep all of them **outside the ppigfinder Git directory**. Validate the installed `run_alphafold.py` with the official example before enabling the ppigfinder adapter.
 
-### Official code and Docker image (separate from ppigFinder)
+### Official code and Docker image (separate from ppigfinder)
 
 On a workstation with suitable access and adequate storage, the upstream sequence is:
 
@@ -114,10 +114,10 @@ readable paths rather than downloading duplicates.
 
 ### Official Python environment and script
 
-The upstream project may require a Python runtime different from ppigFinder's
+The upstream project may require a Python runtime different from ppigfinder's
 Python 3.11 environment. Configure `--python` to point to the **separate AF3
 runtime**. Follow official installation steps for that environment. The AF3
-script is not pip-installed into ppigFinder.
+script is not pip-installed into ppigfinder.
 
 Run a preview first (replace paths with the actual installation):
 
@@ -135,7 +135,7 @@ Once the official AF3 installation, GPU, memory, model terms and available datab
 
 ## 5. Docker installation
 
-Build the upstream image according to [Google DeepMind's Docker instructions](https://github.com/google-deepmind/alphafold3/blob/main/docs/installation.md). **ppigFinder does not build images, configure GPUs or download model weights automatically.** For a prepared `alphafold3` image:
+Build the upstream image according to [Google DeepMind's Docker instructions](https://github.com/google-deepmind/alphafold3/blob/main/docs/installation.md). **ppigfinder does not build images, configure GPUs or download model weights automatically.** For a prepared `alphafold3` image:
 
 ```bash
 .venv/bin/python -m ppigfinder.integrations.af3.cli run \
@@ -149,7 +149,7 @@ Inspect the preview and re-run with `--execute`. The adapter mounts the JSON inp
 
 ## 6. Use the GUI
 
-Open ppigFinder with Python 3.11+ and choose **AlphaFold → AF3 Local/Container Runner**. Choose a native JSON input, an output folder and a mode. Supply the paths of the optional installation, click **Check configuration / Preview**, then **Execute locally** if appropriate. Execution is asynchronous in Qt, but **closing the window during a run is prevented** to avoid interrupting the process accidentally.
+Open ppigfinder with Python 3.11+ and choose **AlphaFold → AF3 Local/Container Runner**. Choose a native JSON input, an output folder and a mode. Supply the paths of the optional installation, click **Check configuration / Preview**, then **Execute locally** if appropriate. Execution is asynchronous in Qt, but **closing the window during a run is prevented** to avoid interrupting the process accidentally.
 
 The existing **System → Capabilities and Integrations** menu only detects dependencies; its *Detected* status does **not** mean the engine has successfully predicted a structure.
 

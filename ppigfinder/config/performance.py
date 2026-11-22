@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Performance defaults for ppigFinder.
+Performance defaults for ppigfinder.
 """
 
 from __future__ import annotations

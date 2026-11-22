@@ -3,7 +3,7 @@
 import sys
 if sys.version_info < (3, 11):
     raise SystemExit(
-        f"ppigFinder needs Python 3.11+, but this is {sys.version.split()[0]}. "
+        f"ppigfinder needs Python 3.11+, but this is {sys.version.split()[0]}. "
         "Activate the project's .venv or install Python 3.11 and run "
         "scripts/install_ppigfinder.sh (Windows: scripts/install_ppigfinder.ps1)."
     )

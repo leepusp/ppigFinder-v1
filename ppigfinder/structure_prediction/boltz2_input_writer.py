@@ -55,7 +55,7 @@ def render_boltz2_job_yaml(job: PredictionJobSpec) -> str:
             "inputs:",
             "  fasta: boltz2_input.fasta",
             "notes:",
-            "  - This is a ppigFinder intermediate Boltz-2 input description.",
+            "  - This is a ppigfinder intermediate Boltz-2 input description.",
             "  - Adapt execution command to the local Boltz-2 CLI/module.",
         ]
     )

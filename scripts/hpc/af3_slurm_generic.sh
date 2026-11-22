@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Reference Slurm job body for a site-managed AlphaFold 3 wrapper.
-# NOT used automatically by ppigFinder; administrator must adapt sbatch directives.
+# NOT used automatically by ppigfinder; administrator must adapt sbatch directives.
 # Do not submit this template without setting the environment and paths.
 set -Eeuo pipefail
 

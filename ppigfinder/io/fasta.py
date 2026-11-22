@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-FASTA input/output utilities for ppigFinder.
+FASTA input/output utilities for ppigfinder.
 
 This module contains FASTA parsing and writing logic independent from the
 PyQt interface.

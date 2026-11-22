@@ -102,7 +102,7 @@ def render_submission_preview(
         backend_module_command,
         "",
         "# Replace this placeholder with backend-specific execution.",
-        'echo "Running ppigFinder structural prediction task ${SLURM_ARRAY_TASK_ID:-1}"',
+        'echo "Running ppigfinder structural prediction task ${SLURM_ARRAY_TASK_ID:-1}"',
         "",
     ]
 
